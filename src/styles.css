@@ -1,0 +1,95 @@
+/* .container {
+  background-color: var(--base00);
+  color: var(--base05);
+}
+
+.data-key {
+  color: var(--base07);
+}
+
+.data-brace {
+  color: var(--base07);
+}
+backgroundColor: theme.base00,
+ellipsisColor: theme.base09,
+braceColor: theme.base07,
+expandedIcon: theme.base0D,
+collapsedIcon: theme.base0E,
+keyColor: theme.base07,
+arrayKeyColor: theme.base0C,
+objectSize: theme.base04,
+copyToClipboard: theme.base0F,
+copyToClipboardCheck: theme.base0D,
+objectBorder: theme.base02,
+dataTypes: {
+    boolean: theme.base0E,
+    date: theme.base0D,
+    float: theme.base0B,
+    function: theme.base0D,
+    integer: theme.base0F,
+    string: theme.base09,
+    nan: theme.base08,
+    null: theme.base0A,
+    undefined: theme.base05,
+    regexp: theme.base0A,
+    background: theme.base02
+}, */
+
+.container {
+  background-color: var(--base00);
+  color: var(--base05);
+  padding: 10px;
+}
+
+.object-row {
+  padding: 3px 0;
+}
+.object-row .object-row {
+  border-left: solid 1px var(--base02);
+  padding-left: 20px;
+}
+
+.object-row .key {
+  color: var(--base07);
+}
+.object-row .colon {
+  color: var(--base07);
+  margin: 0 5px;
+}
+.object-row .brace {
+  color: var(--base07);
+}
+
+.object-row .value.boolean {
+  color: var(--base0E);
+}
+.object-row .value.function {
+  color: var(--base0D);
+}
+.object-row .value.integer {
+  color: var(--base0F);
+}
+.object-row .value.string {
+  color: var(--base09);
+}
+.object-row .value.regexp {
+  color: var(--base0A);
+}
+.object-row .value.nan {
+  color: var(--base08);
+  background-color: var(--base02);
+}
+.object-row .value.null {
+  color: var(--base0A);
+  background-color: var(--base02);
+}
+.object-row .value.undefined {
+  color: var(--base05);
+  background-color: var(--base02);
+}
+
+.object-row .value .type {
+  font-size: smaller;
+  margin-right: 4px;
+  opacity: 0.8;
+}

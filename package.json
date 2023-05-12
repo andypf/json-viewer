@@ -1,0 +1,23 @@
+{
+  "name": "json-viewer",
+  "version": "1.0.0",
+  "description": "A javascript library to visualize json nicely",
+  "main": "dist/iife/index.js",
+  "module": "dist/esm/index.mjs",
+  "keywords": [
+    "json",
+    "browser",
+    "pretty",
+    "react"
+  ],
+  "scripts": {
+    "test": "jest",
+    "build": "esbuild src/index.js --outdir=dist --bundle --minify --format=esm --target=es6 --loader:.css=text",
+    "start": "esbuild src/index.js --outfile=public/dist/index.js --loader:.css=text --bundle --sourcemap --watch --servedir=public --serve=0.0.0.0:$APP_PORT"
+  },
+  "author": "Andreas Pfau",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.17.18"
+  }
+}

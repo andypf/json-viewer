@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JsonViewer</title>
+    <script src="./dist/index.js"></script>
+    <script>
+      new EventSource("/esbuild").addEventListener("change", () =>
+        location.reload()
+      )
+    </script>
+  </head>
+  <body>
+    <json-viewer theme="monokai" id="json">
+      { "id": 10, "title": "HP Pavilion 15-DK1056WM", "description":"HP Pavilion
+      15-DK1056WM Gaming...", "price": 1099, "discountPercentage": 6.18,
+      "rating": 4.43, "stock": 89, "brand": "HP Pavilion", "category":
+      "laptops", "thumbnail":
+      "https://i.dummyjson.com/data/products/10/thumbnail.jpeg", "images": [
+      "https://i.dummyjson.com/data/products/10/1.jpg",
+      "https://i.dummyjson.com/data/products/10/2.jpg",
+      "https://i.dummyjson.com/data/products/10/3.jpg",
+      "https://i.dummyjson.com/data/products/10/thumbnail.jpeg" ] }
+    </json-viewer>
+
+    <button type="button" id="button">Change Theme</button>
+    <script>
+      let className = "light"
+      document.getElementById("button").addEventListener("click", () => {
+        document.getElementById("json").setAttribute("theme", className)
+        className = className === "light" ? "monokai" : "light"
+      })
+    </script>
+
+    <json-viewer src='{"name": "json viewer 2"}' theme="dark"></json-viewer>
+    <json-viewer src='{"name": "json viewer 3"}' theme="light"></json-viewer>
+    <script>
+      const jsonViewer = document.createElement("json-viewer")
+      jsonViewer.data = { name: "json viewer 4" }
+      document.body.append(jsonViewer)
+    </script>
+
+    <json-viewer theme='{"base00": "red", "base05": "yellow"}'></json-viewer>
+    <json-viewer
+      src="https://microsoftedge.github.io/Demos/json-dummy-data/missing-colon.json"
+      theme="testikus"
+    ></json-viewer>
+    <json-viewer
+      src="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"
+      theme="testikus"
+    ></json-viewer>
+  </body>
+</html>
