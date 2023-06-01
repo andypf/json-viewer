@@ -11,7 +11,7 @@
 
 import styles from "./styles.css"
 import themes from "./themes.css"
-import { customThemeStyle, isUrl } from "./helpers"
+import { customThemeStyle, isUrl, parseJson } from "./helpers"
 import DataRenderer from "./data-renderer"
 
 class JsonViewer extends HTMLElement {
@@ -64,7 +64,6 @@ class JsonViewer extends HTMLElement {
   #loadJsonData = async () => {
     // #data is already presented
     if (this.#data) return
-
     // src is unset, probably textContent icontains the json data
     if (!this.src) {
       await new Promise((resolve) =>
@@ -72,12 +71,13 @@ class JsonViewer extends HTMLElement {
       )
       if (this.textContent) {
         try {
-          this.data = JSON.parse(
+          this.data = parseJson(
             this.textContent
               .replace(/(?:\r\n|\r|\n)/g, " ")
               .replace(/\s+/g, " ")
           )
         } catch (e) {
+          console.warn(e)
           this.#error = e.message
         }
       }
@@ -95,8 +95,9 @@ class JsonViewer extends HTMLElement {
 
     // src is json string
     try {
-      this.data = JSON.parse(this.src)
+      this.data = parseJson(this.src)
     } catch (e) {
+      console.warn(e)
       this.#error = e.message
     }
   }
@@ -105,6 +106,7 @@ class JsonViewer extends HTMLElement {
   async connectedCallback() {
     // console.log("---connected", this.data, this.theme, this.textContent)
     await this.#loadJsonData()
+
     this.#container = this.attachShadow({ mode: "closed" })
     this.textContent = null
 

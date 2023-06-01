@@ -39,6 +39,8 @@ dataTypes: {
   background-color: var(--base00);
   color: var(--base05);
   padding: 10px;
+  letter-spacing: 0.5px;
+  font-family: monospace;
 }
 
 .object-row {
@@ -47,11 +49,16 @@ dataTypes: {
 .object-row .object-row {
   border-left: solid 1px var(--base02);
   padding-left: 20px;
+  margin-left: 5px;
 }
 
 .object-row .key {
   color: var(--base07);
 }
+.object-row .key.number {
+  color: var(--base0C);
+}
+
 .object-row .colon {
   color: var(--base07);
   margin: 0 5px;
@@ -59,15 +66,31 @@ dataTypes: {
 .object-row .brace {
   color: var(--base07);
 }
+.object-row .size {
+  margin-left: 10px;
+  color: var(--base04);
+  font-style: italic;
+  font-size: smaller;
+}
 
+.object-row .ellipsis {
+  color: var(--base09);
+  cursor: pointer;
+}
+
+.object-row .value.bool,
 .object-row .value.boolean {
   color: var(--base0E);
 }
 .object-row .value.function {
   color: var(--base0D);
 }
+.object-row .value.int,
 .object-row .value.integer {
   color: var(--base0F);
+}
+.object-row .value.float {
+  color: var(--base0B);
 }
 .object-row .value.string {
   color: var(--base09);
@@ -77,19 +100,55 @@ dataTypes: {
 }
 .object-row .value.nan {
   color: var(--base08);
-  background-color: var(--base02);
 }
 .object-row .value.null {
   color: var(--base0A);
-  background-color: var(--base02);
 }
 .object-row .value.undefined {
   color: var(--base05);
+}
+
+.object-row .value.nan,
+.object-row .value.null,
+.object-row .value.undefined {
+  border-radius: 3px;
   background-color: var(--base02);
+  padding: 1px 2px;
 }
 
 .object-row .value .type {
   font-size: smaller;
   margin-right: 4px;
   opacity: 0.8;
+}
+
+.icon-wrapper {
+  display: inline-block;
+  width: 17px;
+  cursor: pointer;
+}
+.icon {
+  width: 0;
+  height: 0;
+  display: inline-block;
+}
+.icon.arrow-up {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+
+  border-bottom: 6px solid var(--base0D);
+}
+
+.icon.arrow-down {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+
+  border-top: 6px solid var(--base0D);
+}
+
+.icon.arrow-right {
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+
+  border-left: 6px solid var(--base0E);
 }
