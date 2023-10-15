@@ -1,44 +1,177 @@
-var A=(a,b,e)=>{if(!b.has(a))throw TypeError("Cannot "+e)};var c=(a,b,e)=>(A(a,b,"read from private field"),e?e.call(a):b.get(a)),o=(a,b,e)=>{if(b.has(a))throw TypeError("Cannot add the same private member more than once");b instanceof WeakSet?b.add(a):b.set(a,e)},t=(a,b,e,s)=>(A(a,b,"write to private field"),s?s.call(a,e):b.set(a,e),e);var E=(a,b,e)=>new Promise((s,f)=>{var l=d=>{try{D(e.next(d))}catch(B){f(B)}},m=d=>{try{D(e.throw(d))}catch(B){f(B)}},D=d=>d.done?s(d.value):Promise.resolve(d.value).then(l,m);D((e=e.apply(a,b)).next())});var u=`:host {
-  /*  @see: https://github.com/chriskempson/base16/blob/main/styling.md */
-  /* Default Background */
-  --base00: #181818;
-  /* Lighter Background (Used for status bars, line number and folding marks) */
-  --base01: #282828;
-  /* Selection Background */
-  --base02: #383838;
-  /* Comments, Invisibles, Line Highlighting */
-  --base03: #585858;
-  /* Dark Foreground (Used for status bars) */
-  --base04: #b8b8b8;
-  /* Default Foreground, Caret, Delimiters, Operators */
-  --base05: #d8d8d8;
-  /* Light Foreground (Not often used) */
-  --base06: #e8e8e8;
-  /* Light Background (Not often used) */
-  --base07: #f8f8f8;
-  /* Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted */
-  --base08: #ab4642;
-  /* Integers, Boolean, Constants, XML Attributes, Markup Link Url */
-  --base09: #dc9656;
-  /* Classes, Markup Bold, Search Text Background */
-  --base0A: #f7ca88;
-  /* Strings, Inherited Class, Markup Code, Diff Inserted */
-  --base0B: #a1b56c;
-  /* Support, Regular Expressions, Escape Characters, Markup Quotes */
-  --base0C: #86c1b9;
-  /* Functions, Methods, Attribute IDs, Headings */
-  --base0D: #7cafc2;
-  /* Keywords, Storage, Selector, Markup Italic, Diff Changed */
-  --base0E: #ba8baf;
-  /* Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> */
-  --base0F: #a16946;
+var be=Object.defineProperty;var se=(b,a,e)=>a in b?be(b,a,{enumerable:!0,configurable:!0,writable:!0,value:e}):b[a]=e;var E=(b,a,e)=>(se(b,typeof a!="symbol"?a+"":a,e),e),S=(b,a,e)=>{if(!a.has(b))throw TypeError("Cannot "+e)};var f=(b,a,e)=>(S(b,a,"read from private field"),e?e.call(b):a.get(b)),c=(b,a,e)=>{if(a.has(b))throw TypeError("Cannot add the same private member more than once");a instanceof WeakSet?a.add(b):a.set(b,e)},d=(b,a,e,s)=>(S(b,a,"write to private field"),s?s.call(b,e):a.set(b,e),e);var D=(b,a,e)=>(S(b,a,"access private method"),e);var $=(b,a,e)=>new Promise((s,t)=>{var r=i=>{try{w(e.next(i))}catch(L){t(L)}},k=i=>{try{w(e.throw(i))}catch(L){t(L)}},w=i=>i.done?s(i.value):Promise.resolve(i.value).then(r,k);w((e=e.apply(b,a)).next())});var G=`/* .container {
+  background-color: var(--base00);
+  color: var(--base05);
 }
+
+.data-key {
+  color: var(--base07);
+}
+
+.data-brace {
+  color: var(--base07);
+}
+backgroundColor: theme.base00,
+ellipsisColor: theme.base09,
+braceColor: theme.base07,
+expandedIcon: theme.base0D,
+collapsedIcon: theme.base0E,
+keyColor: theme.base07,
+arrayKeyColor: theme.base0C,
+objectSize: theme.base04,
+copyToClipboard: theme.base0F,
+copyToClipboardCheck: theme.base0D,
+objectBorder: theme.base02,
+dataTypes: {
+    boolean: theme.base0E,
+    date: theme.base0D,
+    float: theme.base0B,
+    function: theme.base0D,
+    integer: theme.base0F,
+    string: theme.base09,
+    nan: theme.base08,
+    null: theme.base0A,
+    undefined: theme.base05,
+    regexp: theme.base0A,
+    background: theme.base02
+}, */
 
 .container {
   background-color: var(--base00);
   color: var(--base05);
+  padding: 10px;
+  letter-spacing: 0.5px;
+  font-family: monospace;
 }
-`;var g=`/* source: https://github.com/gammons/base16-obsidian */
+
+.object-row {
+  padding: 3px 0;
+}
+.object-row .object-row {
+  border-left: solid 1px var(--base02);
+  padding-left: 20px;
+  margin-left: 5px;
+}
+
+.object-row .key {
+  color: var(--base07);
+}
+.object-row .key.number {
+  color: var(--base0C);
+}
+
+.object-row .colon {
+  color: var(--base07);
+  margin: 0 5px;
+}
+.object-row .brace {
+  color: var(--base07);
+}
+.object-row .size {
+  margin-left: 10px;
+  color: var(--base04);
+  font-style: italic;
+  font-size: smaller;
+}
+
+.object-row .ellipsis {
+  color: var(--base09);
+  cursor: pointer;
+}
+
+.object-row .value.bool,
+.object-row .value.boolean {
+  color: var(--base0E);
+}
+.object-row .value.function {
+  color: var(--base0D);
+}
+.object-row .value.int,
+.object-row .value.integer {
+  color: var(--base0F);
+}
+.object-row .value.float {
+  color: var(--base0B);
+}
+.object-row .value.string {
+  color: var(--base09);
+}
+.object-row .value.regexp {
+  color: var(--base0A);
+}
+.object-row .value.nan {
+  color: var(--base08);
+}
+.object-row .value.null {
+  color: var(--base0A);
+}
+.object-row .value.undefined {
+  color: var(--base05);
+}
+
+.object-row .value.nan,
+.object-row .value.null,
+.object-row .value.undefined {
+  border-radius: 3px;
+  background-color: var(--base02);
+  padding: 1px 2px;
+}
+
+.object-row .value .type {
+  font-size: smaller;
+  margin-right: 4px;
+  opacity: 0.8;
+}
+
+.icon-wrapper {
+  display: inline-block;
+  width: 17px;
+  cursor: pointer;
+}
+.icon {
+  width: 0;
+  height: 0;
+  display: inline-block;
+}
+.icon.arrow-up {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+
+  border-bottom: 6px solid var(--base0D);
+}
+
+.icon.arrow-down {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+
+  border-top: 6px solid var(--base0D);
+}
+
+.icon.arrow-right {
+  border-top: 6px solid transparent;
+  border-bottom: 6px solid transparent;
+
+  border-left: 6px solid var(--base0E);
+}
+`;var W=`/* 
+  --base00: Default Background 
+  --base01: Lighter Background (Used for status bars, line number and folding marks)
+  --base02: Selection Background
+  --base03: Comments, Invisibles, Line Highlighting 
+  --base04: Dark Foreground (Used for status bars) 
+  --base05: Default Foreground, Caret, Delimiters, Operators 
+  --base06: Light Foreground (Not often used) 
+  --base07: Light Background (Not often used) 
+  --base08: Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted 
+  --base09: Integers, Boolean, Constants, XML Attributes, Markup Link Url 
+  --base0A: Classes, Markup Bold, Search Text Background 
+  --base0B: Strings, Inherited Class, Markup Code, Diff Inserted 
+  --base0C: Support, Regular Expressions, Escape Characters, Markup Quotes 
+  --base0D: Functions, Methods, Attribute IDs, Headings 
+  --base0E: Keywords, Storage, Selector, Markup Italic, Diff Changed 
+  --base0F: Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?> 
+*/
+
+/* source: https://github.com/gammons/base16-obsidian */
 .apathy {
   --base00: #031a16;
   --base01: #0b342d;
@@ -1444,13 +1577,10 @@ var A=(a,b,e)=>{if(!b.has(a))throw TypeError("Cannot "+e)};var c=(a,b,e)=>(A(a,b
   --base0E: #dc8cc3;
   --base0F: #000000;
 }
-`;var y=a=>`
+`;var Y=(b,a)=>{let e=Object.keys(a).map(t=>`  --${t}: ${a[t]};`);return`
 /* custom theme */
-:host {
-${Object.keys(a).map(s=>`  --${s}: ${a[s]};`).join(`
+.${b} {
+${e.join(`
 `)}
 }
-`,L=a=>{try{return!!new URL(a)}catch(b){return!1}},n,r,i,h,C,F=class extends HTMLElement{constructor(){super();o(this,n,"");o(this,r,null);o(this,i,null);o(this,h,null);o(this,C,()=>E(this,null,function*(){if(!c(this,r)){if(!this.src){if(yield new Promise(e=>window.addEventListener("DOMContentLoaded",e)),this.textContent)try{this.data=JSON.parse(this.textContent.replace(/(?:\r\n|\r|\n)/g," ").replace(/\s+/g," "))}catch(e){t(this,i,e.message)}return}if(L(this.src)){this.data=yield fetch(this.src).then(e=>e.json()).catch(e=>t(this,i,e.message));return}try{this.data=JSON.parse(this.src)}catch(e){t(this,i,e.message)}}}));this.indent=2,this.expanded=1,this.toolbar=!1,this.theme="default-light"}static get observedAttributes(){return["src","theme","data","indent","expanded","toolbar"]}attributeChangedCallback(e,s,f){if(s!==f&&(this[e]=f,e==="theme"&&f&&f.indexOf("base")>=0))try{let l=JSON.parse(f);t(this,n,y(l)),this.theme=""}catch(l){}}set data(e){t(this,r,e)}connectedCallback(){return E(this,null,function*(){yield c(this,C).call(this),t(this,h,this.attachShadow({mode:"closed"})),this.render()})}render(){c(this,h).innerHTML=`<style>${u} ${c(this,n)} ${g}
-    </style><div class="container ${this.theme}">
-      ${c(this,i)||(c(this,r)?"<pre>"+JSON.stringify(c(this,r),null,2)+"</pre>":"No JSON data found")}
-    </div>`}};n=new WeakMap,r=new WeakMap,i=new WeakMap,h=new WeakMap,C=new WeakMap;customElements.define("json-viewer",F);
+`},Z=b=>{try{return!!new URL(b)}catch(a){return!1}},V=b=>{if(Array.isArray(b))return"array";if(b===null)return"null";if(b&&b instanceof RegExp)return"regexp";let a=typeof b;return a==="number"?isNaN(b)?"NaN":Number.isInteger(b)?"int":"float":a==="boolean"?"bool":a},M=jsonString=>(jsonString=jsonString.replace(/:\s*NaN/gi,': "NaN"').replace(/:\s*undefined/gi,': "undefined"'),JSON.parse(jsonString,(key,value)=>value===null||value==="NaN"||value==="undefined"?eval(value):value));var z=class{constructor({expanded:a=!1,onToggle:e}){let s=a?"arrow-down":"arrow-right",t=a,r=Object.assign(document.createElement("i"),{className:`icon ${s}`}),k=Object.assign(document.createElement("span"),{className:"icon-wrapper",onclick:function(w){r.classList.toggle("arrow-down"),r.classList.toggle("arrow-right"),t=!t,e&&e(t)}});return k.append(r),k}},n,J,R,P,A,F,y,I,j=class{constructor({expanded:a,type:e,children:s,onExpand:t}){c(this,y);c(this,n,void 0);c(this,J,void 0);c(this,R,void 0);c(this,P,void 0);c(this,A,void 0);c(this,F,void 0);d(this,n,a);let r=s.length;this.element=document.createElement("span"),d(this,A,j.createExpandedTree({type:e,size:r,children:s})),d(this,F,j.createCollapsedTree({type:e,size:r,onExpand:t})),D(this,y,I).call(this)}set expanded(a){console.log("============2"),f(this,n)!==a&&(d(this,n,a),console.log(".............",f(this,n)),D(this,y,I).call(this))}},B=j;n=new WeakMap,J=new WeakMap,R=new WeakMap,P=new WeakMap,A=new WeakMap,F=new WeakMap,y=new WeakSet,I=function(){this.element.innerHTML="",f(this,n)?this.element.append(...f(this,A)):this.element.append(...f(this,F))},E(B,"createExpandedTree",({type:a,size:e,children:s})=>[Object.assign(document.createElement("span"),{className:"brace",textContent:a==="array"?"[":"{"}),Object.assign(document.createElement("span"),{className:"size",textContent:`${e} item${e===1?"":"s"}`}),...s,Object.assign(document.createElement("span"),{className:"brace",textContent:a==="array"?"]":"}"})]),E(B,"createCollapsedTree",({type:a,size:e,onExpand:s})=>[Object.assign(document.createElement("span"),{className:"brace",textContent:a==="array"?"[":"{"}),Object.assign(document.createElement("span"),{className:"ellipsis",textContent:"...",onclick:()=>{s&&s()}}),Object.assign(document.createElement("span"),{className:"brace",textContent:a==="array"?"]":"}"}),Object.assign(document.createElement("span"),{className:"size",textContent:`${e} item${e===1?"":"s"}`})]);var h,p,K,X,o,N,_,Q=class{constructor(a,e,{expanded:s,indent:t,level:r=0}){c(this,N);c(this,h,!1);c(this,p,!1);c(this,K,!1);c(this,X,0);c(this,o,null);this.key=a,this.value=e,this.expanded=s,this.indent=t,this.level=r,this.type=V(e).toLowerCase(),d(this,h,this.type==="object"||this.type==="array"),d(this,p,s===!0||s>=r),D(this,N,_).call(this)}},U=Q;h=new WeakMap,p=new WeakMap,K=new WeakMap,X=new WeakMap,o=new WeakMap,N=new WeakSet,_=function(){if(this.element=document.createElement("div"),this.element.className="object-row",f(this,h)&&this.element.append(new z({expanded:f(this,p),onToggle:a=>{f(this,o)&&(f(this,o).expanded=a)}})),this.key||this.key===0){let a=Object.assign(document.createElement("span"),{className:`key${typeof this.key=="number"?" number":""}`,textContent:typeof this.key=="number"?this.key:`"${this.key}"`}),e=Object.assign(document.createElement("span"),{className:"colon",textContent:":"});this.element.append(a),this.element.append(e)}if(f(this,h)){let e=(this.type==="array"?this.value.map((s,t)=>({key:t,value:s})):Object.keys(this.value).map(s=>({key:s,value:this.value[s]}))).map(({key:s,value:t})=>new Q(s,t,{expanded:this.expanded,indent:this.indent}).element);d(this,o,new B({expanded:f(this,p),children:e,type:this.type,onExpand:()=>{f(this,o).expanded=!0}})),this.element.append(f(this,o).element)}else{let a=["nan","NaN","undefined","null"].includes(this.type)?"":`<span class="type">${this.type}</span>`,e=Object.assign(document.createElement("span"),{className:`value ${this.type}`,innerHTML:a+`<span>${this.value}</span>`});this.element.append(e)}};var O,ee,H=class{constructor(a){c(this,O);this.containerElement=a}update({data:a,expanded:e,indent:s}){(!this.json||this.data&&JSON.stringify(this.data)!==JSON.stringify(a))&&(this.data=a,D(this,O,ee).call(this)),this.expanded!==e&&(this.expanded=e,this.json&&(this.json.expanded=e)),this.indent!==s&&(this.indent=s,this.json&&(this.json.indent=s))}};O=new WeakSet,ee=function(){this.data&&(this.json=new U("root",this.data,{expanded:this.expanded,indent:this.indent}),this.containerElement.append(this.json.element))};var ae=H;var u,l,x,v,m,g,C,T,q=class extends HTMLElement{constructor(){super();c(this,u,null);c(this,l,null);c(this,x,null);c(this,v,"");c(this,m,null);c(this,g,null);c(this,C,null);c(this,T,()=>$(this,null,function*(){if(!f(this,m)){if(!this.src){if(yield new Promise(e=>window.addEventListener("DOMContentLoaded",e)),this.textContent)try{this.data=M(this.textContent.replace(/(?:\r\n|\r|\n)/g," ").replace(/\s+/g," "))}catch(e){console.warn(e),d(this,g,e.message)}return}if(Z(this.src)){this.data=yield fetch(this.src).then(e=>e.json()).catch(e=>d(this,g,e.message));return}try{this.data=M(this.src)}catch(e){console.warn(e),d(this,g,e.message)}}}));E(this,"update",()=>{f(this,u).textContent=`${W} ${f(this,v)} ${G}`,f(this,l).className=`container ${this.theme}`,f(this,x).update({data:f(this,m),indent:this.indent,expanded:this.expanded})});this.indent=2,this.expanded=1,this.toolbar=!1,this.theme="default-light",d(this,u,document.createElement("style")),d(this,l,document.createElement("div")),d(this,x,new ae(f(this,l)))}static get observedAttributes(){return["src","theme","data","indent","expanded","toolbar"]}attributeChangedCallback(e,s,t){if(s!==t){if(this[e]=t,e==="theme"&&t&&t.indexOf("base")>=0)try{let r=JSON.parse(t);d(this,v,Y("custom",r)),this.theme="default-light custom"}catch(r){}this.update()}}set data(e){d(this,m,e)}connectedCallback(){return $(this,null,function*(){yield f(this,T).call(this),d(this,C,this.attachShadow({mode:"closed"})),this.textContent=null,f(this,C).append(f(this,u)),f(this,C).append(f(this,l)),this.update()})}};u=new WeakMap,l=new WeakMap,x=new WeakMap,v=new WeakMap,m=new WeakMap,g=new WeakMap,C=new WeakMap,T=new WeakMap;customElements.define("json-viewer",q);

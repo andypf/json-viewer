@@ -13,7 +13,7 @@
   "scripts": {
     "test": "jest",
     "build": "esbuild src/index.js --outdir=dist --bundle --minify --format=esm --target=es6 --loader:.css=text",
-    "start": "esbuild src/index.js --outfile=public/dist/index.js --loader:.css=text --bundle --sourcemap --watch --servedir=public --serve=0.0.0.0:$APP_PORT"
+    "start": "esbuild src/index.js --outfile=public/dist/index.js --loader:.css=text --bundle --sourcemap --watch --servedir=public --serve=0.0.0.0:3000"
   },
   "author": "Andreas Pfau",
   "license": "MIT",
