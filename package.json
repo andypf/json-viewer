@@ -1,6 +1,6 @@
 {
   "name": "json-viewer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A javascript library to visualize json nicely",
   "main": "dist/iife/index.js",
   "module": "dist/esm/index.mjs",
