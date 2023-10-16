@@ -1,15 +1,3 @@
-// This function generates a custom CSS style based on the provided name and theme JSON object.
-export const customThemeStyle = (name, customThemeJson) => {
-  // Initialize the style string with a CSS class selector and a comment
-  const style =
-    Object.keys(customThemeJson).reduce((css, key) => {
-      // Add each custom CSS property and its value to the style string
-      return `${css}  --${key}: ${customThemeJson[key]};\n`;
-    }, `\n/* custom theme */\n.${name} {\n`) + "}\n"; // Complete the CSS block
-
-  return style; // Return the generated CSS style string
-};
-
 // This function checks if a string is a valid URL.
 export const isUrl = (string) => {
   try {
@@ -63,4 +51,25 @@ export const parseJson = (jsonString) => {
 
   // Parse the modified JSON string using the custom reviver function
   return JSON.parse(fixedJsonString, customReviver);
+};
+
+export const buildContent = (data) => {
+  const dt = dataType(data);
+  if (dt === "array") {
+    return {
+      dataType: dt,
+      value: data.map((item) => buildContent(item)),
+    };
+  } else if (dt === "object") {
+    const value = {};
+    Object.keys(data).forEach((key) => {
+      value[key] = buildContent(data[key]);
+    });
+    return {
+      dataType: dt,
+      value,
+    };
+  } else {
+    return { dataType: dt, value: data };
+  }
 };
