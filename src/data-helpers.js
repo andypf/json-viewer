@@ -18,6 +18,7 @@ export const dataType = (data) => {
   const type = typeof data; // Get the JavaScript type of data
   if (type === "number") {
     if (isNaN(data)) return "NaN"; // Check if data is NaN
+    if (!isFinite(data)) return "Infinity"; // Check if data is Infinity
     return Number.isInteger(data) ? "int" : "float"; // Check if data is integer or float
   }
   if (type === "boolean") return "bool"; // Check if data is a boolean
@@ -47,8 +48,6 @@ export const parseJson = (jsonString) => {
     return value;
   };
 
-  console.log("===", fixedJsonString);
-
   // Parse the modified JSON string using the custom reviver function
   return JSON.parse(fixedJsonString, customReviver);
 };
@@ -73,3 +72,5 @@ export const buildContent = (data) => {
     return { dataType: dt, value: data };
   }
 };
+
+export const buildContentData = buildContent;

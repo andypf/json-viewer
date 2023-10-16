@@ -11,71 +11,83 @@
     </script>
   </head>
   <body>
-    <div style="display:flex;">
+    <div style="display: flex">
       <div>
         <button id="button1">Change Theme</button>
         <button id="button2">Change Data</button>
         <button id="button3">Change multiple attributes</button>
       </div>
-      <!-- <json-viewer id="test" data="test" expanded="true" style="color:green;" class="red"></json-viewer>
+    </div>
+    <!-- <json-viewer id="test" data="test" expanded="true" style="color:green;" class="red"></json-viewer>
       <json-viewer id="test" expanded="true">
         {
           "name": "TEST",
           "date": "2021-01-01T00:00:00.000Z"
         }
       </json-viewer> -->
-      <json-viewer >
-        {
-          "name": "TEST",
-          "date": "2021-01-01T00:00:00.000Z",
-          "count": 1,
-          "array": [
-            1,
-            2,
-            3
-          ]
-        }
-      </json-viewer>
-      <script>
-        const jsonViewer = document.createElement("json-viewer")
-        jsonViewer.data = {
-          string: "TEST JSON!",
-          number: 42,
-          boolean: true,
-          nullValue: null,
-          array: [1, 2, 3, 4],
-          object: {
-            property1: "Value 1",
-            property2: "Value 2"
-          },
-          dateString: "2023-10-13T08:00:00Z",
-          function: function() { console.log('This is a function.'); },
-          undefinedValue: undefined,
-          nanValue: NaN,
-          infinityValue: Infinity,
-          dateObject: new Date()
-        }
-        document.body.append(jsonViewer)
-      </script>
-    </div>
+
+      <!-- <json-viewer
+      data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"
+      theme="monokai"
+      expanded="false"
+    ></json-viewer> -->
+
+    <json-viewer theme="monokai" expanded="1">
+      { "name": "TEST", "date": "2021-01-01T00:00:00.000Z", "count": 1, "array":
+      [ 1, 2, 3 ] }
+    </json-viewer>
+
+
+    <script>
+      const jsonViewer = document.createElement("json-viewer")
+      jsonViewer.expanded = 0
+      jsonViewer.data = {
+        string: "TEST JSON!",
+        number: 42,
+        boolean: true,
+        nullValue: null,
+        array: [1, 2, 3, 4],
+        object: {
+          property1: "Value 1",
+          property2: {
+            property3: "Value 3",
+            property4: "Value 4",
+          }
+        },
+        dateString: "2023-10-13T08:00:00Z",
+        function: function () {
+          console.log("This is a function.")
+        },
+        undefinedValue: undefined,
+        nanValue: NaN,
+        infinityValue: Infinity,
+        dateObject: new Date(),
+      }
+      document.body.append(jsonViewer)
+    </script> 
+
+
 
     <script>
       document.getElementById("button1").addEventListener("click", () => {
         console.log("button1 clicked")
-        document.getElementById("test").theme = "monokai";
-      });
+        document.getElementById("test").theme = "monokai"
+      })
       document.getElementById("button2").addEventListener("click", () => {
         console.log("button2 clicked")
-        document.getElementById("test").data = {name: "TEST", date: new Date()};
-      });
+        document.getElementById("test").data = {
+          name: "TEST",
+          date: new Date(),
+        }
+      })
       document.getElementById("button3").addEventListener("click", () => {
         console.log("button3 clicked")
 
         const elem = document.getElementsByTagName("json-viewer")[0]
         console.log(elem)
-        elem.setAttribute("data",{name: "TEST", date: new Date()});
-        elem.setAttribute("theme","monokai");
-      });
+        elem.setAttribute("data", { name: "TEST", date: new Date() })
+        elem.setAttribute("theme", "monokai")
+      })
     </script>
   </body>
 </html>
