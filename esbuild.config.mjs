@@ -1,6 +1,11 @@
 import * as esbuild from "esbuild"
 import { rmSync } from "node:fs"
 
+// helpers for console log
+const green = "\x1b[32m%s\x1b[0m"
+const yellow = "\x1b[33m%s\x1b[0m"
+const clear = "\x1B[2J"
+
 const isProduction = process.env.NODE_ENV === "production"
 const args = process.argv.slice(2).reduce((map, item) => {
   if (item.startsWith("--")) {
@@ -41,6 +46,18 @@ await esbuild.build({
 
 let ctx = await esbuild.context({
   ...options,
+  plugins: [
+    {
+      name: "start/end",
+      setup(build) {
+        build.onStart(() => {
+          console.log(clear)
+          console.log(yellow, "Compiling...")
+        })
+        build.onEnd(() => console.log(green, "Done!"))
+      },
+    },
+  ],
 })
 
 if (args.watch) {
