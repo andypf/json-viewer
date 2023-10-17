@@ -1,55 +1,65 @@
-import { dataType } from "./data-helpers";
+import { dataType } from "./data-helpers"
 
 class ExpandIcon {
+  #icon
   constructor({ expanded = false, onToggle }) {
-    const className = expanded ? "arrow-down" : "arrow-right";
-    let isExpanded = expanded;
+    const className = expanded ? "arrow-down" : "arrow-right"
+    let isExpanded = expanded
 
-    const icon = Object.assign(document.createElement("i"), {
+    this.#icon = Object.assign(document.createElement("i"), {
       className: `icon ${className}`,
-    });
+    })
 
-    const element = Object.assign(document.createElement("span"), {
+    this.element = Object.assign(document.createElement("span"), {
       className: "icon-wrapper",
       onclick: function (e) {
-        icon.classList.toggle("arrow-down");
-        icon.classList.toggle("arrow-right");
-        isExpanded = !isExpanded;
-        if (onToggle) onToggle(isExpanded);
+        icon.classList.toggle("arrow-down")
+        icon.classList.toggle("arrow-right")
+        isExpanded = !isExpanded
+        if (onToggle) onToggle(isExpanded)
       },
-    });
+    })
 
-    element.append(icon);
-    return element;
+    this.element.append(this.#icon)
+  }
+
+  set expanded(boolean) {
+    if (boolean) {
+      this.#icon.classList.add("arrow-down")
+      this.#icon.classList.remove("arrow-right")
+    } else {
+      this.#icon.classList.remove("arrow-down")
+      this.#icon.classList.add("arrow-right")
+    }
   }
 }
 
 class Expandable {
   constructor({ expanded, type, children, onExpand }) {
-    this.#expanded = expanded;
-    const size = children.length;
-    this.element = document.createElement("span");
+    this.#expanded = expanded
+    const size = children.length
+    this.element = document.createElement("span")
 
     this.#expandedTree = Expandable.createExpandedTree({
       type,
       size,
       children,
-    });
+    })
     this.#collapsedTree = Expandable.createCollapsedTree({
       type,
       size,
       onExpand,
-    });
-    this.#render();
+    })
+    this.#render()
   }
-  #expanded;
-  #expandedTree;
-  #collapsedTree;
+  #expanded
+  #expandedTree
+  #collapsedTree
 
   set expanded(boolean) {
     if (this.#expanded !== boolean) {
-      this.#expanded = boolean;
-      this.#render();
+      this.#expanded = boolean
+      this.#render()
     }
   }
 
@@ -70,7 +80,7 @@ class Expandable {
       className: "brace",
       textContent: type === "array" ? "]" : "}",
     }),
-  ];
+  ]
 
   static createCollapsedTree = ({ type, size, onExpand }) => [
     Object.assign(document.createElement("span"), {
@@ -82,7 +92,7 @@ class Expandable {
       className: "ellipsis",
       textContent: "...",
       onclick: () => {
-        onExpand && onExpand();
+        onExpand && onExpand()
       },
     }),
 
@@ -95,65 +105,102 @@ class Expandable {
       className: "size",
       textContent: `${size} item${size === 1 ? "" : "s"}`,
     }),
-  ];
+  ]
 
   #render() {
-    this.element.innerHTML = "";
+    this.element.innerHTML = ""
     if (this.#expanded) {
-      this.element.append(...this.#expandedTree);
+      this.element.append(...this.#expandedTree)
     } else {
-      this.element.append(...this.#collapsedTree);
+      this.element.append(...this.#collapsedTree)
     }
   }
 }
 
 class Row {
-  constructor(key, value, { expanded, indent, level = 0 }) {
-    this.key = key;
-    this.value = value;
-    this.expanded = expanded;
-    this.indent = indent;
-    this.level = level;
-    this.type = dataType(value).toLowerCase();
-    this.#isExpandable = this.type === "object" || this.type === "array";
-    this.#isExpanded =
-      typeof expanded === "boolean" ? expanded : expanded > level;
-    this.#render();
+  #isExpandable = false
+  #expanded = false
+  #indent = 2
+  #expandable = null
+  #expandIcon = null
+  #children = null
+
+  constructor(key, value, { expanded, indent, showDataTypes, level = 0 }) {
+    this.key = key
+    this.value = value
+    this.#expanded = typeof expanded === "boolean" ? expanded : expanded > level
+    this.#indent = indent
+    this.showDataTypes = showDataTypes
+    this.level = level
+    this.type = dataType(value).toLowerCase()
+    this.#isExpandable = this.type === "object" || this.type === "array"
+    this.#render()
   }
 
-  #isExpandable = false;
-  #isExpanded = false;
-  #expandable = null;
+  set expanded(newValue) {
+    const expanded =
+      typeof newValue === "boolean" ? newValue : newValue > this.level
+
+    if (this.#expanded !== expanded) {
+      this.#expanded = expanded
+
+      if (this.#expandable) {
+        this.#expandable.expanded = expanded
+      }
+      if (this.#expandIcon) {
+        this.#expandIcon.expanded = expanded
+      }
+    }
+    if (Array.isArray(this.#children)) {
+      this.#children.forEach((child) => {
+        child.expanded = newValue
+      })
+    }
+  }
+
+  set indent(newIndent) {
+    if (this.#indent === newIndent) return
+    this.#indent = newIndent
+
+    if (this.level > 0)
+      this.element.style.paddingLeft = `${this.#indent * 10}px`
+    if (Array.isArray(this.#children)) {
+      this.#children.forEach((child) => {
+        child.indent = newIndent
+      })
+    }
+  }
 
   #render() {
-    this.element = document.createElement("div");
-    this.element.className = "object-row";
+    this.element = document.createElement("div")
+    this.element.className = "object-row"
+    if (this.level > 0)
+      this.element.style.paddingLeft = `${this.#indent * 10}px`
 
     // Exampnd Icon
     if (this.#isExpandable) {
-      this.element.append(
-        new ExpandIcon({
-          expanded: this.#isExpanded,
-          onToggle: (bool) => {
-            if (this.#expandable) this.#expandable.expanded = bool;
-          },
-        })
-      );
+      this.#expandIcon = new ExpandIcon({
+        expanded: this.#expanded,
+        onToggle: (bool) => {
+          if (this.#expandable) this.#expandable.expanded = bool
+        },
+      })
+      this.element.append(this.#expandIcon.element)
     }
 
     // Render key (name) and colon
-    if (this.key || this.key === 0) {
+    if (this.key || this.key === undefined || this.key === 0) {
       const keyElem = Object.assign(document.createElement("span"), {
         className: `key ${typeof this.key === "number" ? "number" : ""}`,
         textContent: typeof this.key === "number" ? this.key : `"${this.key}"`,
-      });
+      })
       const colonElem = Object.assign(document.createElement("span"), {
         className: "colon",
         textContent: ":",
-      });
+      })
 
-      this.element.append(keyElem);
-      this.element.append(colonElem);
+      this.element.append(keyElem)
+      this.element.append(colonElem)
     }
 
     if (this.#isExpandable) {
@@ -163,74 +210,78 @@ class Row {
           : Object.keys(this.value).map((key) => ({
               key,
               value: this.value[key],
-            }));
+            }))
 
-      const children = subRows.map(
-        ({ key, value }) =>
-          new Row(key, value, {
-            expanded: this.expanded,
-            indent: this.indent,
-            level: this.level + 1,
-          }).element
-      );
+      this.#children = subRows.map(({ key, value }) => {
+        return new Row(key, value, {
+          expanded: this.#expanded,
+          indent: this.#indent,
+          showDataTypes: this.showDataTypes,
+          level: this.level + 1,
+        })
+      })
 
       this.#expandable = new Expandable({
-        expanded: this.#isExpanded,
-        children,
+        expanded: this.#expanded,
+        children: this.#children.map((child) => child.element),
         type: this.type,
         onExpand: () => {
-          this.#expandable.expanded = true;
+          this.#expandable.expanded = true
         },
-      });
-      this.element.append(this.#expandable.element);
+      })
+
+      this.element.append(this.#expandable.element)
     } else {
-      // render value if not an object or array
-      const typeElement = ["nan", "NaN", "undefined", "null"].includes(
-        this.type
-      )
-        ? ""
-        : `<span class="type">${this.type}</span>`;
+      let valueType = ""
+      if (this.showDataTypes) {
+        // render value if not an object or array
+        valueType = ["nan", "NaN", "undefined", "null"].includes(this.type)
+          ? ""
+          : `<span class="type">${this.type}</span>`
+      }
 
       const valueElement = Object.assign(document.createElement("span"), {
         className: `value ${this.type}`,
-        innerHTML: typeElement + `<span>${this.value}</span>`,
-      });
-      this.element.append(valueElement);
+        innerHTML: valueType + `<span>${this.value}</span>`,
+      })
+      this.element.append(valueElement)
     }
   }
 }
 
 class DataRenderer {
   constructor(containerElement) {
-    this.containerElement = containerElement;
+    this.containerElement = containerElement
   }
-  update({ data, expanded, indent }) {
-    this.expanded = expanded;
-    this.indent = indent;
+  update({ data, expanded, indent, showDataTypes, showRoot }) {
+    this.expanded = expanded
+    this.indent = indent
+    this.showDataTypes = showDataTypes
+    this.showRoot = showRoot
 
     if (
       !this.json ||
       (this.data && JSON.stringify(this.data) !== JSON.stringify(data))
     ) {
-      this.data = data;
-      this.#render();
+      this.data = data
+      this.#render()
     }
     if (this.json) {
-      this.json.expanded = expanded;
-      this.json.indent = indent;
+      this.json.expanded = expanded
+      this.json.indent = indent
     }
   }
 
   #render() {
-    if (!this.data) return;
-    console.log(":::::::::::::::::::::::", this.expanded);
-    this.json = new Row("root", this.data, {
+    if (!this.data) return
+    this.json = new Row(this.showRoot ? "Root" : "", this.data, {
       expanded: this.expanded,
       indent: this.indent,
-    });
+      showDataTypes: this.showDataTypes,
+    })
 
-    this.containerElement.append(this.json.element);
+    this.containerElement.append(this.json.element)
   }
 }
 
-export default DataRenderer;
+export default DataRenderer

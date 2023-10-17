@@ -19,7 +19,7 @@
 
 /* source: https://github.com/gammons/base16-obsidian */
 const themes = {
-  "apathy": {
+  apathy: {
     base00: "#031a16",
     base01: "#0b342d",
     base02: "#184e45",
@@ -37,7 +37,7 @@ const themes = {
     base0E: "#4c963e",
     base0F: "#3e965b",
   },
-  "ashes": {
+  ashes: {
     base00: "#1c2023",
     base01: "#393f45",
     base02: "#565e65",
@@ -53,7 +53,7 @@ const themes = {
     base0C: "#95aec7",
     base0D: "#ae95c7",
     base0E: "#c795ae",
-    base0F: "#c79595"
+    base0F: "#c79595",
   },
   "atelier-dune-light": {
     base00: "#fefbec",
@@ -89,9 +89,9 @@ const themes = {
     base0C: "#1fad83",
     base0D: "#6684e1",
     base0E: "#b854d4",
-    base0F: "#d43552"
+    base0F: "#d43552",
   },
-  "atlas": {
+  atlas: {
     base00: "#002635",
     base01: "#00384d",
     base02: "#517f8d",
@@ -107,9 +107,9 @@ const themes = {
     base0C: "#14747e",
     base0D: "#5dd7b9",
     base0E: "#9a70a4",
-    base0F: "#c43060"
+    base0F: "#c43060",
   },
-  "bespin": {
+  bespin: {
     base00: "#28211c",
     base01: "#36312e",
     base02: "#5e5d5c",
@@ -125,7 +125,7 @@ const themes = {
     base0C: "#afc4db",
     base0D: "#5ea6ea",
     base0E: "#9b859d",
-    base0F: "#937121"
+    base0F: "#937121",
   },
   "black-metal": {
     base00: "#000000",
@@ -143,9 +143,9 @@ const themes = {
     base0C: "#aaaaaa",
     base0D: "#888888",
     base0E: "#999999",
-    base0F: "#444444"
+    base0F: "#444444",
   },
-  "brewer": {
+  brewer: {
     base00: "#0c0d0e",
     base01: "#2e2f30",
     base02: "#515253",
@@ -161,9 +161,9 @@ const themes = {
     base0C: "#80b1d3",
     base0D: "#3182bd",
     base0E: "#756bb1",
-    base0F: "#b15928"
+    base0F: "#b15928",
   },
-  "bright": {
+  bright: {
     base00: "#000000",
     base01: "#303030",
     base02: "#505050",
@@ -179,9 +179,9 @@ const themes = {
     base0C: "#76c7b7",
     base0D: "#6fb3d2",
     base0E: "#d381c3",
-    base0F: "#be643c"
+    base0F: "#be643c",
   },
-  "brogrammer": {
+  brogrammer: {
     base00: "#1f1f1f",
     base01: "#f81118",
     base02: "#2dc55e",
@@ -197,7 +197,7 @@ const themes = {
     base0C: "#1081d6",
     base0D: "#5350b9",
     base0E: "#0f7ddb",
-    base0F: "#ffffff"
+    base0F: "#ffffff",
   },
   "brushtrees-dark": {
     base00: "#485867",
@@ -217,7 +217,7 @@ const themes = {
     base0E: "#b386b2",
     base0F: "#b39f9f",
   },
-  "brushtrees": {
+  brushtrees: {
     base00: "#e3efef",
     base01: "#c9dbdc",
     base02: "#b0c5c8",
@@ -235,7 +235,7 @@ const themes = {
     base0E: "#b386b2",
     base0F: "#b39f9f",
   },
-  "chalk": {
+  chalk: {
     base00: "#151515",
     base01: "#202020",
     base02: "#303030",
@@ -253,7 +253,7 @@ const themes = {
     base0E: "#e1a3ee",
     base0F: "#deaf8f",
   },
-  "circus": {
+  circus: {
     base00: "#191919",
     base01: "#202020",
     base02: "#303030",
@@ -307,7 +307,7 @@ const themes = {
     base0E: "#aa759f",
     base0F: "#8f5536",
   },
-  "codeschool": {
+  codeschool: {
     base00: "#232c31",
     base01: "#1c3657",
     base02: "#2a343a",
@@ -325,7 +325,7 @@ const themes = {
     base0E: "#c59820",
     base0F: "#c98344",
   },
-  "cupcake": {
+  cupcake: {
     base00: "#fbf1f2",
     base01: "#f2f1f4",
     base02: "#d8d5dd",
@@ -343,7 +343,7 @@ const themes = {
     base0E: "#bb99b4",
     base0F: "#baa58c",
   },
-  "cupertino": {
+  cupertino: {
     base00: "#ffffff",
     base01: "#c0c0c0",
     base02: "#c0c0c0",
@@ -361,7 +361,7 @@ const themes = {
     base0E: "#a90d91",
     base0F: "#826b28",
   },
-  "darcula": {
+  darcula: {
     base00: "#2b2b2b",
     base01: "#323232",
     base02: "#323232",
@@ -379,7 +379,7 @@ const themes = {
     base0E: "#cc7832",
     base0F: "#808080",
   },
-  "darktooth": {
+  darktooth: {
     base00: "#1d2021",
     base01: "#32302f",
     base02: "#504945",
@@ -416,7 +416,7 @@ const themes = {
     base0F: "#a16946",
   },
   "default-light": {
-    base00: "#f8f8f8",
+    base00: "#ffffff",
     base01: "#e8e8e8",
     base02: "#d8d8d8",
     base03: "#b8b8b8",
@@ -433,7 +433,7 @@ const themes = {
     base0E: "#ba8baf",
     base0F: "#a16946",
   },
-  "dracula": {
+  dracula: {
     base00: "#282936",
     base01: "#3a3c4e",
     base02: "#4d4f68",
@@ -451,7 +451,7 @@ const themes = {
     base0E: "#b45bcf",
     base0F: "#00f769",
   },
-  "eighties": {
+  eighties: {
     base00: "#2d2d2d",
     base01: "#393939",
     base02: "#515151",
@@ -469,7 +469,7 @@ const themes = {
     base0E: "#cc99cc",
     base0F: "#d27b53",
   },
-  "embers": {
+  embers: {
     base00: "#16130f",
     base01: "#2c2620",
     base02: "#433b32",
@@ -487,7 +487,7 @@ const themes = {
     base0E: "#82576d",
     base0F: "#825757",
   },
-  "flat": {
+  flat: {
     base00: "#2c3e50",
     base01: "#34495e",
     base02: "#7f8c8d",
@@ -523,7 +523,7 @@ const themes = {
     base0E: "#611fce",
     base0F: "#b16f40",
   },
-  "github": {
+  github: {
     base00: "#ffffff",
     base01: "#f5f5f5",
     base02: "#c8c8fa",
@@ -613,7 +613,7 @@ const themes = {
     base0E: "#747474",
     base0F: "#5e5e5e",
   },
-  "greenscreen": {
+  greenscreen: {
     base00: "#001100",
     base01: "#003300",
     base02: "#005500",
@@ -721,7 +721,7 @@ const themes = {
     base0E: "#bd0152",
     base0F: "#dedae2",
   },
-  "heetch": {
+  heetch: {
     base00: "#190134",
     base01: "#392551",
     base02: "#5a496e",
@@ -739,7 +739,7 @@ const themes = {
     base0E: "#82034c",
     base0F: "#470546",
   },
-  "helios": {
+  helios: {
     base00: "#1d2021",
     base01: "#383c3e",
     base02: "#53585b",
@@ -757,7 +757,7 @@ const themes = {
     base0E: "#be4264",
     base0F: "#c85e0d",
   },
-  "hopscotch": {
+  hopscotch: {
     base00: "#322931",
     base01: "#433b42",
     base02: "#5c545b",
@@ -829,7 +829,7 @@ const themes = {
     base0E: "#a94598",
     base0F: "#8b6c37",
   },
-  "icy": {
+  icy: {
     base00: "#021012",
     base01: "#031619",
     base02: "#041f23",
@@ -847,7 +847,7 @@ const themes = {
     base0E: "#00acc1",
     base0F: "#0097a7",
   },
-  "isotope": {
+  isotope: {
     base00: "#000000",
     base01: "#404040",
     base02: "#606060",
@@ -865,7 +865,7 @@ const themes = {
     base0E: "#cc00ff",
     base0F: "#3300ff",
   },
-  "macintosh": {
+  macintosh: {
     base00: "#000000",
     base01: "#404040",
     base02: "#404040",
@@ -883,7 +883,7 @@ const themes = {
     base0E: "#4700a5",
     base0F: "#90713a",
   },
-  "marrakesh": {
+  marrakesh: {
     base00: "#201602",
     base01: "#302e00",
     base02: "#5f5b17",
@@ -901,7 +901,7 @@ const themes = {
     base0E: "#8868b3",
     base0F: "#b3588e",
   },
-  "materia": {
+  materia: {
     base00: "#263238",
     base01: "#2c393f",
     base02: "#37474f",
@@ -937,7 +937,7 @@ const themes = {
     base0E: "#7c4dff",
     base0F: "#e53935",
   },
-  "material": {
+  material: {
     base00: "#263238",
     base01: "#2e3c43",
     base02: "#314549",
@@ -991,7 +991,7 @@ const themes = {
     base0E: "#96609e",
     base0F: "#a16946",
   },
-  "mocha": {
+  mocha: {
     base00: "#3b3228",
     base01: "#534636",
     base02: "#645240",
@@ -1009,7 +1009,7 @@ const themes = {
     base0E: "#a89bb9",
     base0F: "#bb9584",
   },
-  "monokai": {
+  monokai: {
     base00: "#272822",
     base01: "#383830",
     base02: "#49483e",
@@ -1027,7 +1027,7 @@ const themes = {
     base0E: "#ae81ff",
     base0F: "#cc6633",
   },
-  "nord": {
+  nord: {
     base00: "#2e3440",
     base01: "#3b4252",
     base02: "#434c5e",
@@ -1045,7 +1045,7 @@ const themes = {
     base0E: "#a3be8c",
     base0F: "#b48ead",
   },
-  "ocean": {
+  ocean: {
     base00: "#2b303b",
     base01: "#343d46",
     base02: "#4f5b66",
@@ -1081,7 +1081,7 @@ const themes = {
     base0E: "#a626a4",
     base0F: "#986801",
   },
-  "onedark": {
+  onedark: {
     base00: "#282c34",
     base01: "#353b45",
     base02: "#3e4451",
@@ -1135,7 +1135,7 @@ const themes = {
     base0E: "#005faf",
     base0F: "#005f87",
   },
-  "paraiso": {
+  paraiso: {
     base00: "#2f1e2e",
     base01: "#41323f",
     base02: "#4f424c",
@@ -1153,7 +1153,7 @@ const themes = {
     base0E: "#815ba4",
     base0F: "#e96ba8",
   },
-  "pico": {
+  pico: {
     base00: "#000000",
     base01: "#1d2b53",
     base02: "#7e2553",
@@ -1171,7 +1171,7 @@ const themes = {
     base0E: "#ff77a8",
     base0F: "#ffccaa",
   },
-  "pop": {
+  pop: {
     base00: "#000000",
     base01: "#202020",
     base02: "#303030",
@@ -1189,7 +1189,7 @@ const themes = {
     base0E: "#b31e8d",
     base0F: "#7a2d00",
   },
-  "railscasts": {
+  railscasts: {
     base00: "#2b2b2b",
     base01: "#272935",
     base02: "#3a4055",
@@ -1207,7 +1207,7 @@ const themes = {
     base0E: "#b6b3eb",
     base0F: "#bc9458",
   },
-  "seti": {
+  seti: {
     base00: "#151718",
     base01: "#282a2b",
     base02: "#3b758c",
@@ -1261,7 +1261,7 @@ const themes = {
     base0E: "#6c71c4",
     base0F: "#d33682",
   },
-  "spacemacs": {
+  spacemacs: {
     base00: "#1f2022",
     base01: "#282828",
     base02: "#444155",
@@ -1333,7 +1333,7 @@ const themes = {
     base0E: "#b294bb",
     base0F: "#a3685a",
   },
-  "tomorrow": {
+  tomorrow: {
     base00: "#ffffff",
     base01: "#e0e0e0",
     base02: "#d6d6d6",
@@ -1351,7 +1351,7 @@ const themes = {
     base0E: "#8959a8",
     base0F: "#a3685a",
   },
-  "tube": {
+  tube: {
     base00: "#231f20",
     base01: "#1c3f95",
     base02: "#5a5758",
@@ -1369,7 +1369,7 @@ const themes = {
     base0E: "#98005d",
     base0F: "#b06110",
   },
-  "twilight": {
+  twilight: {
     base00: "#1e1e1e",
     base01: "#323537",
     base02: "#464b50",
@@ -1387,7 +1387,7 @@ const themes = {
     base0E: "#9b859d",
     base0F: "#9b703f",
   },
-  "woodland": {
+  woodland: {
     base00: "#231e18",
     base01: "#302b25",
     base02: "#48413a",
@@ -1405,7 +1405,7 @@ const themes = {
     base0E: "#bb90e2",
     base0F: "#b49368",
   },
-  "zenburn": {
+  zenburn: {
     base00: "#383838",
     base01: "#404040",
     base02: "#606060",
@@ -1422,17 +1422,21 @@ const themes = {
     base0D: "#7cb8bb",
     base0E: "#dc8cc3",
     base0F: "#000000",
-  }
+  },
 }
 
 export const availableThemes = Object.keys(themes)
 
 export const themeStyles = (name) => {
-  return `.${name}{${Object.keys(themes[name]).map((key) => `--${key}: ${themes[name][key]};`).join('')}}`  
+  return `.${name}{${Object.keys(themes[name])
+    .map((key) => `--${key}: ${themes[name][key]};`)
+    .join("")}}`
 }
 
-export const customThemeStyles = (theme,name="custom") => {
+export const customThemeStyles = (theme, name = "custom") => {
   return `.${name} {
-    ${Object.keys(theme).map((key) => `--${key}: ${theme[key]};`).join('\n')}
+    ${Object.keys(theme)
+      .map((key) => `--${key}: ${theme[key]};`)
+      .join("\n")}
   }`
 }

@@ -4,90 +4,156 @@
     <meta charset="utf-8" />
     <title>JsonViewer</title>
     <script src="./dist/index.js"></script>
+
     <script>
       new EventSource("/esbuild").addEventListener("change", () =>
         location.reload()
       )
     </script>
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .input-element {
+        display: flex;
+        flex-direction: column;
+      }
+      .input-element label {
+        margin-bottom: 5px;
+      }
+
+      select,
+      input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      form.options {
+        padding: 10px;
+      }
+      .container {
+        display: grid;
+        grid-template-columns: 33% 33% 33%;
+        grid-template-rows: auto;
+        grid-gap: 10px;
+      }
+    </style>
   </head>
   <body>
-    <div style="display: flex">
-      <div>
-        <button id="button1">Change Theme</button>
-        <button id="button2">Change Data</button>
-        <button id="button3">Change multiple attributes</button>
-      </div>
-    </div>
-    <!-- <json-viewer id="test" data="test" expanded="true" style="color:green;" class="red"></json-viewer>
-      <json-viewer id="test" expanded="true">
-        {
-          "name": "TEST",
-          "date": "2021-01-01T00:00:00.000Z"
-        }
-      </json-viewer> -->
-
-      <!-- <json-viewer
+    <!-- <json-viewer
       data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"
       theme="monokai"
       expanded="false"
     ></json-viewer> -->
 
-    <json-viewer theme="monokai" expanded="1">
-      { "name": "TEST", "date": "2021-01-01T00:00:00.000Z", "count": 1, "array":
-      [ 1, 2, 3 ] }
-    </json-viewer>
+    <!-- <json-viewer
+      theme="monokai"
+      expanded="true"
+      show-data-types="true"
+      show-root="true"
+    >
+      { "string": "this is a test ...", "integer":42, "array":[ 1, 2, 3, "test",
+      NaN], "float":3.14159, "undefined":undefined, "object":{
+      "first-child":true, "second-child":false, "last-child":null },
+      "string_number":"1234", "date": "Tue, Oct 17, 2023, 08:58 AM" }
+    </json-viewer> -->
 
+    <div>
+      <json-viewer id="json-viewer"></json-viewer>
+
+      <form class="options">
+        <div class="container">
+          <div class="input-element">
+            <label for="theme">Theme</label>
+            <select class="theme"></select>
+          </div>
+          <div class="input-element">
+            <label for="expanded">Expanded</label>
+            <select class="expanded">
+              <option value="true">True</option>
+              <option value="false">False</option>
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div class="input-element">
+            <label for="indent">Indent</label>
+            <select class="indent">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
 
     <script>
-      const jsonViewer = document.createElement("json-viewer")
-      jsonViewer.expanded = 0
+      const defaultTheme = "monokai"
+
+      const jsonViewer = document.getElementById("json-viewer")
+      jsonViewer.id = "json"
+      jsonViewer.expanded = true
+      jsonViewer.showDataTypes = true
+      jsonViewer.theme = defaultTheme
       jsonViewer.data = {
-        string: "TEST JSON!",
-        number: 42,
-        boolean: true,
-        nullValue: null,
-        array: [1, 2, 3, 4],
+        string: "this is a test ...",
+        integer: 42,
+        array: [1, 2, 3, "test", NaN],
+        float: 3.14159,
+        undefined: undefined,
         object: {
-          property1: "Value 1",
-          property2: {
-            property3: "Value 3",
-            property4: "Value 4",
-          }
+          "first-child": true,
+          "second-child": false,
+          "last-child": null,
         },
-        dateString: "2023-10-13T08:00:00Z",
-        function: function () {
-          console.log("This is a function.")
-        },
-        undefinedValue: undefined,
-        nanValue: NaN,
-        infinityValue: Infinity,
-        dateObject: new Date(),
+        string_number: "1234",
+        date: new Date(),
       }
-      document.body.append(jsonViewer)
-    </script> 
 
+      // form
 
+      // select theme
+      const select = document.querySelector("select.theme")
 
-    <script>
-      document.getElementById("button1").addEventListener("click", () => {
-        console.log("button1 clicked")
-        document.getElementById("test").theme = "monokai"
+      select.addEventListener("change", function () {
+        jsonViewer.setAttribute("theme", this.value)
       })
-      document.getElementById("button2").addEventListener("click", () => {
-        console.log("button2 clicked")
-        document.getElementById("test").data = {
-          name: "TEST",
-          date: new Date(),
-        }
-      })
-      document.getElementById("button3").addEventListener("click", () => {
-        console.log("button3 clicked")
 
-        const elem = document.getElementsByTagName("json-viewer")[0]
-        console.log(elem)
-        elem.setAttribute("data", { name: "TEST", date: new Date() })
-        elem.setAttribute("theme", "monokai")
-      })
+      // Load available themes
+      import("./dist/themes.js").then((module) =>
+        module.availableThemes.forEach((theme) => {
+          const option = document.createElement("option")
+          option.value = theme
+          option.innerText = theme
+          if (theme === defaultTheme) option.selected = true
+          select.append(option)
+        })
+      )
+
+      document
+        .querySelector("select.expanded")
+        .addEventListener("change", function () {
+          jsonViewer.expanded = this.value
+        })
+
+      document
+        .querySelector("select.indent")
+        .addEventListener("change", function () {
+          jsonViewer.indent = this.value
+        })
     </script>
   </body>
 </html>

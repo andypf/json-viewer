@@ -107,6 +107,9 @@ dataTypes: {
 .object-row .value.undefined {
   color: var(--base05);
 }
+.object-row .value.date {
+  color: var(--base0D);
+}
 
 .object-row .value.nan,
 .object-row .value.null,
