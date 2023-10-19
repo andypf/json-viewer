@@ -10,6 +10,10 @@ body {
   margin-bottom: 5px;
 }
 
+h1.title {
+  color: #333333;
+}
+
 select,
 input {
   padding: 10px;

@@ -15,6 +15,10 @@
   margin-left: 5px;
 }
 
+.object-row .key-wrapper {
+  cursor: pointer;
+}
+
 .object-row .key {
   color: var(--base07);
 }
@@ -125,48 +129,90 @@
   cursor: pointer;
 }
 
+.icon {
+  display: block;
+  position: relative;
+}
+
+.icon:before,
 .icon:after {
   content: "";
   position: absolute;
+  display: block;
 }
 
 /* expand arrow */
+.expand.icon {
+  margin-right: 5px;
+}
 .expand-icon-arrow .expand.icon {
+  margin-left: 3px;
   width: 0;
   height: 0;
-  display: inline-block;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-
-  border-left: 6px solid var(--base0E);
+  border-left: solid 6px var(--base0E);
+  border-top: solid 6px transparent;
+  border-bottom: solid 6px transparent;
 }
 
 .expand-icon-arrow .expand.icon.expanded {
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-
-  border-top: 6px solid var(--base0D);
+  transform: rotate(90deg);
+  border-left-color: var(--base0D);
 }
 
 /* expand icon square */
-.expand-icon-square .expand.icon {
-  width: 15px;
-  height: 15px;
+.expand-icon-square .expand.icon,
+.expand-icon-circle .expand.icon {
+  display: block;
+  width: 9px;
+  height: 9px;
   border-radius: 2px;
-  border: solid 1px #333333;
+  border: solid 1px var(--base0E);
 }
+.expand-icon-circle .expand.icon {
+  border-radius: 50%;
+}
+
+.expand-icon-square .expand.icon:before,
+.expand-icon-circle .expand.icon:before,
+.expand-icon-square .expand.icon:after,
+.expand-icon-circle .expand.icon:after {
+  width: 5px;
+  height: 1px;
+  background-color: var(--base0E);
+  left: 2px;
+  top: 4px;
+}
+.expand-icon-square .expand.icon:after,
+.expand-icon-circle .expand.icon:after {
+  transform: rotate(90deg);
+}
+.expand-icon-square .expand.icon.expanded:after,
+.expand-icon-circle .expand.icon.expanded:after {
+  display: none;
+}
+
+.expand-icon-square .expand.icon.expanded,
+.expand-icon-circle .expand.icon.expanded {
+  border-color: var(--base0D);
+}
+
+.expand-icon-square .expand.icon.expanded:before,
+.expand-icon-circle .expand.icon.expanded:before {
+  background-color: var(--base0D);
+}
+/* ---------------- */
 
 .icon-wrapper {
   display: inline-block;
   cursor: pointer;
 }
 
+/* copy icon */
 .show-copy .object-row:hover > .copy-icon-wrapper .icon.copy,
 .show-copy .object-row:hover > .expandable > .copy-icon-wrapper .icon.copy {
   display: block;
 }
 
-/* copy icon */
 .copy.icon {
   margin-left: 10px;
   display: none;
@@ -176,6 +222,10 @@
   border-radius: 1px;
   position: relative;
   top: 4px;
+}
+
+.copy.icon.copied {
+  background-color: var(--base0B);
 }
 
 .copy.icon:before {
@@ -190,5 +240,3 @@
   border-left: solid 1px var(--base0D);
   border-radius: 1px 0 0 0;
 }
-
-/*  icon */

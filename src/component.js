@@ -204,6 +204,7 @@ class JsonViewer extends HTMLElement {
 
   #render = () => {
     console.log("====================RENDER")
+
     this.#renderer.update({
       data: this.#contentData,
       expanded: this.#options.expanded,

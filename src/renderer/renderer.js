@@ -92,14 +92,16 @@ class Row {
   #expandable = null
   #expandIcon = null
   #children = null
-
+  #isExpanded = false
   #keyElem
   #colonElem
 
   constructor(key, value, { expanded, indent, level = 0 }) {
     this.key = key
     this.value = value
-    this.#expanded = typeof expanded === "boolean" ? expanded : expanded > level
+    this.#expanded = expanded
+    this.#isExpanded =
+      typeof expanded === "boolean" ? expanded : expanded > level
     this.#indent = indent
     this.level = level
     this.type = dataType(value).toLowerCase()
@@ -152,15 +154,21 @@ class Row {
     if (this.level > 0)
       this.element.style.paddingLeft = `${this.#indent * 10}px`
 
+    const keyWrapper = Object.assign(document.createElement("span"), {
+      className: "key-wrapper",
+    })
+    keyWrapper.addEventListener("click", (e) => {
+      this.expanded = !this.#expanded
+    })
+
+    this.element.append(keyWrapper)
+
     // Exampnd Icon
     if (this.#isExpandable) {
       this.#expandIcon = new ExpandIcon({
-        expanded: this.#expanded,
-        onToggle: (bool) => {
-          if (this.#expandable) this.#expandable.expanded = bool
-        },
+        expanded: this.#isExpanded,
       })
-      this.element.append(this.#expandIcon.element)
+      keyWrapper.append(this.#expandIcon.element)
     }
 
     // Render key (name) and colon
@@ -174,8 +182,8 @@ class Row {
         textContent: ":",
       })
 
-      this.element.append(this.#keyElem)
-      this.element.append(this.#colonElem)
+      keyWrapper.append(this.#keyElem)
+      keyWrapper.append(this.#colonElem)
     }
 
     const copyIcon = Object.assign(document.createElement("span"), {
@@ -213,14 +221,14 @@ class Row {
       })
 
       this.#expandable = new Expandable({
-        expanded: this.#expanded,
+        expanded: this.#isExpanded,
         children: [copyIconWrapper].concat(
           this.#children.map((child) => child.element)
         ),
 
         type: this.type,
         onExpand: () => {
-          this.#expandable.expanded = true
+          this.expanded = !this.#isExpanded
         },
       })
 
@@ -301,7 +309,9 @@ class Container {
       this.expanded = expanded
       this.indent = indent
 
-      this.row = new Row("root", data, {
+      console.log("====expanded1", expanded)
+
+      this.row = new Row("", data, {
         expanded,
         indent,
       })
@@ -316,6 +326,7 @@ class Container {
       propsToBeUpdated.indent = indent
     }
     if (this.expanded !== expanded) {
+      console.log("====expanded", expanded)
       this.expanded = expanded
       propsToBeUpdated.expanded = expanded
     }
