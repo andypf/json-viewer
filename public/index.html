@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>JsonViewer</title>
+    <link rel="stylesheet" href="styles.css" />
     <script src="./dist/index.js"></script>
 
     <script>
@@ -10,36 +11,6 @@
         location.reload()
       )
     </script>
-
-    <style>
-      body {
-        font-family: sans-serif;
-      }
-
-      .input-element {
-        display: flex;
-        flex-direction: column;
-      }
-      .input-element label {
-        margin-bottom: 5px;
-      }
-
-      select,
-      input {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-      }
-      form.options {
-        padding: 10px;
-      }
-      .container {
-        display: grid;
-        grid-template-columns: 33% 33% 33%;
-        grid-template-rows: auto;
-        grid-gap: 10px;
-      }
-    </style>
   </head>
   <body>
     <!-- <json-viewer
@@ -63,97 +34,58 @@
     <div>
       <json-viewer id="json-viewer"></json-viewer>
 
+      <pre class="html-code"><code id="output"></code></pre>
+
       <form class="options">
         <div class="container">
           <div class="input-element">
             <label for="theme">Theme</label>
-            <select class="theme"></select>
+            <select id="theme"></select>
           </div>
           <div class="input-element">
             <label for="expanded">Expanded</label>
-            <select class="expanded">
-              <option value="true">True</option>
-              <option value="false">False</option>
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
+            <select id="expanded"></select>
           </div>
           <div class="input-element">
             <label for="indent">Indent</label>
-            <select class="indent">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2" selected>2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
+            <select id="indent"></select>
+          </div>
+          <div class="input-element">
+            <label for="expand-icon">Expand Icon</label>
+            <select id="expand-icon"></select>
+          </div>
+          <div class="input-element">
+            <label for="show-data-types">Show Data Types</label>
+            <label class="switch">
+              <input type="checkbox" id="show-data-types" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="input-element">
+            <label for="show-toolbar">Show Toolbar</label>
+            <label class="switch">
+              <input type="checkbox" id="show-toolbar" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="input-element">
+            <label for="show-size">Show Size</label>
+            <label class="switch">
+              <input type="checkbox" id="show-size" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="input-element">
+            <label for="show-copy">Show Copy Button</label>
+            <label class="switch">
+              <input type="checkbox" id="show-copy" />
+              <span class="slider round"></span>
+            </label>
           </div>
         </div>
       </form>
     </div>
 
-    <script>
-      const defaultTheme = "monokai"
-
-      const jsonViewer = document.getElementById("json-viewer")
-      jsonViewer.id = "json"
-      jsonViewer.expanded = true
-      jsonViewer.showDataTypes = true
-      jsonViewer.theme = defaultTheme
-      jsonViewer.data = {
-        string: "this is a test ...",
-        integer: 42,
-        array: [1, 2, 3, "test", NaN],
-        float: 3.14159,
-        undefined: undefined,
-        object: {
-          "first-child": true,
-          "second-child": false,
-          "last-child": null,
-        },
-        string_number: "1234",
-        date: new Date(),
-      }
-
-      // form
-
-      // select theme
-      const select = document.querySelector("select.theme")
-
-      select.addEventListener("change", function () {
-        jsonViewer.setAttribute("theme", this.value)
-      })
-
-      // Load available themes
-      import("./dist/themes.js").then((module) =>
-        module.availableThemes.forEach((theme) => {
-          const option = document.createElement("option")
-          option.value = theme
-          option.innerText = theme
-          if (theme === defaultTheme) option.selected = true
-          select.append(option)
-        })
-      )
-
-      document
-        .querySelector("select.expanded")
-        .addEventListener("change", function () {
-          jsonViewer.expanded = this.value
-        })
-
-      document
-        .querySelector("select.indent")
-        .addEventListener("change", function () {
-          jsonViewer.indent = this.value
-        })
-    </script>
+    <script src="index.js"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import "../src/component.js"
+// import "../src/component.js"
 
 describe("JsonViewer", () => {
   it("should be defined", () => {

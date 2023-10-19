@@ -11,29 +11,31 @@
 
 //#########################################NEW
 import styles from "./styles.css"
-import { availableThemes, themeStyles, customThemeStyles } from "./themes"
-import { parseJson, isUrl } from "./data-helpers"
+import { themeStyles } from "./themes"
+import { isUrl } from "./data-helpers"
 import {
   validateBoolean,
   validateBooleanOrPositiveNumber,
   validatePositiveNumber,
   validateStringOrJson,
+  validateString,
 } from "./validator"
-import Renderer from "./renderer"
+import Renderer from "./renderer/renderer"
 
 const DEFAULT_PARAMS = {
   indent: 2,
   expanded: 1,
+  theme: "default-light",
   showDataTypes: true,
-  showRoot: false,
-  toolbar: false,
-  theme: null,
+  showToolbar: false,
+  expandIconType: "arrow",
+  showCopy: true,
+  showSize: true,
   data: null,
 }
 
 class JsonViewer extends HTMLElement {
   #themeStylesContainer
-  #dataContainer
   #options
   #contentData
   #renderer
@@ -44,7 +46,6 @@ class JsonViewer extends HTMLElement {
     this.#options = { ...DEFAULT_PARAMS }
 
     this.#themeStylesContainer = document.createElement("style")
-    this.#dataContainer = document.createElement("div")
 
     // Attach a shadow DOM to encapsulate the component
     const shadowRoot = this.attachShadow({ mode: "closed" })
@@ -53,13 +54,10 @@ class JsonViewer extends HTMLElement {
 
     shadowRoot.appendChild(basicStyles)
     shadowRoot.appendChild(this.#themeStylesContainer)
-    shadowRoot.appendChild(this.#dataContainer)
-
-    // set default initial theme
-    this.theme = "default-light"
 
     // initialize renderer
-    this.#renderer = new Renderer(this.#dataContainer)
+    this.#renderer = new Renderer(this.#options)
+    shadowRoot.appendChild(this.#renderer.element)
   }
 
   // component attributes
@@ -96,12 +94,16 @@ class JsonViewer extends HTMLElement {
     this.#validateAndUpdate("showDataTypes", value, validateBoolean)
   }
 
-  set showRoot(value) {
-    this.#validateAndUpdate("showRoot", value, validateBoolean)
+  set showToolbar(value) {
+    this.#validateAndUpdate("showToolbar", value, validateBoolean)
   }
 
   set indent(newIndent) {
     this.#validateAndUpdate("indent", newIndent, validatePositiveNumber)
+  }
+
+  set expandIconType(name) {
+    this.#validateAndUpdate("expandIconType", name, validateString)
   }
 
   set expanded(newExpanded) {
@@ -112,37 +114,33 @@ class JsonViewer extends HTMLElement {
     )
   }
 
+  set showSize(newShowSize) {
+    this.#validateAndUpdate("showSize", newShowSize, validateBoolean)
+  }
+
+  set expandIconType(newExpandIconType) {
+    this.#validateAndUpdate("expandIconType", newExpandIconType, validateString)
+  }
+
+  set showCopy(showCopy) {
+    this.#validateAndUpdate("showCopy", showCopy, validateBoolean)
+  }
+
   // validate and set theme
   // theme can be a string or an object
   // validationg theme is more complex than other attributes
   set theme(newTheme) {
     try {
       newTheme = validateStringOrJson(newTheme)
-      // build a string from the value to compare with the current theme
-      const newThemeString = JSON.stringify(newTheme)
-      // do nothing if the theme is the same
-      if (this.#options.theme === newThemeString) return
+      // do nothing if the theme is the same or theme container is empty
+      if (
+        this.#options.theme === newTheme &&
+        this.#themeStylesContainer.textContent !== ""
+      )
+        return
+      this.#options.theme = newTheme
 
-      let cssClass = newTheme
-      let styles
-      // check if the theme is a custom theme
-      if (typeof newTheme === "string") {
-        if (availableThemes.indexOf(newTheme) < 0) {
-          this.#warn(
-            `Theme ${newTheme} is not supported! Supported themes are: 
-              availableThemes ${availableThemes}`
-          )
-          return
-        }
-        styles = themeStyles(newTheme)
-      } else if (typeof newTheme === "object") {
-        styles = customThemeStyles(newTheme, "custom")
-        cssClass = "custom"
-      }
-
-      this.#options.theme = newThemeString
-      this.#themeStylesContainer.textContent = styles
-      this.#dataContainer.className = `container ${cssClass}`
+      this.#themeStylesContainer.textContent = themeStyles(newTheme)
     } catch (e) {
       this.#warn(`Attribute theme: ${e.message}`)
     }
@@ -158,6 +156,7 @@ class JsonViewer extends HTMLElement {
       const newDataString = JSON.stringify(newData)
       // do nothing if the data is the same
       if (this.#options.data === newDataString) return
+      this.#options.data = newDataString
 
       if (isUrl(newData)) {
         fetch(newData)
@@ -176,7 +175,7 @@ class JsonViewer extends HTMLElement {
   }
 
   get options() {
-    return this.#options.options
+    return this.#options
   }
 
   connectedCallback() {
@@ -205,22 +204,15 @@ class JsonViewer extends HTMLElement {
 
   #render = () => {
     console.log("====================RENDER")
-    // // console.log("theme", this.#options.theme);
-    // console.log("data", this.#options.data)
-    // console.log("indent", this.#options.indent)
-    // console.log("expanded", this.#options.expanded)
-    // console.log("showDataTypes", this.#options.showDataTypes)
-    // console.log("toolbar", this.#options.toolbar)
-    // console.log("content", this.#contentData)
-    // console.log(JsonViewer.allowedAttributes)
-    if (!this.#contentData) return
-
     this.#renderer.update({
       data: this.#contentData,
       expanded: this.#options.expanded,
+      expandIconType: this.#options.expandIconType,
       indent: this.#options.indent,
       showDataTypes: this.#options.showDataTypes,
-      showRoot: this.#options.showRoot,
+      showToolbar: this.#options.showToolbar,
+      showSize: this.#options.showSize,
+      showCopy: this.#options.showCopy,
     })
   }
 }

@@ -6,6 +6,12 @@ export const validateBoolean = (value) => {
   throw new Error(`should be a boolean!`)
 }
 
+export const validateString = (value) => {
+  if (typeof value === "string") return value
+
+  throw new Error(`should be a string!`)
+}
+
 export const validatePositiveNumber = (value) => {
   if (typeof value === "number" && value >= 0) return value
   if (typeof value === "string") {

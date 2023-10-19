@@ -426,7 +426,7 @@ const themes = {
     base07: "#181818",
     base08: "#ab4642",
     base09: "#dc9656",
-    base0A: "#f7ca88",
+    base0A: "#ab4642",
     base0B: "#a1b56c",
     base0C: "#86c1b9",
     base0D: "#7cafc2",
@@ -927,7 +927,7 @@ const themes = {
     base04: "#8796b0",
     base05: "#80cbc4",
     base06: "#80cbc4",
-    base07: "#ffffff",
+    base07: "#666666",
     base08: "#ff5370",
     base09: "#f76d47",
     base0A: "#ffb62c",
@@ -1427,16 +1427,18 @@ const themes = {
 
 export const availableThemes = Object.keys(themes)
 
-export const themeStyles = (name) => {
-  return `.${name}{${Object.keys(themes[name])
-    .map((key) => `--${key}: ${themes[name][key]};`)
-    .join("")}}`
-}
+export const themeStyles = (nameOrObject) => {
+  let theme
+  if (typeof nameOrObject === "string") {
+    if (themes[nameOrObject] === undefined) {
+      throw new Error(`Theme ${nameOrObject} not found`)
+    }
+    theme = themes[nameOrObject]
+  } else {
+    theme = nameOrObject
+  }
 
-export const customThemeStyles = (theme, name = "custom") => {
-  return `.${name} {
-    ${Object.keys(theme)
-      .map((key) => `--${key}: ${theme[key]};`)
-      .join("\n")}
-  }`
+  return `.container{${Object.keys(theme)
+    .map((key) => `--${key}: ${theme[key]};`)
+    .join("")}}`
 }

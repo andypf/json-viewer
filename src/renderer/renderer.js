@@ -1,44 +1,12 @@
-import { dataType } from "./data-helpers"
-
-class ExpandIcon {
-  #icon
-  constructor({ expanded = false, onToggle }) {
-    const className = expanded ? "arrow-down" : "arrow-right"
-    let isExpanded = expanded
-
-    this.#icon = Object.assign(document.createElement("i"), {
-      className: `icon ${className}`,
-    })
-
-    this.element = Object.assign(document.createElement("span"), {
-      className: "icon-wrapper",
-      onclick: function (e) {
-        icon.classList.toggle("arrow-down")
-        icon.classList.toggle("arrow-right")
-        isExpanded = !isExpanded
-        if (onToggle) onToggle(isExpanded)
-      },
-    })
-
-    this.element.append(this.#icon)
-  }
-
-  set expanded(boolean) {
-    if (boolean) {
-      this.#icon.classList.add("arrow-down")
-      this.#icon.classList.remove("arrow-right")
-    } else {
-      this.#icon.classList.remove("arrow-down")
-      this.#icon.classList.add("arrow-right")
-    }
-  }
-}
+import { dataType } from "../data-helpers"
+import ExpandIcon from "./expand-icon"
 
 class Expandable {
   constructor({ expanded, type, children, onExpand }) {
     this.#expanded = expanded
     const size = children.length
     this.element = document.createElement("span")
+    this.element.className = "expandable"
 
     this.#expandedTree = Expandable.createExpandedTree({
       type,
@@ -125,16 +93,23 @@ class Row {
   #expandIcon = null
   #children = null
 
-  constructor(key, value, { expanded, indent, showDataTypes, level = 0 }) {
+  #keyElem
+  #colonElem
+
+  constructor(key, value, { expanded, indent, level = 0 }) {
     this.key = key
     this.value = value
     this.#expanded = typeof expanded === "boolean" ? expanded : expanded > level
     this.#indent = indent
-    this.showDataTypes = showDataTypes
     this.level = level
     this.type = dataType(value).toLowerCase()
     this.#isExpandable = this.type === "object" || this.type === "array"
     this.#render()
+  }
+
+  update({ expanded, indent }) {
+    if (this.indent !== indent) this.indent = indent
+    if (this.expanded !== expanded) this.expanded = expanded
   }
 
   set expanded(newValue) {
@@ -148,7 +123,7 @@ class Row {
         this.#expandable.expanded = expanded
       }
       if (this.#expandIcon) {
-        this.#expandIcon.expanded = expanded
+        this.#expandIcon.update({ expanded })
       }
     }
     if (Array.isArray(this.#children)) {
@@ -190,18 +165,35 @@ class Row {
 
     // Render key (name) and colon
     if (this.key || this.key === undefined || this.key === 0) {
-      const keyElem = Object.assign(document.createElement("span"), {
+      this.#keyElem = Object.assign(document.createElement("span"), {
         className: `key ${typeof this.key === "number" ? "number" : ""}`,
         textContent: typeof this.key === "number" ? this.key : `"${this.key}"`,
       })
-      const colonElem = Object.assign(document.createElement("span"), {
-        className: "colon",
+      this.#colonElem = Object.assign(document.createElement("span"), {
+        className: `colon`,
         textContent: ":",
       })
 
-      this.element.append(keyElem)
-      this.element.append(colonElem)
+      this.element.append(this.#keyElem)
+      this.element.append(this.#colonElem)
     }
+
+    const copyIcon = Object.assign(document.createElement("span"), {
+      className: "copy icon",
+      title: "Copy to clipboard",
+      onclick: () => {
+        navigator.clipboard.writeText(JSON.stringify(this.value, null, 2))
+        copyIcon.classList.add("copied")
+        setTimeout(() => {
+          copyIcon.classList.remove("copied")
+        }, 200)
+      },
+    })
+    const copyIconWrapper = Object.assign(document.createElement("span"), {
+      className: "copy-icon-wrapper",
+    })
+
+    copyIconWrapper.append(copyIcon)
 
     if (this.#isExpandable) {
       const subRows =
@@ -216,14 +208,16 @@ class Row {
         return new Row(key, value, {
           expanded: this.#expanded,
           indent: this.#indent,
-          showDataTypes: this.showDataTypes,
           level: this.level + 1,
         })
       })
 
       this.#expandable = new Expandable({
         expanded: this.#expanded,
-        children: this.#children.map((child) => child.element),
+        children: [copyIconWrapper].concat(
+          this.#children.map((child) => child.element)
+        ),
+
         type: this.type,
         onExpand: () => {
           this.#expandable.expanded = true
@@ -232,56 +226,104 @@ class Row {
 
       this.element.append(this.#expandable.element)
     } else {
-      let valueType = ""
-      if (this.showDataTypes) {
-        // render value if not an object or array
-        valueType = ["nan", "NaN", "undefined", "null"].includes(this.type)
-          ? ""
-          : `<span class="type">${this.type}</span>`
-      }
+      // render value if not an object or array
+      const valueType = ["nan", "NaN", "undefined", "null"].includes(this.type)
+        ? ""
+        : `<span class="type">${this.type}</span>`
 
       const valueElement = Object.assign(document.createElement("span"), {
         className: `value ${this.type}`,
-        innerHTML: valueType + `<span>${this.value}</span>`,
+        innerHTML: valueType + `<span class="content">${this.value}</span>`,
       })
       this.element.append(valueElement)
+      this.element.append(copyIconWrapper)
     }
   }
 }
 
-class DataRenderer {
-  constructor(containerElement) {
-    this.containerElement = containerElement
-  }
-  update({ data, expanded, indent, showDataTypes, showRoot }) {
-    this.expanded = expanded
-    this.indent = indent
-    this.showDataTypes = showDataTypes
-    this.showRoot = showRoot
-
-    if (
-      !this.json ||
-      (this.data && JSON.stringify(this.data) !== JSON.stringify(data))
-    ) {
-      this.data = data
-      this.#render()
-    }
-    if (this.json) {
-      this.json.expanded = expanded
-      this.json.indent = indent
-    }
-  }
-
-  #render() {
-    if (!this.data) return
-    this.json = new Row(this.showRoot ? "Root" : "", this.data, {
-      expanded: this.expanded,
-      indent: this.indent,
-      showDataTypes: this.showDataTypes,
+class Container {
+  constructor({
+    data,
+    expanded,
+    indent,
+    showDataTypes,
+    showToolbar,
+    showSize,
+  }) {
+    this.element = document.createElement("div")
+    this.element.className = "container"
+    this.update({
+      data,
+      expanded,
+      indent,
+      showDataTypes,
+      showToolbar,
+      showSize,
     })
+  }
 
-    this.containerElement.append(this.json.element)
+  update({
+    data,
+    expanded,
+    indent,
+    showDataTypes,
+    showToolbar,
+    expandIconType,
+    showCopy,
+    showSize,
+  }) {
+    if (this.showSize !== showSize) {
+      this.showSize = showSize
+      if (this.showSize) this.element.classList.add("show-size")
+      else this.element.classList.remove("show-size")
+    }
+
+    if (this.expandIconType !== expandIconType) {
+      this.element.classList.add(`expand-icon-${expandIconType}`)
+      this.element.classList.remove(`expand-icon-${this.expandIconType}`)
+      this.expandIconType = expandIconType
+    }
+
+    if (this.showCopy !== showCopy) {
+      if (showCopy) this.element.classList.add(`show-copy`)
+      else this.element.classList.remove(`show-copy`)
+      this.showCopy = showCopy
+    }
+
+    if (this.showDataTypes !== showDataTypes) {
+      this.showDataTypes = showDataTypes
+      if (this.showDataTypes) this.element.classList.add("show-data-types")
+      else this.element.classList.remove("show-data-types")
+    }
+
+    const dataString = JSON.stringify(data)
+    if (this.dataString !== dataString) {
+      this.expanded = expanded
+      this.indent = indent
+
+      this.row = new Row("root", data, {
+        expanded,
+        indent,
+      })
+      this.element.replaceChildren(this.row.element)
+      this.dataString = dataString
+      return
+    }
+
+    let propsToBeUpdated = {}
+    if (this.indent !== indent) {
+      this.indent = indent
+      propsToBeUpdated.indent = indent
+    }
+    if (this.expanded !== expanded) {
+      this.expanded = expanded
+      propsToBeUpdated.expanded = expanded
+    }
+
+    if (Object.keys(propsToBeUpdated).length > 0) {
+      this.row.update(propsToBeUpdated)
+    }
   }
 }
 
-export default DataRenderer
+export default Container
