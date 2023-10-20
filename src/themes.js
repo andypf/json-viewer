@@ -1431,7 +1431,7 @@ export const themeStyles = (nameOrObject) => {
   let theme
   if (typeof nameOrObject === "string") {
     if (themes[nameOrObject] === undefined) {
-      throw new Error(`Theme ${nameOrObject} not found`)
+      throw new Error(`${nameOrObject} not found`)
     }
     theme = themes[nameOrObject]
   } else {

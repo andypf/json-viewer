@@ -33,7 +33,7 @@ export const validateBooleanOrPositiveNumber = (value) => {
     if (!isNaN(value) && value >= 0) return value
   }
 
-  throw new Error(`should be a boolean or positive number!`)
+  throw new Error(`should be a boolean or a positive number!`)
 }
 
 export const validateStringOrJson = (value) => {

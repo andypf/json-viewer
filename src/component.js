@@ -20,7 +20,7 @@ import {
   validateStringOrJson,
   validateString,
 } from "./validator"
-import Renderer from "./renderer/renderer"
+import Renderer from "./renderer/container"
 
 const DEFAULT_PARAMS = {
   indent: 2,
@@ -48,7 +48,7 @@ class JsonViewer extends HTMLElement {
     this.#themeStylesContainer = document.createElement("style")
 
     // Attach a shadow DOM to encapsulate the component
-    const shadowRoot = this.attachShadow({ mode: "closed" })
+    const shadowRoot = this.attachShadow({ mode: "open" })
     const basicStyles = document.createElement("style")
     basicStyles.textContent = `${styles}`
 
@@ -56,8 +56,7 @@ class JsonViewer extends HTMLElement {
     shadowRoot.appendChild(this.#themeStylesContainer)
 
     // initialize renderer
-    this.#renderer = new Renderer(this.#options)
-    shadowRoot.appendChild(this.#renderer.element)
+    this.#renderer = new Renderer(shadowRoot, this.#options)
   }
 
   // component attributes
@@ -71,12 +70,15 @@ class JsonViewer extends HTMLElement {
   static allowedAttributes = ["id"].concat(JsonViewer.observedAttributes)
 
   #warn = (...args) => {
-    console.warn(`JsonViewer ${this.id ? `(${this.id})` : ""}:`, ...args)
+    console.warn(`JsonViewer${this.id ? ` (${this.id})` : ""}:`, ...args)
   }
 
-  #validateAndUpdate = (propName, value, validatorFunc) => {
+  #validateAndUpdate = (propName, value, validatorFunc, allowedValues) => {
     try {
       value = validatorFunc(value)
+      if (allowedValues && !allowedValues.includes(value)) {
+        throw new Error(`should be one of ${allowedValues.join(", ")}`)
+      }
       if (this.#options[propName] === value) return
 
       this.#options[propName] = value
@@ -103,7 +105,11 @@ class JsonViewer extends HTMLElement {
   }
 
   set expandIconType(name) {
-    this.#validateAndUpdate("expandIconType", name, validateString)
+    this.#validateAndUpdate("expandIconType", name, validateString, [
+      "arrow",
+      "square",
+      "circle",
+    ])
   }
 
   set expanded(newExpanded) {
@@ -116,10 +122,6 @@ class JsonViewer extends HTMLElement {
 
   set showSize(newShowSize) {
     this.#validateAndUpdate("showSize", newShowSize, validateBoolean)
-  }
-
-  set expandIconType(newExpandIconType) {
-    this.#validateAndUpdate("expandIconType", newExpandIconType, validateString)
   }
 
   set showCopy(showCopy) {
@@ -138,9 +140,9 @@ class JsonViewer extends HTMLElement {
         this.#themeStylesContainer.textContent !== ""
       )
         return
-      this.#options.theme = newTheme
 
       this.#themeStylesContainer.textContent = themeStyles(newTheme)
+      this.#options.theme = newTheme
     } catch (e) {
       this.#warn(`Attribute theme: ${e.message}`)
     }
@@ -203,7 +205,7 @@ class JsonViewer extends HTMLElement {
   }
 
   #render = () => {
-    console.log("====================RENDER")
+    // console.log("====================RENDER");
 
     this.#renderer.update({
       data: this.#contentData,

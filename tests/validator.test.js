@@ -3,6 +3,7 @@ import {
   validateBooleanOrPositiveNumber,
   validatePositiveNumber,
   validateStringOrJson,
+  validateString,
 } from "../src/validator"
 
 describe("validateBoolean", () => {
@@ -67,7 +68,7 @@ describe("validateBooleanOrPositiveNumber", () => {
     expect(() =>
       validateBooleanOrPositiveNumber("foo")
     ).toThrowErrorMatchingInlineSnapshot(
-      `"should be a boolean or positive number!"`
+      `"should be a boolean or a positive number!"`
     )
   })
 })
@@ -88,6 +89,17 @@ describe("validateStringOrJson", () => {
   it("should throw an error if value is not a string or JSON", () => {
     expect(() => validateStringOrJson(1)).toThrowErrorMatchingInlineSnapshot(
       `"should be a string or JSON!"`
+    )
+  })
+})
+
+describe("validateString", () => {
+  it("should return the value if it is a string", () => {
+    expect(validateString("foo")).toEqual("foo")
+  })
+  it("should throw an error if value is not a string", () => {
+    expect(() => validateString(1)).toThrowErrorMatchingInlineSnapshot(
+      `"should be a string!"`
     )
   })
 })

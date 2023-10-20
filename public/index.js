@@ -27,12 +27,12 @@ jsonViewer.data = {
     "first-child": true,
     "second-child": false,
     "last-child": null,
-    strings: {
-      veryLong:
-        "The 'json-viewer' is a powerful tool designed specifically for displaying and analyzing JSON data. JSON (JavaScript Object Notation) is a widely used data format for transmission and storage. It's easy to understand and write, but when it comes to visualizing extensive or complex JSON data, it can be a challenge.",
-      withoutSpaces:
-        "The'json-viewer'isapowerfultooldesignedspecificallyfordisplayingandanalyzingJSONdata.JSON(JavaScriptObjectNotation)isawidelyuseddataformatfortransmissionandstorage.It'seasytounderstandandwrite,butwhenitcomestovisualizingextensiveorcomplexJSONdata,itcanbeachallenge",
-    },
+    // strings: {
+    //   veryLong:
+    //     "The 'json-viewer' is a powerful tool designed specifically for displaying and analyzing JSON data. JSON (JavaScript Object Notation) is a widely used data format for transmission and storage. It's easy to understand and write, but when it comes to visualizing extensive or complex JSON data, it can be a challenge.",
+    //   withoutSpaces:
+    //     "The'json-viewer'isapowerfultooldesignedspecificallyfordisplayingandanalyzingJSONdata.JSON(JavaScriptObjectNotation)isawidelyuseddataformatfortransmissionandstorage.It'seasytounderstandandwrite,butwhenitcomestovisualizingextensiveorcomplexJSONdata,itcanbeachallenge",
+    // },
   },
   string_number: "1234",
   date: new Date(),
