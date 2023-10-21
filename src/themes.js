@@ -1423,22 +1423,22 @@ const themes = {
     base0E: "#dc8cc3",
     base0F: "#000000",
   },
-}
+};
 
-export const availableThemes = Object.keys(themes)
+export const availableThemes = Object.keys(themes);
 
 export const themeStyles = (nameOrObject) => {
-  let theme
+  let theme;
   if (typeof nameOrObject === "string") {
     if (themes[nameOrObject] === undefined) {
-      throw new Error(`${nameOrObject} not found`)
+      throw new Error(`${nameOrObject} not found`);
     }
-    theme = themes[nameOrObject]
+    theme = themes[nameOrObject];
   } else {
-    theme = nameOrObject
+    theme = nameOrObject;
   }
 
   return `.container{${Object.keys(theme)
     .map((key) => `--${key}: ${theme[key]};`)
-    .join("")}}`
-}
+    .join("")}}`;
+};

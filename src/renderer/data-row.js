@@ -12,7 +12,7 @@ const DataRow = function ({ key, value, expanded, indent, level = 0 }) {
   row.className = `data-row ${isExpanded ? "expanded" : ""}`
   row.dataset.key = key
   row.dataset.level = level
-  row.style.paddingLeft = `${indent * level}rem`
+  if (level > 0) row.style.paddingLeft = `${indent * 5}px`
 
   const keyValueWrapper = document.createElement("span")
   keyValueWrapper.className = "key-value-wrapper"
@@ -84,9 +84,17 @@ const DataRow = function ({ key, value, expanded, indent, level = 0 }) {
 
     // CHILDREN ROWS
     childrenRows = []
-    const items = thisDataType === "array" ? value : Object.keys(value)
+
+    const items =
+      thisDataType === "array" ? value.map((v, i) => i) : Object.keys(value)
     items.forEach((key) => {
-      const subRow = new DataRow({ key, value: value[key], level: level + 1 })
+      const subRow = new DataRow({
+        key,
+        value: value[key],
+        expanded,
+        indent,
+        level: level + 1,
+      })
       childrenRows.push(subRow)
       row.appendChild(subRow.element)
     })
@@ -105,8 +113,10 @@ const DataRow = function ({ key, value, expanded, indent, level = 0 }) {
     }
 
     const valueEl = document.createElement("span")
-    valueEl.className = `value ${thisDataType}`
-    valueEl.innerHTML = `${valueType} ${value}`
+    valueEl.className = `value ${thisDataType.toLowerCase()}`
+    valueEl.innerHTML = `${valueType}${
+      thisDataType === "string" ? `"${value}"` : value
+    }`
     keyValueWrapper.appendChild(valueEl)
   }
 
@@ -115,7 +125,7 @@ const DataRow = function ({ key, value, expanded, indent, level = 0 }) {
   copyIcon.className = "copy icon"
   copyIcon.setAttribute("title", "Copy to clipboard")
   copyIcon.addEventListener("click", () => {
-    navigator.clipboard.writeText(JSON.stringify(value))
+    navigator.clipboard.writeText(JSON.stringify(value, null, indent))
   })
 
   const copyIconWrapper = document.createElement("span")
@@ -125,17 +135,19 @@ const DataRow = function ({ key, value, expanded, indent, level = 0 }) {
 
   // this function updates the icon based on the expanded state
   this.update = ({ expanded, indent }) => {
-    if (indent !== undefined) {
-      row.style.paddingLeft = `${indent * level}rem`
+    // console.log("update", { expanded, indent, level })
+    if (indent !== undefined && level > 0) {
+      row.style.paddingLeft = `${indent * 5}px`
     }
 
     if (expanded !== undefined) {
       isExpanded = expanded === true || expanded > level
       row.classList.toggle("expanded", isExpanded)
       if (expandIcon) expandIcon.title = isExpanded ? "Collapse" : "Expand"
-      if (childrenRows)
-        childrenRows.forEach((r) => r.update({ expanded, indent }))
     }
+
+    if (childrenRows)
+      childrenRows.forEach((r) => r.update({ expanded, indent }))
   }
 
   this.element = row
