@@ -1,7 +1,16 @@
-const Toolbar = function ({ expanded, indent, onChange, showDetails }) {
+const Toolbar = function ({
+  expanded,
+  indent,
+  onChange,
+  onSearch,
+  showDetails,
+}) {
   this.indent = indent || 2;
   this.expanded = typeof expanded === "number" ? expanded : 2;
   this.showDetails = showDetails || true;
+  this.maxExpandLevel = 0;
+
+  let searchInput;
 
   const toolbar = document.createElement("div");
   toolbar.className = "toolbar";
@@ -22,9 +31,7 @@ const Toolbar = function ({ expanded, indent, onChange, showDetails }) {
   options.appendChild(refreshIconWrapper);
   const refreshIcon = document.createElement("span");
   refreshIcon.className = "icon refresh";
-  refreshIconWrapper.onclick = () => {
-    onChange({ indent: 2, expanded: 1 });
-  };
+  refreshIconWrapper.onclick = () => this.refresh();
   refreshIconWrapper.appendChild(refreshIcon);
 
   // EXPAND ICON
@@ -48,7 +55,10 @@ const Toolbar = function ({ expanded, indent, onChange, showDetails }) {
   collapseIcon.className = "icon minus";
   collapseIconWrapper.appendChild(collapseIcon);
   collapseIconWrapper.onclick = () => {
-    this.expanded -= 1;
+    console.log(this.expanded, this.maxExpandLevel);
+    if (this.expanded > this.maxExpandLevel)
+      this.expanded = this.maxExpandLevel;
+    if (this.expanded > 0) this.expanded -= 1;
     onChange({ expanded: this.expanded });
   };
 
@@ -97,13 +107,21 @@ const Toolbar = function ({ expanded, indent, onChange, showDetails }) {
   const searchIcon = document.createElement("span");
   searchIcon.className = "icon search";
   searchWrapper.appendChild(searchIcon);
-  const searchInput = document.createElement("input");
+  searchInput = document.createElement("input");
   searchInput.className = "search-input";
   searchInput.placeholder = "Search";
   searchInput.oninput = (e) => {
-    onChange({ searchString: e.target.value });
+    onSearch(e.target.value);
   };
   searchWrapper.appendChild(searchInput);
+
+  this.refresh = () => {
+    this.expanded = 1;
+    this.indent = 2;
+    if (searchInput) searchInput.value = "";
+    onChange({ indent: 2, expanded: 1 });
+    onSearch("");
+  };
 
   this.element = toolbar;
 };

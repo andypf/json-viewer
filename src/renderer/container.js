@@ -32,10 +32,16 @@ function Container(root, options = {}) {
           value: data,
           expanded,
           indent,
+          onToggleExpand: (level) => {
+            if (toolbar) toolbar.expanded = level;
+          },
         });
         containerElem.replaceChildren(dataRow.element);
-        if (cache.showToolbar && toolbar)
+        if (cache.showToolbar && toolbar) {
           containerElem.prepend(toolbar.element);
+          toolbar.maxExpandLevel = dataRow.maxLevel;
+          toolbar.refresh();
+        }
       }
     }
     if (showToolbar !== undefined && cache.showToolbar !== showToolbar) {
@@ -46,7 +52,11 @@ function Container(root, options = {}) {
             expanded: cache.expanded,
             indent: cache.indent,
             onChange: update,
+            onSearch: (searchTerm) => {
+              if (dataRow) dataRow.update({ searchTerm });
+            },
           });
+        if (dataRow) toolbar.maxExpandLevel = dataRow.maxLevel;
         containerElem.prepend(toolbar.element);
       } else {
         const element = containerElem.querySelector(".toolbar");
