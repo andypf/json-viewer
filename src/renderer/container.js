@@ -1,14 +1,14 @@
-import DataRow from "./data-row";
-import Toolbar from "./toolbar";
+import DataRow from "./data-row"
+import Toolbar from "./toolbar"
 
 function Container(root, options = {}) {
-  const containerElem = document.createElement("div");
-  containerElem.className = "container";
-  root.appendChild(containerElem);
-  let dataRow = null;
-  let toolbar = null;
+  const containerElem = document.createElement("div")
+  containerElem.className = "container"
+  root.appendChild(containerElem)
+  let dataRow = null
+  let toolbar = null
 
-  const cache = {};
+  const cache = {}
 
   const update = ({
     data,
@@ -22,10 +22,10 @@ function Container(root, options = {}) {
   }) => {
     // DATA
     if (data) {
-      const newDataCompareString = JSON.stringify(data);
+      const newDataCompareString = JSON.stringify(data)
       // if data has not changed, do nothing
       if (cache.dataComapreString !== newDataCompareString) {
-        cache.dataComapreString = newDataCompareString;
+        cache.dataComapreString = newDataCompareString
 
         dataRow = new DataRow({
           key: "",
@@ -33,19 +33,20 @@ function Container(root, options = {}) {
           expanded,
           indent,
           onToggleExpand: (level) => {
-            if (toolbar) toolbar.expanded = level;
+            if (toolbar) toolbar.expanded = level
+            cache.expanded = level
           },
-        });
-        containerElem.replaceChildren(dataRow.element);
+        })
+        containerElem.replaceChildren(dataRow.element)
         if (cache.showToolbar && toolbar) {
-          containerElem.prepend(toolbar.element);
-          toolbar.maxExpandLevel = dataRow.maxLevel;
-          toolbar.refresh();
+          containerElem.prepend(toolbar.element)
+          toolbar.maxExpandLevel = dataRow.maxLevel
+          toolbar.refresh()
         }
       }
     }
     if (showToolbar !== undefined && cache.showToolbar !== showToolbar) {
-      cache.showToolbar = showToolbar;
+      cache.showToolbar = showToolbar
       if (showToolbar) {
         if (!toolbar)
           toolbar = new Toolbar({
@@ -53,62 +54,62 @@ function Container(root, options = {}) {
             indent: cache.indent,
             onChange: update,
             onSearch: (searchTerm) => {
-              if (dataRow) dataRow.update({ searchTerm });
+              if (dataRow) dataRow.update({ searchTerm })
             },
-          });
-        if (dataRow) toolbar.maxExpandLevel = dataRow.maxLevel;
-        containerElem.prepend(toolbar.element);
+          })
+        if (dataRow) toolbar.maxExpandLevel = dataRow.maxLevel
+        containerElem.prepend(toolbar.element)
       } else {
-        const element = containerElem.querySelector(".toolbar");
-        if (element) element.remove();
+        const element = containerElem.querySelector(".toolbar")
+        if (element) element.remove()
       }
     }
 
-    const propsToBeUpdated = {};
+    const propsToBeUpdated = {}
     // EXPANDED
     if (expanded !== undefined && cache.expanded !== expanded) {
-      cache.expanded = expanded;
-      propsToBeUpdated.expanded = expanded;
+      cache.expanded = expanded
+      propsToBeUpdated.expanded = expanded
     }
     // INDENT
     if (indent !== undefined && cache.indent !== indent) {
-      cache.indent = indent;
-      propsToBeUpdated.indent = indent;
+      cache.indent = indent
+      propsToBeUpdated.indent = indent
     }
     if (Object.keys(propsToBeUpdated).length > 0 && dataRow) {
-      dataRow.update(propsToBeUpdated);
+      dataRow.update(propsToBeUpdated)
     }
 
     // SHOW COPY
     if (showCopy !== undefined && cache.showCopy !== showCopy) {
-      cache.showCopy = showCopy;
-      containerElem.classList.toggle("show-copy", showCopy);
+      cache.showCopy = showCopy
+      containerElem.classList.toggle("show-copy", showCopy)
     }
     // SHOW SIZE
     if (showSize !== undefined && cache.showSize !== showSize) {
-      cache.showSize = showSize;
-      containerElem.classList.toggle("show-size", showSize);
+      cache.showSize = showSize
+      containerElem.classList.toggle("show-size", showSize)
     }
     // SHOW DATA TYPES
     if (showDataTypes !== undefined && cache.showDataTypes !== showDataTypes) {
-      cache.showDataTypes = showDataTypes;
-      containerElem.classList.toggle("show-data-types", showDataTypes);
+      cache.showDataTypes = showDataTypes
+      containerElem.classList.toggle("show-data-types", showDataTypes)
     }
     // EXPAND ICON TYPE
     if (
       expandIconType !== undefined &&
       cache.expandIconType !== expandIconType
     ) {
-      containerElem.classList.add(`expand-icon-${expandIconType}`);
-      containerElem.classList.remove(`expand-icon-${cache.expandIconType}`);
-      cache.expandIconType = expandIconType;
+      containerElem.classList.add(`expand-icon-${expandIconType}`)
+      containerElem.classList.remove(`expand-icon-${cache.expandIconType}`)
+      cache.expandIconType = expandIconType
     }
-  };
+  }
 
-  update(options);
+  update(options)
 
   // make update function public
-  this.update = update;
+  this.update = update
 }
 
-export default Container;
+export default Container

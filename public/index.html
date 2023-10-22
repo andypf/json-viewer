@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <title>JsonViewer</title>
     <link rel="stylesheet" href="styles.css" />
-    <script src="./dist/index.js"></script>
+    <script src="./dist/iife/index.js"></script>
   </head>
   <body>
     <h1 class="title">Json Viewer</h1>
@@ -26,13 +26,9 @@
       "string_number":"1234", "date": "Tue, Oct 17, 2023, 08:58 AM" }
     </json-viewer> -->
 
-    <div>
-      <json-viewer id="json-viewer"></json-viewer>
-
-      <pre class="html-code"><code id="output"></code></pre>
-
+    <div class="container">
       <form class="options">
-        <div class="container">
+        <div class="options-container">
           <div class="input-element">
             <label for="theme">Theme</label>
             <select id="theme"></select>
@@ -77,8 +73,31 @@
               <span class="slider round"></span>
             </label>
           </div>
+          <div class="input-element">
+            <label for="show-code">Show Code</label>
+            <label class="switch">
+              <input type="checkbox" id="show-code" />
+              <span class="slider round"></span>
+            </label>
+          </div>
+          <div class="input-element">
+            <label for="show-source">Show Source</label>
+            <label class="switch">
+              <input type="checkbox" id="show-source" />
+              <span class="slider round"></span>
+            </label>
+          </div>
         </div>
       </form>
+      <div class="display">
+        <textarea id="source-code" class="source-code hidden"> </textarea>
+
+        <json-viewer id="json-viewer"></json-viewer>
+        <pre
+          class="html-code hidden"
+          id="html-code"
+        ><code id="output"></code></pre>
+      </div>
     </div>
 
     <script src="index.js"></script>

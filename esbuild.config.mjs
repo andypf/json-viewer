@@ -1,5 +1,6 @@
 import * as esbuild from "esbuild"
 import { rmSync } from "node:fs"
+import { env } from "node:process"
 
 // helpers for console log
 const green = "\x1b[32m%s\x1b[0m"
@@ -22,7 +23,7 @@ await rmSync(outdir, { recursive: true, force: true })
 
 const options = {
   entryPoints: ["src/index.js"],
-  outfile: `${outdir}/index.js`,
+  outfile: `${outdir}/iife/index.js`,
   format: "iife",
   bundle: true,
   minify: isProduction,
@@ -42,6 +43,12 @@ await esbuild.build({
   ...options,
   outfile: `${outdir}/esm/index.mjs`,
   format: "esm",
+})
+
+await esbuild.build({
+  ...options,
+  outfile: `${outdir}/cjs/index.mjs`,
+  format: "cjs",
 })
 
 let ctx = await esbuild.context({
@@ -64,7 +71,7 @@ if (args.watch) {
   let { host, port } = await ctx.serve({
     servedir: "./public",
     host: "0.0.0.0",
-    port: 3000,
+    port: parseInt(process.env.PORT || 3000),
   })
 
   console.log("server on " + host + ":" + port)
