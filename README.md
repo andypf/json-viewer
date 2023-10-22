@@ -1,14 +1,49 @@
 # json-viewer
 
-**json-viewer** is a package that defines a custom HTML element called "json-viewer" for rendering JSON data within a shadow DOM. It offers various customization options, both through tag attributes and a JavaScript API.
+**json-viewer** is a modern JavaScript-based JSON data visualization tool designed with cutting-edge web technologies, including Web Components and Shadow DOM. This versatile tool empowers you to elegantly and attractively present JSON data within your web browser. It's well-suited for use in standalone web applications and seamlessly integrates with popular frameworks like React.
 
-## Installation
+![Demo](doc/jsonViewer.png)
 
-You can install the package using npm:
+## Inspired by react-json-view
 
-```shell
-npm install json-viewer
-```
+Our project drew inspiration from [react-json-view](https://github.com/mac-s-g/react-json-view) but was developed with the goal of enabling usage outside of React. We were inspired by the user-friendliness and functionality of react-json-view and implemented these ideas in json-viewer.
+
+## Features
+
+- Stylish visualization of JSON data.
+- Supports usage in the browser and within React applications.
+- Utilizes modern web technologies like Web Components and Shadow DOM.
+- Easy integration into existing projects.
+- Customizable presentation and configuration.
+
+## Usage
+
+### In the Browser
+
+Insert your JSON object into an HTML element of your choice and initialize json-viewer:
+
+````html
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="json-viewer.js"></script>
+  </head>
+  <body>
+    <div id="json-container"></div>
+
+    <script>
+      const jsonData = {
+        /* Your JSON object here */
+      }
+      const jsonContainer = document.getElementById("json-container")
+      jsonContainer.jsonData = jsonData
+    </script>
+  </body>
+</html>
+
+## Installation You can install the package using npm: ```shell npm install
+json-viewer
+````
 
 ```browser
 <script src="">
@@ -68,6 +103,18 @@ jsonViewer.showCopy = true
 jsonViewer.expandIconType = "square"
 jsonViewer.data = { example: "data" }
 ```
+
+| Option           | Type                           | Default Value   | Description                                                                                                                                                                           |
+| ---------------- | ------------------------------ | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `indent`         | Number                         | 2               | The number of spaces used for indentation when rendering the JSON data.                                                                                                               |
+| `expanded`       | Number or Boolean              | 2               | The initial depth to which the JSON data is expanded. You can also set it to `true` to fully expand the data, or `false` to collapse it.                                              |
+| `theme`          | String or JSON Object          | "default-light" | The theme used for styling the JSON viewer. You can provide a JSON object with custom CSS variables. There are many [predefined themes](#themes)                                      |
+| `showDataTypes`  | Boolean                        | true            | Whether to display data types (e.g., "string", "number") alongside the values.                                                                                                        |
+| `showToolbar`    | Boolean                        | false           | Whether to display the toolbar with expand and indent options and a searchbar.                                                                                                        |
+| `expandIconType` | String                         | "square"        | The type of icons used for expanding and collapsing JSON nodes. You can choose "square", "circle" or "arrow".                                                                         |
+| `showCopy`       | Boolean                        | true            | Whether to show the copy button to copy the JSON data to the clipboard.                                                                                                               |
+| `showSize`       | Boolean                        | true            | Whether to display the size (number of characters) of the JSON data.                                                                                                                  |
+| `data`           | Stringified JSON or URL String | (Not specified) | The JSON data to be visualized. You can provide it as a stringified JSON or a URL string. Alternatively, you can pass the data via the API as an object or as content within the tag. |
 
 ## Toolbar Functions
 
@@ -165,6 +212,49 @@ The "theme" option allows you to choose from various themes:
 - twilight
 - woodland
 - zenburn
+
+### Customizations
+
+You have the flexibility to customize the theme by defining a JSON object with the following properties:
+
+- `--base00`: Default Background
+- `--base01` (**unused**): Lighter Background (Reserved for status bars, line numbers, and folding marks)
+- `--base02`: Borders and Background for types NaN, null, and undefined
+- `--base03` (**unused**): Comments, Invisibles, Line Highlighting
+- `--base04`: Item Size
+- `--base05`: Default Foreground, Brackets, and Colons
+- `--base06` (**unused**): Light Foreground (Infrequently used)
+- `--base07`: Keys, Colons, and Brackets
+- `--base08`: Color for NaN
+- `--base09`: Ellipsis and String Values
+- `--base0A`: Regular Expressions and Null Values
+- `--base0B`: Floating-Point Values
+- `--base0C`: Number Keys
+- `--base0D`: Icons, Search Input, Date
+- `--base0E`: Booleans and Expanded Icons
+- `--base0F`: Integers
+
+Example:
+```javascript
+{
+  "--base00": "#101112",
+  "--base01": "#1C1E1F",
+  "--base02": "#26282A",
+  "--base03": "#323639",
+  "--base04": "#868A8E",
+  "--base05": "#9DA0A2",
+  "--base06": "#D2D5D7",
+  "--base07": "#F1F2F3",
+  "--base08": "#EF5253",
+  "--base09": "#E66B2B",
+  "--base0A": "#E4B51C",
+  "--base0B": "#7CC844",
+  "--base0C": "#52CBB0",
+  "--base0D": "#33A3DC",
+  "--base0E": "#A363D5",
+  "--base0F": "#D73C9A"
+}
+```
 
 ## Demo
 

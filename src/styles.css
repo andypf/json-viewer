@@ -47,12 +47,6 @@
   color: var(--base0D); /* Input text color */
 }
 
-/* .match {
-  background-color: var(--base02);
-  color: yellow;
-  padding: 2px;
-  font-weight: bold;
-} */
 .match {
   background-color: yellow; /* Hervorhebungsfarbe */
   font-weight: bold; /* Fettschrift, um den Treffer hervorzuheben */
