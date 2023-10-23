@@ -65,7 +65,7 @@ loadingOption.innerText = "loading..."
 select.append(loadingOption)
 
 // Load available themes
-import("./dist/themes.js").then((module) => {
+import("./dist/esm/themes.js").then((module) => {
   loadingOption.remove()
   module.availableThemes.forEach((theme) => {
     const option = document.createElement("option")

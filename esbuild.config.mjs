@@ -21,9 +21,15 @@ const args = process.argv.slice(2).reduce((map, item) => {
 const outdir = isProduction ? "dist" : "public/dist"
 await rmSync(outdir, { recursive: true, force: true })
 
+// default options
 const options = {
-  entryPoints: ["src/index.js"],
-  outfile: `${outdir}/iife/index.js`,
+  external: ["react"],
+  entryPoints: {
+    themes: "src/themes.js",
+    index: "src/index.js",
+    "react/JsonViewer": "src/react/JsonViewer.jsx",
+  },
+  outdir: `${outdir}/iife`,
   format: "iife",
   bundle: true,
   minify: isProduction,
@@ -32,22 +38,17 @@ const options = {
   },
 }
 
+// ESM
 await esbuild.build({
   ...options,
-  entryPoints: ["src/themes.js"],
-  outfile: `${outdir}/themes.js`,
+  outdir: `${outdir}/esm/`,
   format: "esm",
 })
 
+// CommonJS
 await esbuild.build({
   ...options,
-  outfile: `${outdir}/esm/index.mjs`,
-  format: "esm",
-})
-
-await esbuild.build({
-  ...options,
-  outfile: `${outdir}/cjs/index.mjs`,
+  outdir: `${outdir}/cjs/`,
   format: "cjs",
 })
 
