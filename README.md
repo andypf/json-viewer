@@ -20,13 +20,29 @@
 
 ## Installation
 
-### Using npm
+### npm
 
-You can install the **json-viewer** package via npm with the following command:
+You can easily install the **json-viewer** package using npm with the following commands:
+
+```bash
+npm install json-viewer
+```
+
+Next, include it in your project:
+
+```javascript
+import "json-viewer"
+```
+
+Now, you're ready to use it as a custom HTML tag within your web application:
+
+```html
+<json-viewer data='{"test": "Hello World"}'></json-viewer>
+```
 
 ### Browser Integration
 
-To use **json-viewer** in your web application, embed your JSON object within an HTML element of your choice and initialize **json-viewer** as follows:
+To use **json-viewer** in your web application, load json-viewer.js and embed your JSON object within an HTML element of your choice and initialize **json-viewer** as follows:
 
 ```html
 <!DOCTYPE html>
@@ -111,6 +127,14 @@ jsonViewer.data = { example: "data" }
 ### Integration with React
 
 **json-viewer** can also be used as a React component in your React applications.
+
+```js
+import React from "react"
+import JsonViewer from "json-viewer/react/JsonViewer"
+
+// use the component in your app!
+;<JsonViewer data={jsonObject} />
+```
 
 ## Options
 

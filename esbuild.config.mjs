@@ -1,6 +1,8 @@
 import * as esbuild from "esbuild"
-import { rmSync } from "node:fs"
-import { env } from "node:process"
+import { rmSync, readFileSync } from "node:fs"
+import { resolve } from "node:path"
+import postcss from "postcss"
+import postcssMinify from "postcss-minify"
 
 // helpers for console log
 const green = "\x1b[32m%s\x1b[0m"
@@ -18,43 +20,81 @@ const args = process.argv.slice(2).reduce((map, item) => {
   return map
 }, {})
 
-const outdir = isProduction ? "dist" : "public/dist"
-await rmSync(outdir, { recursive: true, force: true })
+await rmSync("public/build", { recursive: true, force: true })
+await rmSync("dist", { recursive: true, force: true })
 
+let cssPlugin = {
+  name: "minify-css",
+  setup(build) {
+    build.onResolve({ filter: /^.*\.css$/ }, (args) => {
+      return {
+        path: resolve(args.resolveDir, args.path),
+        namespace: "minify-css",
+      }
+    })
+
+    build.onLoad({ filter: /.*/, namespace: "minify-css" }, async (args) => {
+      const source = readFileSync(args.path, "utf-8")
+      const css = await postcss(postcssMinify())
+        .process(source, { from: undefined })
+        .then((result) => result.css)
+
+      return {
+        contents: css,
+        loader: "text",
+      }
+    })
+  },
+}
 // default options
 const options = {
   external: ["react"],
-  entryPoints: {
-    themes: "src/themes.js",
-    index: "src/index.js",
-    "react/JsonViewer": "src/react/JsonViewer.jsx",
-  },
-  outdir: `${outdir}/iife`,
-  format: "iife",
   bundle: true,
   minify: isProduction,
   loader: {
     ".css": "text",
   },
+  plugins: [cssPlugin],
 }
 
-// ESM
-await esbuild.build({
-  ...options,
-  outdir: `${outdir}/esm/`,
-  format: "esm",
-})
+if (isProduction) {
+  const prodOptions = {
+    ...options,
+    entryPoints: {
+      index: "src/index.js",
+      "react/JsonViewer": "src/react/JsonViewer.jsx",
+    },
+  }
+  // ESM
+  await esbuild.build({
+    ...prodOptions,
+    outdir: `dist/esm/`,
+    format: "esm",
+  })
 
-// CommonJS
+  // CommonJS
+  await esbuild.build({
+    ...prodOptions,
+    outdir: `dist/cjs/`,
+    format: "cjs",
+  })
+}
+
+// Themse
 await esbuild.build({
   ...options,
-  outdir: `${outdir}/cjs/`,
-  format: "cjs",
+  entryPoints: ["src/themes.js"],
+  outfile: `public/build/themes.js`,
+  format: "esm",
 })
 
 let ctx = await esbuild.context({
   ...options,
+  entryPoints: ["src/index.js"],
+  outfile: `public/build/index.js`,
+  format: "iife",
   plugins: [
+    cssPlugin,
     {
       name: "start/end",
       setup(build) {
