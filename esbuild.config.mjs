@@ -21,7 +21,6 @@ const args = process.argv.slice(2).reduce((map, item) => {
 }, {})
 
 await rmSync("demo/build", { recursive: true, force: true })
-await rmSync("dist", { recursive: true, force: true })
 
 let cssPlugin = {
   name: "minify-css",
@@ -48,7 +47,7 @@ let cssPlugin = {
 }
 // default options
 const options = {
-  external: ["react"],
+  external: isProduction ? ["react"] : [],
   bundle: true,
   minify: isProduction,
   loader: {
@@ -58,6 +57,7 @@ const options = {
 }
 
 if (isProduction) {
+  await rmSync("dist", { recursive: true, force: true })
   const prodOptions = {
     ...options,
     entryPoints: {
@@ -82,6 +82,9 @@ if (isProduction) {
   // IIFE
   await esbuild.build({
     ...prodOptions,
+    entryPoints: {
+      index: "src/index.js",
+    },
     outdir: `dist/iife/`,
     format: "iife",
   })

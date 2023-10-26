@@ -25,13 +25,13 @@
 You can easily install the **json-viewer** package using npm with the following commands:
 
 ```bash
-npm install json-viewer
+npm install @andypf/json-viewer
 ```
 
 Next, include it in your project:
 
 ```javascript
-import "json-viewer"
+import "@andypf/json-viewer"
 ```
 
 Now, you're ready to use it as a custom HTML tag within your web application:
@@ -130,10 +130,30 @@ jsonViewer.data = { example: "data" }
 
 ```js
 import React from "react"
-import JsonViewer from "json-viewer/react/JsonViewer"
+import JsonViewer from "@andypf/json-viewer/dist/esm/react/JsonViewer"
 
 // use the component in your app!
-<JsonViewer data={jsonObject} />
+const MyComponent = () => <JsonViewer data={jsonObject} />
+```
+
+Or if you prefer a more customized approach:
+
+```js
+import React from "react"
+import "@andypf/json-viewer"
+
+const JsonViewer = ({ data, ...props }) => {
+  const ref = React.useRef(null)
+
+  React.useEffect(() => {
+    if (ref.current) {
+      ref.current.data = data
+    }
+  }, [data])
+  return <json-viewer ref={ref} {...props} />
+}
+
+export default JsonViewer
 ```
 
 ## Options
