@@ -1,6 +1,6 @@
 {
   "name": "@andypf/json-viewer",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "A javascript library to visualize json nicely",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -17,6 +17,7 @@
   },
   "author": "Andreas Pfau",
   "license": "MIT",
+  "packedSize": 32.3,
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
