@@ -2,6 +2,9 @@
 
 **json-viewer** is a modern JavaScript-based JSON data visualization tool designed with cutting-edge web technologies, including Web Components and Shadow DOM. This versatile tool empowers you to elegantly and attractively present JSON data within your web browser. It's well-suited for use in standalone web applications and seamlessly integrates with popular frameworks like React.
 
+The packed size of this project is approximately **32.3KB**.
+Please note that half of this size is dedicated to the predefined themes, allowing for rich visual customization.
+
 ![Demo Dark](doc/jsonViewer.png)
 
 ![Demo Light](doc/jsonViewer_light.png)
