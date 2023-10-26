@@ -1,6 +1,6 @@
 {
   "name": "@andypf/json-viewer",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "A javascript library to visualize json nicely",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -8,7 +8,17 @@
     "json",
     "browser",
     "pretty",
-    "react"
+    "react",
+    "JSON",
+    "viewer",
+    "visualization",
+    "web",
+    "js",
+    "javascript",
+    "shadow",
+    "component",
+    "fast",
+    "small"
   ],
   "scripts": {
     "test": "jest",
