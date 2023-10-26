@@ -133,7 +133,7 @@ import React from "react"
 import JsonViewer from "json-viewer/react/JsonViewer"
 
 // use the component in your app!
-;<JsonViewer data={jsonObject} />
+<JsonViewer data={jsonObject} />
 ```
 
 ## Options

@@ -5,14 +5,27 @@ body {
 .input-element {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   margin-bottom: 15px;
 }
 .input-element label {
   margin-bottom: 5px;
 }
 
-h1.title {
+.title {
+  padding: 10px;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title h1 {
   color: #333333;
+}
+.title .slogan {
+  color: #e8772e;
+  margin-top: -20px;
+  font-size: small;
 }
 
 select,
@@ -23,7 +36,7 @@ input {
 }
 form.options {
   padding: 10px;
-  min-width: 400px;
+  min-width: 300px;
 }
 
 .display {
@@ -44,8 +57,8 @@ form.options {
 .switch {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 34px;
+  width: 54px;
+  height: 28px;
 }
 
 /* Hide default HTML checkbox */
@@ -71,8 +84,8 @@ form.options {
 .slider:before {
   position: absolute;
   content: "";
-  height: 26px;
-  width: 26px;
+  height: 20px;
+  width: 20px;
   left: 4px;
   bottom: 4px;
   background-color: white;
@@ -81,11 +94,11 @@ form.options {
 }
 
 input:checked + .slider {
-  background-color: #50a14f;
+  background-color: #e8772e;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #50a14f;
+  box-shadow: 0 0 1px #e8772e;
 }
 
 input:checked + .slider:before {
@@ -96,7 +109,7 @@ input:checked + .slider:before {
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+  border-radius: 28px;
 }
 
 .slider.round:before {
