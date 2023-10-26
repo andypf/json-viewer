@@ -78,6 +78,13 @@ if (isProduction) {
     outdir: `dist/cjs/`,
     format: "cjs",
   })
+
+  // IIFE
+  await esbuild.build({
+    ...prodOptions,
+    outdir: `dist/iife/`,
+    format: "iife",
+  })
 }
 
 // Themse
