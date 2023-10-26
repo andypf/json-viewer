@@ -6,6 +6,10 @@
 
 ![Demo Light](doc/jsonViewer_light.png)
 
+## Demo
+
+For a live demonstration of **json-viewer**, please visit our [demo](https://pfau-software.de/json-viewer/demo/).
+
 ## Inspired by react-json-view
 
 **json-viewer** is inspired by the functionality and user-friendliness of [react-json-view](https://github.com/mac-s-g/react-json-view). However, our mission was to make this feature-rich visualization tool accessible beyond the confines of React. We've taken the best ideas from react-json-view and implemented them in **json-viewer** to cater to a broader audience.
@@ -310,10 +314,6 @@ Example:
   "--base0F": "#D73C9A"
 }
 ```
-
-## Demo
-
-For a live demonstration of **json-viewer**, please visit our [demo](http://json-viewer.ws.pfau/).
 
 ## License
 
