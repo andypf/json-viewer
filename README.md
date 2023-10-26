@@ -48,7 +48,7 @@ To use **json-viewer** in your web application, load json-viewer.js and embed yo
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="json-viewer.js"></script>
+    <script src="https://pfau-software.de/json-viewer/demo/build/index.js"></script>
   </head>
   <body>
     <json-viewer>{"name": "Helmut"}</json-viewer>

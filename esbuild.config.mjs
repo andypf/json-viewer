@@ -20,7 +20,7 @@ const args = process.argv.slice(2).reduce((map, item) => {
   return map
 }, {})
 
-await rmSync("docs/build", { recursive: true, force: true })
+await rmSync("demo/build", { recursive: true, force: true })
 await rmSync("dist", { recursive: true, force: true })
 
 let cssPlugin = {
@@ -84,14 +84,14 @@ if (isProduction) {
 await esbuild.build({
   ...options,
   entryPoints: ["src/themes.js"],
-  outfile: `docs/build/themes.js`,
+  outfile: `demo/build/themes.js`,
   format: "esm",
 })
 
 let ctx = await esbuild.context({
   ...options,
   entryPoints: ["src/index.js"],
-  outfile: `docs/build/index.js`,
+  outfile: `demo/build/index.js`,
   format: "iife",
   plugins: [
     cssPlugin,
@@ -110,7 +110,7 @@ let ctx = await esbuild.context({
 
 if (args.watch) {
   let { host, port } = await ctx.serve({
-    servedir: "./docs",
+    servedir: "./demo",
     host: "0.0.0.0",
     port: parseInt(process.env.PORT || 3000),
   })
