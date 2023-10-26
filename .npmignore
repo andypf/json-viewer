@@ -2,3 +2,6 @@ src
 demo
 docker
 tests
+babel.config.js
+esbuild.config.mjs
+jest.config.js
