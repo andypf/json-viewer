@@ -1,0 +1,142 @@
+body {
+  font-family: sans-serif;
+}
+
+.input-element {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+.input-element label {
+  margin-bottom: 5px;
+}
+
+.title {
+  padding: 10px;
+  display:flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title h1 {
+  color: #333333;
+}
+.title .slogan {
+  color: #e8772e;
+  margin-top: -20px;
+  font-size: small;
+}
+
+select,
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+form.options {
+  padding: 10px;
+  min-width: 300px;
+}
+
+.display {
+  flex-grow: 1;
+}
+
+.options-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+  height: 28px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #e8772e;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #e8772e;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 28px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+pre.html-code {
+  background-color: #f5f5f5;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  overflow: auto;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none;
+}
+
+pre.html-code code {
+  display: block;
+  white-space: pre;
+  color: #333;
+}
+
+.source-code {
+  width: 100%;
+  height: 400px;
+}

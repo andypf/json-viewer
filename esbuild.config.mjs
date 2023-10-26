@@ -1,43 +1,122 @@
-import * as esbuild from "esbuild";
+import * as esbuild from "esbuild"
+import { rmSync, readFileSync } from "node:fs"
+import { resolve } from "node:path"
+import postcss from "postcss"
+import postcssMinify from "postcss-minify"
 
+// helpers for console log
+const green = "\x1b[32m%s\x1b[0m"
+const yellow = "\x1b[33m%s\x1b[0m"
+const clear = "\x1B[2J"
+
+const isProduction = process.env.NODE_ENV === "production"
 const args = process.argv.slice(2).reduce((map, item) => {
   if (item.startsWith("--")) {
-    const [name, value] = item.replace(/^-+/, "").split("=");
-    map[name] = value || true;
+    let [name, value] = item.replace(/^-+/, "").split("=")
+    if (value === "true") value = true
+    else if (value === "false") value = false
+    map[name] = value || true
   }
-  return map;
-}, {});
+  return map
+}, {})
 
-console.log(args);
+await rmSync("public/build", { recursive: true, force: true })
+await rmSync("dist", { recursive: true, force: true })
 
+let cssPlugin = {
+  name: "minify-css",
+  setup(build) {
+    build.onResolve({ filter: /^.*\.css$/ }, (args) => {
+      return {
+        path: resolve(args.resolveDir, args.path),
+        namespace: "minify-css",
+      }
+    })
+
+    build.onLoad({ filter: /.*/, namespace: "minify-css" }, async (args) => {
+      const source = readFileSync(args.path, "utf-8")
+      const css = await postcss(postcssMinify())
+        .process(source, { from: undefined })
+        .then((result) => result.css)
+
+      return {
+        contents: css,
+        loader: "text",
+      }
+    })
+  },
+}
+// default options
 const options = {
-  entryPoints: ["src/index.js"],
+  external: ["react"],
   bundle: true,
-  watch: true,
-};
+  minify: isProduction,
+  loader: {
+    ".css": "text",
+  },
+  plugins: [cssPlugin],
+}
 
+if (isProduction) {
+  const prodOptions = {
+    ...options,
+    entryPoints: {
+      index: "src/index.js",
+      "react/JsonViewer": "src/react/JsonViewer.jsx",
+    },
+  }
+  // ESM
+  await esbuild.build({
+    ...prodOptions,
+    outdir: `dist/esm/`,
+    format: "esm",
+  })
+
+  // CommonJS
+  await esbuild.build({
+    ...prodOptions,
+    outdir: `dist/cjs/`,
+    format: "cjs",
+  })
+}
+
+// Themse
 await esbuild.build({
   ...options,
-  outfile: "dist/esm/index.mjs",
+  entryPoints: ["src/themes.js"],
+  outfile: `public/build/themes.js`,
   format: "esm",
-});
-
-await esbuild.build({
-  ...options,
-  outfile: "dist/iife/index.js",
-  format: "iife",
-});
+})
 
 let ctx = await esbuild.context({
   ...options,
-  outfile: "dist/iife/index.js",
+  entryPoints: ["src/index.js"],
+  outfile: `public/build/index.js`,
   format: "iife",
-});
+  plugins: [
+    cssPlugin,
+    {
+      name: "start/end",
+      setup(build) {
+        build.onStart(() => {
+          console.log(clear)
+          console.log(yellow, "Compiling...")
+        })
+        build.onEnd(() => console.log(green, "Done!"))
+      },
+    },
+  ],
+})
 
-let { host, port } = await ctx.serve({
-  servedir: ".",
-  host: "0.0.0.0",
-  port: 3000,
-});
+if (args.watch) {
+  let { host, port } = await ctx.serve({
+    servedir: "./public",
+    host: "0.0.0.0",
+    port: parseInt(process.env.PORT || 3000),
+  })
 
-console.log("server on " + host + ":" + port);
+  console.log("server on " + host + ":" + port)
+} else {
+  await ctx.rebuild()
+  await ctx.dispose()
+}
