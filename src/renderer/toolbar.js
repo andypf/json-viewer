@@ -94,9 +94,7 @@ const Toolbar = function ({
     infoIcon.classList.toggle("active")
     this.showDetails = !this.showDetails
     onChange({
-      showCopy: this.showDetails,
-      showDataTypes: this.showDetails,
-      showSize: this.showDetails,
+      showDetails: this.showDetails,
     })
   }
   infoIconWrapper.appendChild(infoIcon)

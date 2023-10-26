@@ -97,13 +97,6 @@ describe("Container", () => {
     expect(spy).toHaveBeenCalledTimes(1)
   })
 
-  // it("should update displayed data if expanded changes to true", () => {
-  //   let root = document.createElement("div")
-  //   const renderer = new Container(root)
-  //   renderer.update({ data: { name: "John" } })
-  //   expect(root.children[0].children[0].textContent).toBe("name: John")
-  // })
-
   it("should add the class 'show-copy'", () => {
     let root = document.createElement("div")
     const renderer = new Container(root)
@@ -159,5 +152,40 @@ describe("Container", () => {
     expect(root.children[0].classList.contains("expand-icon-csquare")).toBe(
       false
     )
+  })
+  it("should render the toolbar node", () => {
+    let root = document.createElement("div")
+    const renderer = new Container(root)
+    renderer.update({ showToolbar: true })
+    expect(root.querySelector(".toolbar")).not.toBe(null)
+  })
+  it("should toggle the toolbar node", () => {
+    let root = document.createElement("div")
+    const renderer = new Container(root)
+    renderer.update({ showToolbar: true })
+    renderer.update({ showToolbar: false })
+    expect(root.querySelector(".toolbar")).toBe(null)
+  })
+  it("should toggle showCopy, showDataTypes, showSize when clicking on show details icon in toolbar", () => {
+    let root = document.createElement("div")
+    const renderer = new Container(root)
+    renderer.update({
+      showToolbar: true,
+    })
+    const toolbar = root.querySelector(".toolbar")
+    const showDetails = toolbar.querySelector(".icon.info")
+    const spy = jest.spyOn(renderer, "update")
+    showDetails.click()
+    expect(spy).toHaveBeenCalledWith({
+      showCopy: false,
+      showDataTypes: false,
+      showSize: false,
+    })
+    showDetails.click()
+    expect(spy).toHaveBeenCalledWith({
+      showCopy: true,
+      showDataTypes: true,
+      showSize: true,
+    })
   })
 })

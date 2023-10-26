@@ -10,7 +10,7 @@ function Container(root, options = {}) {
 
   const cache = {}
 
-  const update = ({
+  this.update = ({
     data,
     expanded,
     indent,
@@ -52,7 +52,16 @@ function Container(root, options = {}) {
           toolbar = new Toolbar({
             expanded: cache.expanded,
             indent: cache.indent,
-            onChange: update,
+            onChange: ({ expanded, indent, showDetails }) => {
+              const options = { expanded, indent }
+              if (showDetails !== undefined) {
+                options.showCopy = showDetails
+                options.showSize = showDetails
+                options.showDataTypes = showDetails
+              }
+
+              this.update(options)
+            },
             onSearch: (searchTerm) => {
               if (dataRow) dataRow.update({ searchTerm })
             },
@@ -106,10 +115,7 @@ function Container(root, options = {}) {
     }
   }
 
-  update(options)
-
-  // make update function public
-  this.update = update
+  this.update(options)
 }
 
 export default Container

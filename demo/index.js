@@ -174,6 +174,7 @@ sourceCode.addEventListener("input", function () {
     const newData = JSON.parse(this.value)
     jsonViewer.data = newData
     jsonViewer.expanded = true
+    updateOutput()
   } catch (e) {
     console.warn(e)
   }

@@ -94,10 +94,10 @@ const DataRow = function ({
 
     // ITEMS SIZE
     const itemsSize = document.createElement("span")
-    itemsSize.className = "items-size"
-    itemsSize.textContent = `${
+    const length =
       thisDataType === "array" ? value.length : Object.keys(value).length
-    } items`
+    itemsSize.className = "items-size"
+    itemsSize.textContent = `${length} item${length === 1 ? "" : "s"}`
     keyValueWrapper.appendChild(itemsSize)
 
     // CHILDREN ROWS
@@ -131,13 +131,13 @@ const DataRow = function ({
     if (!["nan", "NaN", "undefined", "null"].includes(thisDataType)) {
       valueType = document.createElement("span")
       valueType.className = `type`
-      valueType.innerText = thisDataType.toLowerCase()
+      valueType.textContent = thisDataType.toLowerCase()
     }
 
     const valueWrapper = document.createElement("span")
     valueWrapper.className = `value ${thisDataType.toLowerCase()}`
     valueEl = document.createElement("span")
-    valueEl.innerText = thisDataType === "string" ? `"${value}"` : value
+    valueEl.textContent = thisDataType === "string" ? `"${value}"` : value
     if (valueType) valueWrapper.appendChild(valueType)
     valueWrapper.appendChild(valueEl)
     keyValueWrapper.appendChild(valueWrapper)
@@ -163,7 +163,10 @@ const DataRow = function ({
       // remove any existing matches
       keyEl.innerHTML = keyString
 
-      const keyIndex = keyString.indexOf(searchTerm)
+      const keyIndex =
+        searchTerm === null || searchTerm === undefined || searchTerm === ""
+          ? -1
+          : keyString.indexOf(searchTerm)
 
       if (keyIndex > -1) {
         keyEl.innerHTML =
@@ -179,7 +182,11 @@ const DataRow = function ({
       // remove any existing matches
       valueEl.innerHTML = valueString
 
-      const valueIndex = valueString.indexOf(searchTerm)
+      const valueIndex =
+        searchTerm === null || searchTerm === undefined || searchTerm === ""
+          ? -1
+          : valueString.indexOf(searchTerm)
+
       if (valueIndex > -1) {
         valueEl.innerHTML =
           valueString.slice(0, valueIndex) +
