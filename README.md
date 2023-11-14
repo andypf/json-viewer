@@ -1,5 +1,7 @@
 # json-viewer
 
+![Size](https://img.shields.io/badge/size-32.3KB-green.svg) [![License](https://img.shields.io/npm/l/%40andypf%2Fjson-viewer?color=yellow)](https://github.com/andypf/json-viewer/blob/main/LICENSE.md) ![Coverage Status](https://img.shields.io/badge/coverage-88.5%25-orange.svg) [![Version](https://img.shields.io/npm/v/%40andypf%2Fjson-viewer)](https://github.com/andypf/json-viewer/blob/main/LICENSE.md) ![Tools](https://img.shields.io/badge/tools-Shadow_DOM%2C_Web_Component%2C_React-red)
+
 **json-viewer** is a modern JavaScript-based JSON data visualization tool designed with cutting-edge web technologies, including Web Components and Shadow DOM. This versatile tool empowers you to elegantly and attractively present JSON data within your web browser. It's well-suited for use in standalone web applications and seamlessly integrates with popular frameworks like React.
 
 The packed size of this project is approximately **32.3KB**.
@@ -52,7 +54,7 @@ Now, you're ready to use it as a custom HTML tag within your web application:
 To use **json-viewer** in your web application, load json-viewer.js and embed your JSON object within an HTML element of your choice and initialize **json-viewer** as follows:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <script src="https://pfau-software.de/json-viewer/dist/iife/index.js"></script>
