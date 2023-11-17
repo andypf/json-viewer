@@ -8,6 +8,7 @@ const DataRow = function ({
   searchTerm,
   onToggleExpand,
   level = 0,
+  parentRow,
 }) {
   const row = document.createElement("div")
   this.maxLevel = level
@@ -29,6 +30,7 @@ const DataRow = function ({
 
   const toggleExpand = () => {
     row.classList.toggle("expanded")
+
     if (onToggleExpand) {
       if (row.classList.contains("expanded")) {
         onToggleExpand(level + 1)
@@ -113,6 +115,7 @@ const DataRow = function ({
         indent,
         onToggleExpand,
         level: level + 1,
+        parentRow: row,
       })
       childrenRows.push(subRow)
       row.appendChild(subRow.element)
@@ -158,43 +161,43 @@ const DataRow = function ({
 
   // this function highlights the search term
   const search = (searchTerm) => {
-    if (keyEl) {
-      const keyString = keyEl.textContent
-      // remove any existing matches
-      keyEl.innerHTML = keyString
+    // create a regular expression from the search term
+    const regex = new RegExp(searchTerm, "gi")
+    // initialize an array of elements to search
+    const searchElements = []
+    // add the key and value elements to the array if they exist
+    if (keyEl) searchElements.push(keyEl)
+    if (valueEl) searchElements.push(valueEl)
 
-      const keyIndex =
-        searchTerm === null || searchTerm === undefined || searchTerm === ""
-          ? -1
-          : keyString.indexOf(searchTerm)
+    let found = false
+    // loop through the elements and highlight the matches
+    searchElements.forEach((el) => {
+      const string = el.textContent
+      // remove any existing matches (RESETTING THE OLD SEARCH)
+      el.innerHTML = string
 
-      if (keyIndex > -1) {
-        keyEl.innerHTML =
-          keyString.slice(0, keyIndex) +
-          `<span class="match">${keyString.slice(
-            keyIndex,
-            keyIndex + searchTerm.length
-          )}</span>${keyString.slice(keyIndex + searchTerm.length)}`
-      }
-    }
-    if (valueEl) {
-      const valueString = valueEl.textContent
-      // remove any existing matches
-      valueEl.innerHTML = valueString
+      // if the search term is empty, return
+      if (!searchTerm || searchTerm === "") return
+      // find all the indexes of the search term in the string
+      const indexes = [...string.matchAll(regex)].map((m) => m.index)
+      // if there are matches, expand the row
+      const newHtml = []
+      let lastIndex = 0
+      indexes.forEach((index) => {
+        found = true
+        newHtml.push(string.slice(lastIndex, index))
+        newHtml.push(`<span class="match">${searchTerm}</span>`)
+        lastIndex = index + searchTerm.length
+      })
+      newHtml.push(string.slice(lastIndex))
+      el.innerHTML = newHtml.join("")
+    })
 
-      const valueIndex =
-        searchTerm === null || searchTerm === undefined || searchTerm === ""
-          ? -1
-          : valueString.indexOf(searchTerm)
-
-      if (valueIndex > -1) {
-        valueEl.innerHTML =
-          valueString.slice(0, valueIndex) +
-          `<span class="match">${valueString.slice(
-            valueIndex,
-            valueIndex + searchTerm.length
-          )}</span>${valueString.slice(valueIndex + searchTerm.length)}`
-      }
+    // if the search term was found, expand the row
+    if (found && !row.classList.contains("expanded")) {
+      toggleExpand()
+      // if the row has a parent, expand it too
+      if (parentRow) parentRow.classList.add("expanded")
     }
   }
 
