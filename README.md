@@ -46,7 +46,7 @@ import "@andypf/json-viewer"
 Now, you're ready to use it as a custom HTML tag within your web application:
 
 ```html
-<json-viewer data='{"test": "Hello World"}'></json-viewer>
+<andypf-json-viewer data='{"test": "Hello World"}'></andypf-json-viewer>
 ```
 
 ### Browser Integration
@@ -54,13 +54,13 @@ Now, you're ready to use it as a custom HTML tag within your web application:
 To use **json-viewer** in your web application, load json-viewer.js and embed your JSON object within an HTML element of your choice and initialize **json-viewer** as follows:
 
 ```html
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
     <script src="https://pfau-software.de/json-viewer/dist/iife/index.js"></script>
   </head>
   <body>
-    <json-viewer>{"name": "Helmut"}</json-viewer>
+    <andypf-json-viewer>{"name": "Helmut"}</andypf-json-viewer>
   </body>
 </html>
 ```
@@ -72,7 +72,7 @@ To use **json-viewer** in your web application, load json-viewer.js and embed yo
 To include the "json-viewer" element in your HTML, you can pass options as attributes:
 
 ```html
-<json-viewer
+<andypf-json-viewer
   indent="2"
   expanded="true"
   theme="default-light"
@@ -82,13 +82,13 @@ To include the "json-viewer" element in your HTML, you can pass options as attri
   show-copy="true"
   show-size="true"
   data='{"example": "data"}'
-></json-viewer>
+></andypf-json-viewer>
 ```
 
 You can also provide the `data` option as the content of the "json-viewer" element:
 
 ```html
-<json-viewer
+<andypf-json-viewer
   indent="2"
   expanded="true"
   theme="default-light"
@@ -101,18 +101,18 @@ You can also provide the `data` option as the content of the "json-viewer" eleme
   { "string": "this is a test ...", "integer": 42, "array":[ 1, 2, 3, "test",
   NaN], "float":3.14159, "string_number":"1234", "date": "Tue, Oct 17, 2023,
   08:58 AM" }
-</json-viewer>
+</andypf-json-viewer>
 ```
 
 You can also provide a URL to a JSON file as the 'data':
 
 ```html
-<json-viewer
+<andypf-json-viewer
   data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"
   theme="monokai"
   expanded="2"
   show-toolbar="true"
-></json-viewer>
+></andypf-json-viewer>
 ```
 
 ### Using JavaScript API
@@ -120,7 +120,7 @@ You can also provide a URL to a JSON file as the 'data':
 If you prefer JavaScript, you can set the options programmatically:
 
 ```javascript
-const jsonViewer = document.getElementById("json-viewer")
+const jsonViewer = document.createElement("andypf-json-viewer")
 jsonViewer.id = "json"
 jsonViewer.expanded = 2
 jsonViewer.indent = 2
@@ -159,7 +159,7 @@ const JsonViewer = ({ data, ...props }) => {
       ref.current.data = data
     }
   }, [data])
-  return <json-viewer ref={ref} {...props} />
+  return <andypf-json-viewer ref={ref} {...props} />
 }
 
 export default JsonViewer

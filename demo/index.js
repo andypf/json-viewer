@@ -7,7 +7,7 @@ const defaultShowSize = true
 const defaultShowCopy = true
 const defaultExpandIconType = "square"
 
-const jsonViewer = document.getElementById("json-viewer")
+const jsonViewer = document.getElementById("andypf-json-viewer")
 jsonViewer.id = "json"
 jsonViewer.expanded = defaultExpanded
 jsonViewer.indent = defaultIndent
@@ -43,7 +43,7 @@ const updateOutput = () => {
     json.object.strings.veryLong =
       json?.object.strings.veryLong.slice(0, 50) + "..."
   output.innerText = `
-<json-viewer 
+<andypf-json-viewer 
   ${Object.keys(jsonViewer.options)
     .filter((k) => k !== "data")
     .map(
@@ -54,7 +54,7 @@ const updateOutput = () => {
     )
     .join("\n  ")}>
 ${JSON.stringify(json, null, 2)}
-</json-viewer>`
+</andypf-json-viewer>`
 }
 
 // select theme

@@ -9,7 +9,7 @@ const JsonViewer = ({ data, ...props }) => {
       ref.current.data = data
     }
   }, [data])
-  return <json-viewer ref={ref} {...props} />
+  return <andypf-json-viewer ref={ref} {...props} />
 }
 
 export default JsonViewer

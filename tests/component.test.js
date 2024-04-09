@@ -4,28 +4,28 @@ globalThis.console.warn = jest.fn()
 
 describe("JsonViewer", () => {
   it("should be defined", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     expect(jsonViewer).toBeDefined()
   })
 
   it("should contain shadow root", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     expect(jsonViewer.shadowRoot).toBeDefined()
   })
 
   it("should contain styles", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     expect(jsonViewer.shadowRoot.querySelector("style")).toBeDefined()
   })
 
   it("should set theme", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.theme = "default-light"
     expect(jsonViewer.options.theme).toEqual("default-light")
   })
 
   it("should log warning for invalid theme", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.theme = "test"
     expect(jsonViewer.options.theme).not.toEqual("test")
     expect(console.warn).toHaveBeenCalledWith(
@@ -35,17 +35,17 @@ describe("JsonViewer", () => {
   })
 
   it("should set indent", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.indent = 4
     expect(jsonViewer.options.indent).toEqual(4)
   })
   it("should set indent as string", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.indent = "4"
     expect(jsonViewer.options.indent).toEqual(4)
   })
   it("should warn for invalid indent", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.indent = "test"
     expect(jsonViewer.options.indent).not.toEqual("test")
     expect(console.warn).toHaveBeenCalledWith(
@@ -55,29 +55,29 @@ describe("JsonViewer", () => {
   })
 
   it("should set expanded as number", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expanded = 2
     expect(jsonViewer.options.expanded).toEqual(2)
   })
 
   it("should set expanded as boolean", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expanded = true
     expect(jsonViewer.options.expanded).toEqual(true)
   })
   it("should set expanded number as string", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expanded = "2"
     expect(jsonViewer.options.expanded).toEqual(2)
   })
   it("should set expanded boolean as string", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expanded = "true"
     expect(jsonViewer.options.expanded).toEqual(true)
   })
 
   it("should warn for invalid expanded", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expanded = "test"
     expect(jsonViewer.options.expanded).not.toEqual("test")
     expect(console.warn).toHaveBeenCalledWith(
@@ -87,17 +87,17 @@ describe("JsonViewer", () => {
   })
 
   it("should set showDataTypes", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showDataTypes = false
     expect(jsonViewer.options.showDataTypes).toEqual(false)
   })
   it("should set showDataTypes as string", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showDataTypes = "false"
     expect(jsonViewer.options.showDataTypes).toEqual(false)
   })
   it("should warn for invalid showDataTypes", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showDataTypes = "test"
     expect(jsonViewer.options.showDataTypes).not.toEqual("test")
     expect(console.warn).toHaveBeenCalledWith(
@@ -107,17 +107,17 @@ describe("JsonViewer", () => {
   })
 
   // it("should set showToolbar", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.showToolbar = true
   //   expect(jsonViewer.options.showToolbar).toEqual(true)
   // })
   // it("should set showToolbar as string", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.showToolbar = "true"
   //   expect(jsonViewer.options.showToolbar).toEqual(true)
   // })
   // it("should warn for invalid showToolbar", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.showToolbar = "test"
   //   expect(jsonViewer.options.showToolbar).not.toEqual("test")
   //   expect(console.warn).toHaveBeenCalledWith(
@@ -127,12 +127,12 @@ describe("JsonViewer", () => {
   // })
 
   it("should set expandIconType", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expandIconType = "arrow"
     expect(jsonViewer.options.expandIconType).toEqual("arrow")
   })
   it("should warn for invalid expandIconType", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expandIconType = "test"
     expect(jsonViewer.options.expandIconType).not.toEqual("test")
     expect(console.warn).toHaveBeenCalledWith(
@@ -142,19 +142,19 @@ describe("JsonViewer", () => {
   })
 
   it("should set showCopy", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showCopy = false
     expect(jsonViewer.options.showCopy).toEqual(false)
   })
 
   it("should set showCopy as string", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showCopy = "false"
     expect(jsonViewer.options.showCopy).toEqual(false)
   })
 
   it("should warn for invalid showCopy", () => {
-    const jsonViewer = document.createElement("json-viewer")
+    const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showCopy = "test"
     expect(jsonViewer.options.showCopy).not.toEqual("test")
     expect(console.warn).toHaveBeenCalledWith(
@@ -164,23 +164,23 @@ describe("JsonViewer", () => {
   })
 
   // it("should contain container div", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   expect(jsonViewer.shadowRoot.querySelector("div.container")).toBeDefined()
   // })
 
   // it("should not contain key element", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   expect(jsonViewer.shadowRoot.querySelector("span.key")).toBeNull()
   // })
   // it("should contain key element", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   expect(
   //     jsonViewer.shadowRoot.querySelector("span.key").textContent
   //   ).toContain("name")
   // })
   // it("should contain value element", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   expect(
   //     jsonViewer.shadowRoot.querySelector("span.value").textContent
@@ -188,14 +188,14 @@ describe("JsonViewer", () => {
   // })
 
   // it("should contain 1 expand icon", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   expect(
   //     jsonViewer.shadowRoot.querySelectorAll("span.icon.expand").length
   //   ).toEqual(1)
   // })
   // it("should contain 2 expand icons", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test", sub: ["test"] }
   //   expect(
   //     jsonViewer.shadowRoot.querySelectorAll("span.icon.expand").length
@@ -203,7 +203,7 @@ describe("JsonViewer", () => {
   // })
 
   // it("should contain 0 expanded icons", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test", sub: ["test"] }
   //   jsonViewer.expanded = 0
   //   expect(
@@ -211,7 +211,7 @@ describe("JsonViewer", () => {
   //   ).toEqual(0)
   // })
   // it("should contain 1 expanded icon", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test", sub: ["test"] }
   //   jsonViewer.expanded = 1
   //   expect(
@@ -219,7 +219,7 @@ describe("JsonViewer", () => {
   //   ).toEqual(1)
   // })
   // it("should contain 2 expanded icons", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test", sub: ["test"] }
   //   jsonViewer.expanded = 2
   //   expect(
@@ -228,7 +228,7 @@ describe("JsonViewer", () => {
   // })
 
   // it("should contain show-copy", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   jsonViewer.showCopy = true
   //   expect(
@@ -236,7 +236,7 @@ describe("JsonViewer", () => {
   //   ).toEqual(1)
   // })
   // it("should not contain show-copy", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   jsonViewer.showCopy = false
   //   expect(
@@ -244,7 +244,7 @@ describe("JsonViewer", () => {
   //   ).toEqual(0)
   // })
   // it("should contain show-data-types", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   jsonViewer.showDataTypes = true
   //   expect(
@@ -253,7 +253,7 @@ describe("JsonViewer", () => {
   //   ).toEqual(1)
   // })
   // it("should not contain show-data-types", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   jsonViewer.showDataTypes = false
   //   expect(
@@ -262,7 +262,7 @@ describe("JsonViewer", () => {
   //   ).toEqual(0)
   // })
   // it("should contain show-size", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   jsonViewer.showSize = true
   //   expect(
@@ -270,7 +270,7 @@ describe("JsonViewer", () => {
   //   ).toEqual(1)
   // })
   // it("should not contain show-size", () => {
-  //   const jsonViewer = document.createElement("json-viewer")
+  //   const jsonViewer = document.createElement("andypf-json-viewer")
   //   jsonViewer.data = { name: "test" }
   //   jsonViewer.showSize = false
   //   expect(
