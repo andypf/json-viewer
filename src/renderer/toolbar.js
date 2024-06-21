@@ -7,7 +7,7 @@ const Toolbar = function ({
 }) {
   this.indent = indent || 2
   this.expanded = typeof expanded === "number" ? expanded : 2
-  this.showDetails = showDetails || true
+  this.showDetails = showDetails !== false
   this.maxExpandLevel = 0
 
   let searchInput
@@ -119,6 +119,14 @@ const Toolbar = function ({
     onSearch("")
   }
 
+  this.updateShowDetails = (value) => {
+    this.showDetails = value
+    if (this.showDetails) {
+      infoIcon.classList.add("active")
+    } else {
+      infoIcon.classList.remove("active")
+    }
+  }
   this.element = toolbar
 }
 

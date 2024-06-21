@@ -98,11 +98,17 @@ function Container(root, options = {}) {
     if (showSize !== undefined && cache.showSize !== showSize) {
       cache.showSize = showSize
       containerElem.classList.toggle("show-size", showSize)
+      if (toolbar) {
+        toolbar.updateShowDetails(cache.showSize || cache.showDataTypes)
+      }
     }
     // SHOW DATA TYPES
     if (showDataTypes !== undefined && cache.showDataTypes !== showDataTypes) {
       cache.showDataTypes = showDataTypes
       containerElem.classList.toggle("show-data-types", showDataTypes)
+      if (toolbar) {
+        toolbar.updateShowDetails(cache.showSize || cache.showDataTypes)
+      }
     }
     // EXPAND ICON TYPE
     if (

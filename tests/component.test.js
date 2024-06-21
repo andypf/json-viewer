@@ -106,26 +106,6 @@ describe("JsonViewer", () => {
     )
   })
 
-  // it("should set showToolbar", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.showToolbar = true
-  //   expect(jsonViewer.options.showToolbar).toEqual(true)
-  // })
-  // it("should set showToolbar as string", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.showToolbar = "true"
-  //   expect(jsonViewer.options.showToolbar).toEqual(true)
-  // })
-  // it("should warn for invalid showToolbar", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.showToolbar = "test"
-  //   expect(jsonViewer.options.showToolbar).not.toEqual("test")
-  //   expect(console.warn).toHaveBeenCalledWith(
-  //     expect.anything(),
-  //     expect.stringContaining("should be a boolean")
-  //   )
-  // })
-
   it("should set expandIconType", () => {
     const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.expandIconType = "arrow"
@@ -163,118 +143,37 @@ describe("JsonViewer", () => {
     )
   })
 
-  // it("should contain container div", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   expect(jsonViewer.shadowRoot.querySelector("div.container")).toBeDefined()
-  // })
+  // It seems that the showDetails button is always in the active state by default,
+  // even when json-viewer is initialized with show-data-types="false" and
+  // show-size="false". In that scenario the button then requires two clicks
+  // before it has the expected toggling effect.
+  it("should not show details if show-data-types and show.size are false", () => {
+    const jsonViewer = document.createElement("andypf-json-viewer")
+    jsonViewer.setAttribute("show-toolbar", "true")
+    jsonViewer.setAttribute("show-data-types", "false")
+    jsonViewer.setAttribute("show-size", "false")
+    expect(
+      jsonViewer.shadowRoot.querySelector(".icon.info").classList
+    ).not.toContain("active")
+  })
 
-  // it("should not contain key element", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   expect(jsonViewer.shadowRoot.querySelector("span.key")).toBeNull()
-  // })
-  // it("should contain key element", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelector("span.key").textContent
-  //   ).toContain("name")
-  // })
-  // it("should contain value element", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelector("span.value").textContent
-  //   ).toContain("test")
-  // })
+  it("should show details if show-data-types is true and show.size is false", () => {
+    const jsonViewer = document.createElement("andypf-json-viewer")
+    jsonViewer.setAttribute("show-toolbar", "true")
+    jsonViewer.setAttribute("show-data-types", "true")
+    jsonViewer.setAttribute("show-size", "false")
+    expect(
+      jsonViewer.shadowRoot.querySelector(".icon.info").classList
+    ).toContain("active")
+  })
 
-  // it("should contain 1 expand icon", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll("span.icon.expand").length
-  //   ).toEqual(1)
-  // })
-  // it("should contain 2 expand icons", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test", sub: ["test"] }
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll("span.icon.expand").length
-  //   ).toEqual(2)
-  // })
-
-  // it("should contain 0 expanded icons", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test", sub: ["test"] }
-  //   jsonViewer.expanded = 0
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll("span.icon.expand.expanded").length
-  //   ).toEqual(0)
-  // })
-  // it("should contain 1 expanded icon", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test", sub: ["test"] }
-  //   jsonViewer.expanded = 1
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll("span.icon.expand.expanded").length
-  //   ).toEqual(1)
-  // })
-  // it("should contain 2 expanded icons", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test", sub: ["test"] }
-  //   jsonViewer.expanded = 2
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll("span.icon.expand.expanded").length
-  //   ).toEqual(2)
-  // })
-
-  // it("should contain show-copy", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   jsonViewer.showCopy = true
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll(".container.show-copy").length
-  //   ).toEqual(1)
-  // })
-  // it("should not contain show-copy", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   jsonViewer.showCopy = false
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll(".container.show-copy").length
-  //   ).toEqual(0)
-  // })
-  // it("should contain show-data-types", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   jsonViewer.showDataTypes = true
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll(".container.show-data-types")
-  //       .length
-  //   ).toEqual(1)
-  // })
-  // it("should not contain show-data-types", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   jsonViewer.showDataTypes = false
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll(".container.show-data-types")
-  //       .length
-  //   ).toEqual(0)
-  // })
-  // it("should contain show-size", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   jsonViewer.showSize = true
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll(".container.show-size").length
-  //   ).toEqual(1)
-  // })
-  // it("should not contain show-size", () => {
-  //   const jsonViewer = document.createElement("andypf-json-viewer")
-  //   jsonViewer.data = { name: "test" }
-  //   jsonViewer.showSize = false
-  //   expect(
-  //     jsonViewer.shadowRoot.querySelectorAll(".container.show-size").length
-  //   ).toEqual(0)
-  // })
+  it("should show details if show-data-types is false and show.size is true", () => {
+    const jsonViewer = document.createElement("andypf-json-viewer")
+    jsonViewer.setAttribute("show-toolbar", "true")
+    jsonViewer.setAttribute("show-data-types", "false")
+    jsonViewer.setAttribute("show-size", "true")
+    expect(
+      jsonViewer.shadowRoot.querySelector(".icon.info").classList
+    ).toContain("active")
+  })
 })
