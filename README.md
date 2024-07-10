@@ -278,46 +278,42 @@ The "theme" option allows you to choose from various themes:
 
 Tailor the visual theme to your preferences by crafting a JSON object with the following properties, based on the 16 fundamental colors outlined in the [Base16 styling](https://github.com/chriskempson/base16/blob/main/styling.md). Please note that not all colors are employed in this project:
 
-- `--base00`: Default Background
-- `--base01` (**unused**): Lighter Background (Reserved for status bars, line numbers, and folding marks)
-- `--base02`: Borders and Background for types NaN, null, and undefined
-- `--base03` (**unused**): Comments, Invisibles, Line Highlighting
-- `--base04`: Item Size
-- `--base05`: Default Foreground, Brackets, and Colons
-- `--base06` (**unused**): Light Foreground (Infrequently used)
-- `--base07`: Keys, Colons, and Brackets
-- `--base08`: Color for NaN
-- `--base09`: Ellipsis and String Values
-- `--base0A`: Regular Expressions and Null Values
-- `--base0B`: Floating-Point Values
-- `--base0C`: Number Keys
-- `--base0D`: Icons, Search Input, Date
-- `--base0E`: Booleans and Expanded Icons
-- `--base0F`: Integers
+- `base00`: Default Background
+- `base01` (**unused**): Lighter Background (Reserved for status bars, line numbers, and folding marks)
+- `base02`: Borders and Background for types NaN, null, and undefined
+- `base03` (**unused**): Comments, Invisibles, Line Highlighting
+- `base04`: Item Size
+- `base05`: Default Foreground, Brackets, and Colons
+- `base06` (**unused**): Light Foreground (Infrequently used)
+- `base07`: Keys, Colons, and Brackets
+- `base08`: Color for NaN
+- `base09`: Ellipsis and String Values
+- `base0A`: Regular Expressions and Null Values
+- `base0B`: Floating-Point Values
+- `base0C`: Number Keys
+- `base0D`: Icons, Search Input, Date
+- `base0E`: Booleans and Expanded Icons
+- `base0F`: Integers
 
 This versatile approach empowers you to create a tailored theme that aligns with your specific UI element requirements, giving you the freedom to fine-tune the visual experience of your JSON viewer.
 
 Example:
 
-```javascript
-{
-  "--base00": "#101112",
-  "--base01": "#1C1E1F",
-  "--base02": "#26282A",
-  "--base03": "#323639",
-  "--base04": "#868A8E",
-  "--base05": "#9DA0A2",
-  "--base06": "#D2D5D7",
-  "--base07": "#F1F2F3",
-  "--base08": "#EF5253",
-  "--base09": "#E66B2B",
-  "--base0A": "#E4B51C",
-  "--base0B": "#7CC844",
-  "--base0C": "#52CBB0",
-  "--base0D": "#33A3DC",
-  "--base0E": "#A363D5",
-  "--base0F": "#D73C9A"
-}
+```html
+<andypf-json-viewer
+  indent="2"
+  expanded="true"
+  show-data-types="true"
+  show-toolbar="false"
+  expand-icon-type="arrow"
+  show-copy="true"
+  show-size="true"
+  theme='{"base00": "gray", "base01": "blue", "base02": "yellow", "base03": "orange", "base04": "red", "base05": "#9DA0A2", "base06": "#D2D5D7", "base07": "#F1F2F3", "base08": "#EF5253", "base09": "#E66B2B", "base0A": "#E4B51C", "base0B": "#7CC844", "base0C": "#52CBB0", "base0D": "#33A3DC", "base0E": "#A363D5", "base0F": "gray"}'
+>
+  {"string": "this is a test ...", "integer": 42, "array":[ 1, 2, 3, "test",
+  "NaN"], "float":3.14159, "string_number":"1234", "date": "Tue, Oct 17, 2023,
+  08:58 AM"}
+</andypf-json-viewer>
 ```
 
 ## License
