@@ -1,10 +1,4 @@
-const Toolbar = function ({
-  expanded,
-  indent,
-  onChange,
-  onSearch,
-  showDetails,
-}) {
+const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails }) {
   this.indent = indent || 2
   this.expanded = typeof expanded === "number" ? expanded : 2
   this.showDetails = showDetails !== false

@@ -20,9 +20,7 @@ describe("validateBoolean", () => {
     expect(validateBoolean("false")).toBe(false)
   })
   it("should throw an error if value is not a boolean", () => {
-    expect(() => validateBoolean("foo")).toThrowErrorMatchingInlineSnapshot(
-      `"should be a boolean!"`
-    )
+    expect(() => validateBoolean("foo")).toThrowErrorMatchingInlineSnapshot(`"should be a boolean!"`)
   })
 })
 
@@ -34,14 +32,10 @@ describe("validatePositiveNumber", () => {
     expect(validatePositiveNumber("1")).toBe(1)
   })
   it("should throw an error if the number is negative", () => {
-    expect(() => validatePositiveNumber(-1)).toThrowErrorMatchingInlineSnapshot(
-      `"should be a positive number!"`
-    )
+    expect(() => validatePositiveNumber(-1)).toThrowErrorMatchingInlineSnapshot(`"should be a positive number!"`)
   })
   it("should throw an error if the number is NaN", () => {
-    expect(() =>
-      validatePositiveNumber("foo")
-    ).toThrowErrorMatchingInlineSnapshot(`"should be a positive number!"`)
+    expect(() => validatePositiveNumber("foo")).toThrowErrorMatchingInlineSnapshot(`"should be a positive number!"`)
   })
 })
 
@@ -65,9 +59,7 @@ describe("validateBooleanOrPositiveNumber", () => {
     expect(validateBooleanOrPositiveNumber("1")).toBe(1)
   })
   it("should throw an error if value is not a boolean or positive number", () => {
-    expect(() =>
-      validateBooleanOrPositiveNumber("foo")
-    ).toThrowErrorMatchingInlineSnapshot(
+    expect(() => validateBooleanOrPositiveNumber("foo")).toThrowErrorMatchingInlineSnapshot(
       `"should be a boolean or a positive number!"`
     )
   })
@@ -87,9 +79,7 @@ describe("validateStringOrJson", () => {
     expect(validateStringOrJson("{foo:bar}")).toEqual("{foo:bar}")
   })
   it("should throw an error if value is not a string or JSON", () => {
-    expect(() => validateStringOrJson(1)).toThrowErrorMatchingInlineSnapshot(
-      `"should be a string or JSON!"`
-    )
+    expect(() => validateStringOrJson(1)).toThrowErrorMatchingInlineSnapshot(`"should be a string or JSON!"`)
   })
 })
 
@@ -98,8 +88,6 @@ describe("validateString", () => {
     expect(validateString("foo")).toEqual("foo")
   })
   it("should throw an error if value is not a string", () => {
-    expect(() => validateString(1)).toThrowErrorMatchingInlineSnapshot(
-      `"should be a string!"`
-    )
+    expect(() => validateString(1)).toThrowErrorMatchingInlineSnapshot(`"should be a string!"`)
   })
 })

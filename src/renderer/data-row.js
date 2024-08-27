@@ -1,15 +1,6 @@
 import { dataType } from "../data-helpers"
 
-const DataRow = function ({
-  key,
-  value,
-  expanded,
-  indent,
-  searchTerm,
-  onToggleExpand,
-  level = 0,
-  parentRow,
-}) {
+const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow }) {
   const row = document.createElement("div")
   this.maxLevel = level
 
@@ -60,9 +51,7 @@ const DataRow = function ({
     // KEY
     const keyDataType = typeof key
     keyEl = document.createElement("span")
-    keyEl.className = `key clickable ${
-      keyDataType === "number" ? "number" : ""
-    }`
+    keyEl.className = `key clickable ${keyDataType === "number" ? "number" : ""}`
     keyEl.textContent = keyDataType === "number" ? key : `"${key}"`
     keyEl.addEventListener("click", () => toggleExpand())
     keyValueWrapper.appendChild(keyEl)
@@ -96,8 +85,7 @@ const DataRow = function ({
 
     // ITEMS SIZE
     const itemsSize = document.createElement("span")
-    const length =
-      thisDataType === "array" ? value.length : Object.keys(value).length
+    const length = thisDataType === "array" ? value.length : Object.keys(value).length
     itemsSize.className = "items-size"
     itemsSize.textContent = `${length} item${length === 1 ? "" : "s"}`
     keyValueWrapper.appendChild(itemsSize)
@@ -105,8 +93,7 @@ const DataRow = function ({
     // CHILDREN ROWS
     childrenRows = []
 
-    const items =
-      thisDataType === "array" ? value.map((v, i) => i) : Object.keys(value)
+    const items = thisDataType === "array" ? value.map((v, i) => i) : Object.keys(value)
     items.forEach((key) => {
       const subRow = new DataRow({
         key,
@@ -125,8 +112,7 @@ const DataRow = function ({
     // EXPANDED CLOSING PARENTHESIS
     const expandedClosingParenthesis = document.createElement("span")
     expandedClosingParenthesis.className = "closing-parenthesis"
-    expandedClosingParenthesis.textContent =
-      thisDataType === "array" ? "]" : "}"
+    expandedClosingParenthesis.textContent = thisDataType === "array" ? "]" : "}"
     row.appendChild(expandedClosingParenthesis)
   } else {
     // VALUE
@@ -217,8 +203,7 @@ const DataRow = function ({
       search(searchTerm)
     }
 
-    if (childrenRows)
-      childrenRows.forEach((r) => r.update({ expanded, indent, searchTerm }))
+    if (childrenRows) childrenRows.forEach((r) => r.update({ expanded, indent, searchTerm }))
   }
 
   this.element = row

@@ -1,23 +1,21 @@
-import { themeStyles, availableThemes } from "../src/themes";
+import { themeStyles, availableThemes } from "../src/themes"
 
 describe("themeStyles", () => {
   it("should return a function", () => {
-    expect(typeof themeStyles).toBe("function");
-  });
+    expect(typeof themeStyles).toBe("function")
+  })
 
   it("should return a function that returns an object", () => {
-    expect(typeof themeStyles(availableThemes[0])).toBe("string");
-  });
+    expect(typeof themeStyles(availableThemes[0])).toBe("string")
+  })
 
   it("should return a string containing .container", () => {
-    expect(themeStyles(availableThemes[0])).toContain(".container");
-  });
+    expect(themeStyles(availableThemes[0])).toContain(".container")
+  })
 
   it("should return a string containing the 16 base colors", () => {
-    expect(themeStyles(availableThemes[0])).toMatch(
-      /--base00.+--base01.+--base02.+--base0F/
-    );
-  });
+    expect(themeStyles(availableThemes[0])).toMatch(/--base00.+--base01.+--base02.+--base0F/)
+  })
 
   it("should return a string for a custom theme object", () => {
     const customTheme = {
@@ -37,10 +35,8 @@ describe("themeStyles", () => {
       base0D: "#DDDDDD",
       base0E: "#EEEEEE",
       base0F: "#FFFFFF",
-    };
+    }
 
-    expect(themeStyles(customTheme)).toMatch(
-      /--base00.+--base01.+--base02.+--base0F/
-    );
-  });
-});
+    expect(themeStyles(customTheme)).toMatch(/--base00.+--base01.+--base02.+--base0F/)
+  })
+})

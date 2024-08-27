@@ -64,9 +64,7 @@ class JsonViewer extends HTMLElement {
   // component attributes
   static get observedAttributes() {
     // convert camelCase to kebab-case
-    return Object.keys(DEFAULT_PARAMS).map((k) =>
-      k.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase()
-    )
+    return Object.keys(DEFAULT_PARAMS).map((k) => k.replace(/([a-z0-9])([A-Z])/g, "$1-$2").toLowerCase())
   }
 
   static allowedAttributes = ["id"].concat(JsonViewer.observedAttributes)
@@ -103,19 +101,11 @@ class JsonViewer extends HTMLElement {
   }
 
   set expandIconType(name) {
-    this.#validateAndUpdate("expandIconType", name, validateString, [
-      "arrow",
-      "square",
-      "circle",
-    ])
+    this.#validateAndUpdate("expandIconType", name, validateString, ["arrow", "square", "circle"])
   }
 
   set expanded(newExpanded) {
-    this.#validateAndUpdate(
-      "expanded",
-      newExpanded,
-      validateBooleanOrPositiveNumber
-    )
+    this.#validateAndUpdate("expanded", newExpanded, validateBooleanOrPositiveNumber)
   }
 
   set showSize(newShowSize) {
@@ -133,11 +123,7 @@ class JsonViewer extends HTMLElement {
     try {
       newTheme = validateStringOrJson(newTheme)
       // do nothing if the theme is the same or theme container is empty
-      if (
-        this.#options.theme === newTheme &&
-        this.#themeStylesContainer.textContent !== ""
-      )
-        return
+      if (this.#options.theme === newTheme && this.#themeStylesContainer.textContent !== "") return
 
       this.#themeStylesContainer.textContent = themeStyles(newTheme)
       this.#options.theme = newTheme

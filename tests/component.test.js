@@ -28,10 +28,7 @@ describe("JsonViewer", () => {
     const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.theme = "test"
     expect(jsonViewer.options.theme).not.toEqual("test")
-    expect(console.warn).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.stringContaining("test not found")
-    )
+    expect(console.warn).toHaveBeenCalledWith(expect.anything(), expect.stringContaining("test not found"))
   })
 
   it("should set indent", () => {
@@ -48,10 +45,7 @@ describe("JsonViewer", () => {
     const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.indent = "test"
     expect(jsonViewer.options.indent).not.toEqual("test")
-    expect(console.warn).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.stringContaining("should be a positive number")
-    )
+    expect(console.warn).toHaveBeenCalledWith(expect.anything(), expect.stringContaining("should be a positive number"))
   })
 
   it("should set expanded as number", () => {
@@ -100,10 +94,7 @@ describe("JsonViewer", () => {
     const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showDataTypes = "test"
     expect(jsonViewer.options.showDataTypes).not.toEqual("test")
-    expect(console.warn).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.stringContaining("should be a boolean")
-    )
+    expect(console.warn).toHaveBeenCalledWith(expect.anything(), expect.stringContaining("should be a boolean"))
   })
 
   it("should set expandIconType", () => {
@@ -137,10 +128,7 @@ describe("JsonViewer", () => {
     const jsonViewer = document.createElement("andypf-json-viewer")
     jsonViewer.showCopy = "test"
     expect(jsonViewer.options.showCopy).not.toEqual("test")
-    expect(console.warn).toHaveBeenCalledWith(
-      expect.anything(),
-      expect.stringContaining("should be a boolean")
-    )
+    expect(console.warn).toHaveBeenCalledWith(expect.anything(), expect.stringContaining("should be a boolean"))
   })
 
   // It seems that the showDetails button is always in the active state by default,
@@ -152,9 +140,7 @@ describe("JsonViewer", () => {
     jsonViewer.setAttribute("show-toolbar", "true")
     jsonViewer.setAttribute("show-data-types", "false")
     jsonViewer.setAttribute("show-size", "false")
-    expect(
-      jsonViewer.shadowRoot.querySelector(".icon.info").classList
-    ).not.toContain("active")
+    expect(jsonViewer.shadowRoot.querySelector(".icon.info").classList).not.toContain("active")
   })
 
   it("should show details if show-data-types is true and show.size is false", () => {
@@ -162,9 +148,7 @@ describe("JsonViewer", () => {
     jsonViewer.setAttribute("show-toolbar", "true")
     jsonViewer.setAttribute("show-data-types", "true")
     jsonViewer.setAttribute("show-size", "false")
-    expect(
-      jsonViewer.shadowRoot.querySelector(".icon.info").classList
-    ).toContain("active")
+    expect(jsonViewer.shadowRoot.querySelector(".icon.info").classList).toContain("active")
   })
 
   it("should show details if show-data-types is false and show.size is true", () => {
@@ -172,8 +156,6 @@ describe("JsonViewer", () => {
     jsonViewer.setAttribute("show-toolbar", "true")
     jsonViewer.setAttribute("show-data-types", "false")
     jsonViewer.setAttribute("show-size", "true")
-    expect(
-      jsonViewer.shadowRoot.querySelector(".icon.info").classList
-    ).toContain("active")
+    expect(jsonViewer.shadowRoot.querySelector(".icon.info").classList).toContain("active")
   })
 })

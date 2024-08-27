@@ -21,10 +21,6 @@ describe("DataRow", () => {
     const row = new DataRow({ expanded: true })
     expect(row.element.querySelector(".expand")).toBeDefined()
   })
-  it("should render the expand node", () => {
-    const row = new DataRow({ expanded: true })
-    expect(row.element.querySelector(".expand")).toBeDefined()
-  })
   it("should render same number of row nodes as the data object", () => {
     const row = new DataRow({
       value: { name: "John", subProp: { test: "test" } },
@@ -84,9 +80,7 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    expect(root.querySelectorAll(".data-row")[1].style.paddingLeft).toContain(
-      "5px"
-    )
+    expect(root.querySelectorAll(".data-row")[1].style.paddingLeft).toContain("5px")
   })
   it("should set padding-left to 20px if indent is 4", () => {
     const row = new DataRow({
@@ -95,9 +89,7 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    expect(root.querySelectorAll(".data-row")[1].style.paddingLeft).toContain(
-      "20px"
-    )
+    expect(root.querySelectorAll(".data-row")[1].style.paddingLeft).toContain("20px")
   })
   it("should create a value type node", () => {
     const row = new DataRow({
@@ -105,9 +97,7 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    expect(
-      root.querySelectorAll(".data-row")[1].querySelector(".value .type")
-    ).not.toBeNull()
+    expect(root.querySelectorAll(".data-row")[1].querySelector(".value .type")).not.toBeNull()
   })
   it("should create a value type node with the correct type", () => {
     const row = new DataRow({
@@ -116,14 +106,8 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    console.log(
-      root.innerHTML,
-      root.querySelectorAll(".data-row")[1].querySelector(".value").innerHTML
-    )
-    expect(
-      root.querySelectorAll(".data-row")[1].querySelector(".value .type")
-        .textContent
-    ).toBe("string")
+    console.log(root.innerHTML, root.querySelectorAll(".data-row")[1].querySelector(".value").innerHTML)
+    expect(root.querySelectorAll(".data-row")[1].querySelector(".value .type").textContent).toBe("string")
   })
   it("should create a size node", () => {
     const row = new DataRow({
@@ -132,9 +116,7 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    expect(
-      root.querySelectorAll(".data-row")[0].querySelector(".items-size")
-    ).not.toBeNull()
+    expect(root.querySelectorAll(".data-row")[0].querySelector(".items-size")).not.toBeNull()
   })
   it("should create a size node with 1 size", () => {
     const row = new DataRow({
@@ -143,10 +125,7 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    expect(
-      root.querySelectorAll(".data-row")[0].querySelector(".items-size")
-        .textContent
-    ).toBe("1 item")
+    expect(root.querySelectorAll(".data-row")[0].querySelector(".items-size").textContent).toBe("1 item")
   })
   it("should create a size node with 2 size", () => {
     const row = new DataRow({
@@ -155,10 +134,7 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    expect(
-      root.querySelectorAll(".data-row")[0].querySelector(".items-size")
-        .textContent
-    ).toBe("2 items")
+    expect(root.querySelectorAll(".data-row")[0].querySelector(".items-size").textContent).toBe("2 items")
   })
   it("should create the copy node", () => {
     const row = new DataRow({
@@ -167,8 +143,7 @@ describe("DataRow", () => {
     })
     const root = document.createElement("div")
     root.appendChild(row.element)
-    expect(root.querySelectorAll(".data-row")[0].querySelector(".copy.icon"))
-      .not.toBeNull
+    expect(root.querySelectorAll(".data-row")[0].querySelector(".copy.icon")).not.toBeNull()
   })
   it("should not contain any nodes with match css class", () => {
     const row = new DataRow({

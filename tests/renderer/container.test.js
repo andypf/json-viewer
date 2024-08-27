@@ -149,9 +149,7 @@ describe("Container", () => {
 
     renderer.update({ expandIconType: "circle" })
     expect(root.children[0].classList.contains("expand-icon-circle")).toBe(true)
-    expect(root.children[0].classList.contains("expand-icon-csquare")).toBe(
-      false
-    )
+    expect(root.children[0].classList.contains("expand-icon-csquare")).toBe(false)
   })
   it("should render the toolbar node", () => {
     let root = document.createElement("div")
