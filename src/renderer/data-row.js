@@ -140,6 +140,7 @@ const DataRow = function ({
     const valueWrapper = document.createElement("span")
     valueWrapper.className = `value ${thisDataType.toLowerCase()}`
     valueEl = document.createElement("span")
+    valueEl.className = "value-data"
     valueEl.textContent = thisDataType === "string" ? `"${value}"` : value
     if (valueType) valueWrapper.appendChild(valueType)
     valueWrapper.appendChild(valueEl)
