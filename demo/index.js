@@ -41,19 +41,12 @@ jsonViewer.data = {
 const output = document.getElementById("output")
 const updateOutput = () => {
   const json = JSON.parse(jsonViewer.options.data)
-  if (json?.object?.strings?.veryLong)
-    json.object.strings.veryLong =
-      json?.object.strings.veryLong.slice(0, 50) + "..."
+  if (json?.object?.strings?.veryLong) json.object.strings.veryLong = json?.object.strings.veryLong.slice(0, 50) + "..."
   output.innerText = `
 <andypf-json-viewer 
   ${Object.keys(jsonViewer.options)
     .filter((k) => k !== "data")
-    .map(
-      (k) =>
-        `${k.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()}="${
-          jsonViewer.options[k]
-        }"`
-    )
+    .map((k) => `${k.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase()}="${jsonViewer.options[k]}"`)
     .join("\n  ")}>
 ${JSON.stringify(json, null, 2)}
 </andypf-json-viewer>`

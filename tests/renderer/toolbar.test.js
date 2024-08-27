@@ -82,9 +82,7 @@ describe("Toolbar", () => {
     const onSearch = jest.fn()
     const toolbar = new Toolbar({ onSearch })
     toolbar.element.querySelector(".search-input").value = "test"
-    toolbar.element
-      .querySelector(".search-input")
-      .dispatchEvent(new Event("input"))
+    toolbar.element.querySelector(".search-input").dispatchEvent(new Event("input"))
     expect(onSearch).toHaveBeenCalledWith("test")
   })
 })

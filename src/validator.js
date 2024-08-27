@@ -41,7 +41,8 @@ export const validateStringOrJson = (value) => {
   if (typeof value === "string") {
     try {
       return JSON.parse(value)
-    } catch (e) {
+    } catch (error) {
+      console.debug(error)
       return value
     }
   }

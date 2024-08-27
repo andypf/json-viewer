@@ -10,16 +10,7 @@ function Container(root, options = {}) {
 
   const cache = {}
 
-  this.update = ({
-    data,
-    expanded,
-    indent,
-    expandIconType,
-    showDataTypes,
-    showToolbar,
-    showSize,
-    showCopy,
-  }) => {
+  this.update = ({ data, expanded, indent, expandIconType, showDataTypes, showToolbar, showSize, showCopy }) => {
     // DATA
     if (data) {
       const newDataCompareString = JSON.stringify(data)
@@ -111,10 +102,7 @@ function Container(root, options = {}) {
       }
     }
     // EXPAND ICON TYPE
-    if (
-      expandIconType !== undefined &&
-      cache.expandIconType !== expandIconType
-    ) {
+    if (expandIconType !== undefined && cache.expandIconType !== expandIconType) {
       containerElem.classList.add(`expand-icon-${expandIconType}`)
       containerElem.classList.remove(`expand-icon-${cache.expandIconType}`)
       cache.expandIconType = expandIconType

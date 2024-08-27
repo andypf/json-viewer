@@ -9,6 +9,6 @@ const config = {
       "<rootDir>/tests/__mocks__/fileMock.js",
     ".(css|less)$": "<rootDir>/tests/__mocks__/styleMock.js",
   },
-};
+}
 
-module.exports = config;
+module.exports = config

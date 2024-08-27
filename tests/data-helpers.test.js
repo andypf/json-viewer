@@ -90,9 +90,7 @@ describe("data-helper", () => {
       })
     })
     it("should parse a JSON string including array with NaN and undefined", () => {
-      expect(
-        parseJson('{ "array": [1,2,"test",NaN,undefined,4], "b": "b" }')
-      ).toEqual({
+      expect(parseJson('{ "array": [1,2,"test",NaN,undefined,4], "b": "b" }')).toEqual({
         array: [1, 2, "test", NaN, undefined, 4],
         b: "b",
       })

@@ -1,6 +1,7 @@
-const { readFileSync } = require("fs")
-const { resolve } = require("path")
+import { readFileSync } from "fs"
+import { resolve } from "path"
 
+// eslint-disable-next-line no-undef
 const cssText = readFileSync(resolve(__dirname, "../../src/styles.css"), "utf8")
 
-module.exports = cssText
+export default cssText

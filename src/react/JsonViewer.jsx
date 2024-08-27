@@ -1,6 +1,7 @@
 import React from "react"
 import "../component"
 
+// eslint-disable-next-line react/prop-types
 const JsonViewer = ({ data, ...props }) => {
   const ref = React.useRef(null)
 
