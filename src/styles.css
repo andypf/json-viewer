@@ -179,6 +179,10 @@
   display: none;
 }
 
+.data-row .value .value-data {
+  word-break: break-all;
+}
+
 .show-data-types .data-row .value .type {
   display: inline-block;
 }

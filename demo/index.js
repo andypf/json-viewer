@@ -32,6 +32,8 @@ jsonViewer.data = {
         "The 'json-viewer' is a powerful tool designed specifically for displaying and analyzing JSON data. JSON (JavaScript Object Notation) is a widely used data format for transmission and storage. It's easy to understand and write, but when it comes to visualizing extensive or complex JSON data, it can be a challenge.",
     },
   },
+  token:
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
   string_number: "1234",
   date: new Date(),
 }
