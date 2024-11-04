@@ -54,7 +54,7 @@ Now, you're ready to use it as a custom HTML tag within your web application:
 To use **json-viewer** in your web application, load json-viewer.js and embed your JSON object within an HTML element of your choice and initialize **json-viewer** as follows:
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <script src="https://pfau-software.de/json-viewer/dist/iife/index.js"></script>
@@ -98,9 +98,8 @@ You can also provide the `data` option as the content of the "json-viewer" eleme
   show-copy="true"
   show-size="true"
 >
-  { "string": "this is a test ...", "integer": 42, "array":[ 1, 2, 3, "test",
-  NaN], "float":3.14159, "string_number":"1234", "date": "Tue, Oct 17, 2023,
-  08:58 AM" }
+  { "string": "this is a test ...", "integer": 42, "array":[ 1, 2, 3, "test", "NaN"], "float":3.14159,
+  "string_number":"1234", "date": "Tue, Oct 17, 2023, 08:58 AM" }
 </andypf-json-viewer>
 ```
 
@@ -310,9 +309,8 @@ Example:
   show-size="true"
   theme='{"base00": "gray", "base01": "blue", "base02": "yellow", "base03": "orange", "base04": "red", "base05": "#9DA0A2", "base06": "#D2D5D7", "base07": "#F1F2F3", "base08": "#EF5253", "base09": "#E66B2B", "base0A": "#E4B51C", "base0B": "#7CC844", "base0C": "#52CBB0", "base0D": "#33A3DC", "base0E": "#A363D5", "base0F": "gray"}'
 >
-  {"string": "this is a test ...", "integer": 42, "array":[ 1, 2, 3, "test",
-  "NaN"], "float":3.14159, "string_number":"1234", "date": "Tue, Oct 17, 2023,
-  08:58 AM"}
+  {"string": "this is a test ...", "integer": 42, "array":[ 1, 2, 3, "test", "NaN"], "float":3.14159,
+  "string_number":"1234", "date": "Tue, Oct 17, 2023, 08:58 AM"}
 </andypf-json-viewer>
 ```
 
