@@ -6,6 +6,11 @@ import jest from "eslint-plugin-jest"
 export default [
   { files: ["**/*.{js,mjs,cjs,jsx}"] },
   {
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
     languageOptions: {
       globals: {
         ...globals.browser,
