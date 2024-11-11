@@ -41,8 +41,9 @@ export const validateStringOrJson = (value) => {
   if (typeof value === "string") {
     try {
       return JSON.parse(value)
+      // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      console.debug(error)
+      // console.debug(error)
       return value
     }
   }

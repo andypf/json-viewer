@@ -3,8 +3,9 @@ export const isUrl = (string) => {
   try {
     // Attempt to create a URL object from the input string
     return Boolean(new URL(string)) // Return true if successful
+    // eslint-disable-next-line no-unused-vars
   } catch (error) {
-    console.debug(error)
+    // console.debug(error)
     // If an error occurs (invalid URL), return false
     return false
   }
