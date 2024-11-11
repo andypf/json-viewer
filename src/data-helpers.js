@@ -4,7 +4,7 @@ export const isUrl = (string) => {
     // Attempt to create a URL object from the input string
     return Boolean(new URL(string)) // Return true if successful
   } catch (error) {
-    console.debug(error)
+    // console.debug(error)
     // If an error occurs (invalid URL), return false
     return false
   }

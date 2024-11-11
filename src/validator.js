@@ -42,7 +42,7 @@ export const validateStringOrJson = (value) => {
     try {
       return JSON.parse(value)
     } catch (error) {
-      console.debug(error)
+      // console.debug(error)
       return value
     }
   }
