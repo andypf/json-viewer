@@ -43,7 +43,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     expandIcon.setAttribute("title", isExpanded ? "Collapse" : "Expand")
     expandIconWrapper.appendChild(expandIcon)
 
-    expandIcon.addEventListener("click", () => toggleExpand())
+    expandIconWrapper.addEventListener("click", () => toggleExpand())
   }
 
   // KEY VALUE WRAPPER
