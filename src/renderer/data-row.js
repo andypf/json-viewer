@@ -43,7 +43,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     expandIcon.setAttribute("title", isExpanded ? "Collapse" : "Expand")
     expandIconWrapper.appendChild(expandIcon)
 
-    expandIcon.addEventListener("click", () => toggleExpand())
+    expandIconWrapper.addEventListener("click", () => toggleExpand())
   }
 
   // KEY VALUE WRAPPER
@@ -137,12 +137,12 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   const copyIcon = document.createElement("span")
   copyIcon.className = "copy icon"
   copyIcon.setAttribute("title", "Copy to clipboard")
-  copyIcon.addEventListener("click", () => {
-    navigator.clipboard.writeText(JSON.stringify(value, null, indent))
-  })
 
   const copyIconWrapper = document.createElement("span")
   copyIconWrapper.className = "icon-wrapper"
+  copyIconWrapper.addEventListener("click", () => {
+    navigator.clipboard.writeText(JSON.stringify(value, null, indent))
+  })
   copyIconWrapper.appendChild(copyIcon)
   keyValueWrapper.appendChild(copyIconWrapper)
 
