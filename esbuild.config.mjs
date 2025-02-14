@@ -3,6 +3,9 @@ import { rmSync, readFileSync } from "node:fs"
 import { resolve } from "node:path"
 import postcss from "postcss"
 import postcssMinify from "postcss-minify"
+import fs from "fs"
+
+const licenseText = fs.readFileSync("LICENSE.md", "utf-8")
 
 // helpers for console log
 const green = "\x1b[32m%s\x1b[0m"
@@ -54,6 +57,13 @@ const options = {
     ".css": "text",
   },
   plugins: [cssPlugin],
+  banner: {
+    js: `
+/*
+${licenseText}
+*/
+    `,
+  },
 }
 
 if (isProduction) {
