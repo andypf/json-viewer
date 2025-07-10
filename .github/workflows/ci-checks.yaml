@@ -20,16 +20,28 @@ jobs:
         with:
           node-version: "20" # Specify the node version you need
 
-      - name: Cache npm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.OS }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-pnpm-store-
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
 
   lint:
     needs: install-dependencies
@@ -41,18 +53,30 @@ jobs:
         with:
           node-version: "20" # Specify the node version you need
 
-      - name: Cache npm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.OS }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-pnpm-store-
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
       - name: Run Linter
-        run: npm run lint
+        run: packagenpm run lint
 
   format:
     needs: install-dependencies
@@ -64,16 +88,29 @@ jobs:
         with:
           node-version: "20" # Specify the node version you need
 
-      - name: Cache npm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.OS }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-pnpm-store-
+
 
       - name: Install Dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
       - name: Run Prettier
         run: npm run check-format
 
@@ -87,15 +124,27 @@ jobs:
         with:
           node-version: "20" # Specify the node version you need
 
-      - name: Cache npm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
+
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          
+      - name: Cache pnpm store
         uses: actions/cache@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.OS }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-pnpm-store-
 
       - name: Install Dependencies
-        run: npm ci && npm run build
+        run: pnpm install --frozen-lockfile
+ && npm run build
       - name: Run Tests
-        run: npm run test
+        run: pnpm run test

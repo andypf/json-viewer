@@ -83,7 +83,7 @@
 
 .data-row .colon {
   color: var(--base07);
-  margin: 0 5px;
+  margin: 0 5px 0 0;
 }
 
 .clickable {
