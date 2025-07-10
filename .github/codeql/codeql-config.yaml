@@ -7,4 +7,3 @@ paths-ignore:
   - "build/**"
   - "dist/**"
   - "node_modules/**"
-  
