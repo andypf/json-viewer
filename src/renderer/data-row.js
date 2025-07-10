@@ -52,7 +52,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     const keyDataType = typeof key
     keyEl = document.createElement("span")
     keyEl.className = `key clickable ${keyDataType === "number" ? "number" : ""}`
-    keyEl.textContent = keyDataType === "number" ? key : `"${key}"`
+    keyEl.textContent = keyDataType === "number" ? key : `${key}`
     keyEl.addEventListener("click", () => toggleExpand())
     keyValueWrapper.appendChild(keyEl)
 

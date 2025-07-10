@@ -1,6 +1,6 @@
 {
   "name": "@andypf/json-viewer",
-  "version": "2.1.10",
+  "version": "2.2.0",
   "description": "A javascript library to visualize json nicely",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
