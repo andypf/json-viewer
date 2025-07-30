@@ -1,0 +1,39 @@
+/* Keep your existing CSS but add these improvements */
+:host {
+  display: block;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.container {
+  background-color: var(--base00);
+  color: var(--base05);
+  padding: 10px;
+  letter-spacing: 0.5px;
+  border-radius: 3px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Add smooth transitions */
+.data-row {
+  transition: all 0.2s ease;
+}
+
+.icon-wrapper:hover {
+  background-color: var(--base02);
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+}
+
+/* Improve accessibility */
+.clickable {
+  cursor: pointer;
+  outline: none;
+}
+
+.clickable:focus {
+  outline: 2px solid var(--base0D);
+  outline-offset: 2px;
+}
+
+/* Rest of your existing styles... */
