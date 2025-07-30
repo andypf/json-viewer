@@ -36,9 +36,7 @@ export class JsonViewer extends HTMLElement {
 
   // Boolean attributes
   get expanded(): boolean {
-    return (
-      this.hasAttribute("expanded") && this.getAttribute("expanded") !== "false"
-    )
+    return this.hasAttribute("expanded") && this.getAttribute("expanded") !== "false"
   }
   set expanded(value: boolean) {
     if (value) {
@@ -49,59 +47,41 @@ export class JsonViewer extends HTMLElement {
   }
 
   get showDataTypes(): boolean {
-    return (
-      this.hasAttribute("show-data-types") &&
-      this.getAttribute("show-data-types") !== "false"
-    )
+    return this.hasAttribute("show-data-types") && this.getAttribute("show-data-types") !== "false"
   }
   set showDataTypes(value: boolean) {
     this.setAttribute("show-data-types", value.toString())
   }
 
   get showLoadingStatus(): boolean {
-    return (
-      this.hasAttribute("show-loading-status") &&
-      this.getAttribute("show-loading-status") !== "false"
-    )
+    return this.hasAttribute("show-loading-status") && this.getAttribute("show-loading-status") !== "false"
   }
   set showLoadingStatus(value: boolean) {
     this.setAttribute("show-loading-status", value.toString())
   }
   get showErrors(): boolean {
-    return (
-      this.hasAttribute("show-errors") &&
-      this.getAttribute("show-errors") !== "false"
-    )
+    return this.hasAttribute("show-errors") && this.getAttribute("show-errors") !== "false"
   }
   set showErrors(value: boolean) {
     this.setAttribute("show-errors", value.toString())
   }
 
   get showToolbar(): boolean {
-    return (
-      this.hasAttribute("show-toolbar") &&
-      this.getAttribute("show-toolbar") !== "false"
-    )
+    return this.hasAttribute("show-toolbar") && this.getAttribute("show-toolbar") !== "false"
   }
   set showToolbar(value: boolean) {
     this.setAttribute("show-toolbar", value.toString())
   }
 
   get showCopy(): boolean {
-    return (
-      this.hasAttribute("show-copy") &&
-      this.getAttribute("show-copy") !== "false"
-    )
+    return this.hasAttribute("show-copy") && this.getAttribute("show-copy") !== "false"
   }
   set showCopy(value: boolean) {
     this.setAttribute("show-copy", value.toString())
   }
 
   get showSize(): boolean {
-    return (
-      this.hasAttribute("show-size") &&
-      this.getAttribute("show-size") !== "false"
-    )
+    return this.hasAttribute("show-size") && this.getAttribute("show-size") !== "false"
   }
   set showSize(value: boolean) {
     this.setAttribute("show-size", value.toString())
@@ -150,11 +130,7 @@ export class JsonViewer extends HTMLElement {
     return content || ""
   }
 
-  attributeChangedCallback(
-    _name: string,
-    oldValue: string | null,
-    newValue: string | null
-  ) {
+  attributeChangedCallback(_name: string, oldValue: string | null, newValue: string | null) {
     if (oldValue !== newValue) {
       this.render()
     }
@@ -211,9 +187,7 @@ export class JsonViewer extends HTMLElement {
           Invalid JSON data
           <details style="margin-top: 8px;">
             <summary>Raw data:</summary>
-            <pre style="background: #f5f5f5; padding: 8px; margin-top: 4px;">${
-              this.data
-            }</pre>
+            <pre style="background: #f5f5f5; padding: 8px; margin-top: 4px;">${this.data}</pre>
             <p>Error: ${result.error || "Unknown error"}</p>
           </details>
         </div>
@@ -222,35 +196,6 @@ export class JsonViewer extends HTMLElement {
     }
 
     const parsedData = result.data
-
-    if (this.showToolbar) {
-      if (!this.toolbar) {
-        this.toolbar = new Toolbar()
-        this.toolbar.onChange(({ key, value }) => {
-          if (key === "indent") {
-            this.indent = value as number
-          } else if (key === "expanded") {
-            this.expanded = value as boolean
-          } else if (key === "showDataTypes") {
-            this.showDataTypes = value as boolean
-          } else if (key === "expandIconType") {
-            this.expandIconType = value as string
-          } else if (key === "showCopy") {
-            this.showCopy = value as boolean
-          } else if (key === "showSize") {
-            this.showSize = value as boolean
-          }
-        })
-      }
-      this.toolbar.updateProps({
-        indent: this.indent,
-        expanded: this.expanded,
-        showDataTypes: this.showDataTypes,
-        expandIconType: this.expandIconType,
-        showCopy: this.showCopy,
-        showSize: this.showSize,
-      })
-    }
 
     this.shadowRoot.innerHTML = `
       <style>
@@ -295,7 +240,6 @@ export class JsonViewer extends HTMLElement {
       </style>
       
       <div class="json-viewer" data-theme="${this.theme}">
-        ${this.showToolbar ? this.toolbar?.render() : ""}
         ${this.renderJson(parsedData)}
       </div>
     `

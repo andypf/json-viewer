@@ -72,6 +72,7 @@ export class DataParser {
       const data = JSON.parse(this.data)
       return { data, source: "json" }
     } catch (error) {
+      console.log("JSON parsing error:", error)
       return {
         data: null,
         source: "json",
