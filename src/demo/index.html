@@ -1,93 +1,90 @@
 <!-- demo/index.html -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON Viewer Demo</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON Viewer Demo</title>
 
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="assets/apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="assets/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="assets/favicon-16x16.png"
-    />
-  <script type="module" src="./index.js"></script>
-  <style>
-    body {
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 2rem;
-    }
-    .demo-section {
-      margin-bottom: 2rem;
-    }
-    .controls {
-      margin: 1rem 0;
-    }
-  </style>
-</head>
-<body>
-  <h1>JSON Viewer Web Component Demo</h1>
-  
-
-  <div class="demo-section">
-    <h2>Interactive Example</h2>
-    <div class="controls">
-      <input type="number" id="indent-input" value="2" min="1" max="10" style="width: 100px;">
-      <textarea id="json-input" rows="10" style="width: 100%; font-family: monospace;" 
-                placeholder="Enter JSON here..."></textarea>
-      <button id="parse-button">Parse JSON</button>
-    </div>
-    <andypf-json-viewer 
-      id="interactive-demo" 
-      show-toolbar 
-      expanded 
-      show-copy 
-      show-size 
-      toolbar-show-copy
-      toolbar-show-size
-      toolbar-show-search
-      toolbar-show-expand-controls
-      toolbar-show-indent-controls
-      toolbar-show-theme-select
-      toolbar-show-infos
-      >
-      {"test":"ètest"}
-    </andypf-json-viewer>
-    <andypf-json-viewer show-toolbar id="interactive-demo2" data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"></andypf-json-viewer> 
-  </div>
-  <script>
-    const textArea = document.getElementById('json-input');
-    const parseButton = document.getElementById('parse-button');
-    parseButton.addEventListener('click', () => {
-      const jsonData = textArea.value;
-      const interactiveDemo = document.getElementById('interactive-demo');
-      interactiveDemo.setAttribute('data', jsonData);
-    });
-
-    const indentInput = document.getElementById('indent-input');
-    indentInput.addEventListener('input', () => {
-      const interactiveDemo = document.getElementById('interactive-demo');
-      const indentValue = parseInt(indentInput.value, 10);
-      if (!isNaN(indentValue) && indentValue >= 1 && indentValue <= 10) {
-        interactiveDemo.indent = indentValue
-      } else {
-        console.warn('Indent value must be between 1 and 10');
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png" />
+    <script type="module" src="./index.js"></script>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
       }
-    });
-  </script>
-</body>
+      .demo-section {
+        margin-bottom: 2rem;
+      }
+      .controls {
+        margin: 1rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>JSON Viewer Web Component Demo</h1>
+
+    <div class="demo-section">
+      <h2>Interactive Example</h2>
+      <div class="controls">
+        <input type="number" id="indent-input" value="2" min="1" max="10" style="width: 100px" />
+        <textarea
+          id="json-input"
+          rows="10"
+          style="width: 100%; font-family: monospace"
+          placeholder="Enter JSON here..."
+        ></textarea>
+        <button id="parse-button">Parse JSON</button>
+      </div>
+      <andypf-json-viewer
+        id="interactive-demo"
+        show-toolbar
+        expanded
+        show-copy
+        show-size
+        toolbar-show-copy
+        toolbar-show-size
+        toolbar-show-search
+        toolbar-show-expand-controls
+        toolbar-show-indent-controls
+        toolbar-show-theme-select
+        toolbar-show-infos
+      >
+        {"test":"ètest"}
+      </andypf-json-viewer>
+      <andypf-json-viewer
+        show-toolbar
+        id="interactive-demo2"
+        data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"
+      ></andypf-json-viewer>
+    </div>
+    <script>
+      const textArea = document.getElementById("json-input")
+      const parseButton = document.getElementById("parse-button")
+      parseButton.addEventListener("click", () => {
+        const jsonData = textArea.value
+        const interactiveDemo = document.getElementById("interactive-demo")
+        interactiveDemo.setAttribute("data", jsonData)
+      })
+
+      const indentInput = document.getElementById("indent-input")
+      indentInput.addEventListener("input", () => {
+        const interactiveDemo = document.getElementById("interactive-demo")
+        const indentValue = parseInt(indentInput.value, 10)
+        if (!isNaN(indentValue) && indentValue >= 1 && indentValue <= 10) {
+          interactiveDemo.indent = indentValue
+        } else {
+          console.warn("Indent value must be between 1 and 10")
+        }
+      })
+    </script>
+  </body>
 </html>

@@ -20,6 +20,10 @@ export interface ToolbarState {
   theme: string
 }
 
+// eslint-disable-next-line no-unused-vars
+export type OnStateChangeCallback = (changes: Partial<ToolbarState>) => void
+export type OnCopyAllCallback = () => void
+
 export class Toolbar {
   private config: ToolbarConfig = {
     showCopy: true,
@@ -39,8 +43,9 @@ export class Toolbar {
     dataSize: 0,
     theme: "default-ligth",
   }
-  private onStateChange: (changes: Partial<ToolbarState>) => void
-  private onCopyAll?: () => void
+
+  private onStateChange: OnStateChangeCallback
+  private onCopyAll?: OnCopyAllCallback
   private container: HTMLDivElement
   private leftGroup: HTMLDivElement
   private rightGroup: HTMLDivElement
@@ -57,8 +62,8 @@ export class Toolbar {
     parent: HTMLElement
     config: Partial<ToolbarConfig>
     initialState: Partial<ToolbarState>
-    onStateChange: (changes: Partial<ToolbarState>) => void
-    onCopyAll?: () => void
+    onStateChange: OnStateChangeCallback
+    onCopyAll?: OnCopyAllCallback
   }) {
     this.onStateChange = onStateChange
     this.onCopyAll = onCopyAll
