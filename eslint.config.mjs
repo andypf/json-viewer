@@ -1,41 +1,32 @@
+import js from "@eslint/js"
+import typescript from "@typescript-eslint/eslint-plugin"
+import typescriptParser from "@typescript-eslint/parser"
 import globals from "globals"
-import pluginJs from "@eslint/js"
-import pluginReact from "eslint-plugin-react"
-import jest from "eslint-plugin-jest"
 
 export default [
-  { files: ["**/*.{js,mjs,cjs,jsx}"] },
+  js.configs.recommended,
   {
-    settings: {
-      react: {
-        version: "detect",
-      },
-    },
+    files: ["**/*.{ts,js}"],
     languageOptions: {
-      globals: {
-        ...globals.browser,
-        ...globals.node,
+      parser: typescriptParser,
+      parserOptions: {
+        ecmaVersion: "latest",
+        sourceType: "module",
       },
-      parserOptions: { ecmaFeatures: { jsx: true } },
+      globals: {
+        // Web Components globals
+        ...globals.browser,
+        customElements: "readonly",
+        HTMLElement: "readonly",
+        CustomEvent: "readonly",
+        ShadowRoot: "readonly",
+      },
     },
-  },
-  pluginJs.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  // ######### JEST ##########
-  // {
-  //   files: ["**/*.test.js", "**/*.config.js", "__tests__/**", "test/__mocks__/**"],
-  //   languageOptions: { sourceType: "commonjs" },
-  // },
-  {
-    files: ["__tests__/**", "**/*.test.js", "__mocks__/**"],
-    ...jest.configs["flat/recommended"],
-    rules: {
-      ...jest.configs["flat/recommended"].rules,
-      "jest/prefer-expect-assertions": "off",
-      "jest/no-disabled-tests": "off",
+    plugins: {
+      "@typescript-eslint": typescript,
     },
   },
   {
-    ignores: ["**/dist/*", "demo/build/*", "coverage/*"],
+    ignores: ["**/dist/*"],
   },
 ]

@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    "outFile": "dist/types/index",
+    "rootDir": "src/package"
+  },
+  "include": ["src/package/**/*.ts", "src/package/**/*.tsx"],
+  "exclude": ["src/package/**/*.test.ts", "src/package/**/*.spec.ts"]
+}
