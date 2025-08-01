@@ -51,8 +51,23 @@
                 placeholder="Enter JSON here..."></textarea>
       <button id="parse-button">Parse JSON</button>
     </div>
-    <andypf-json-viewer id="interactive-demo" show-toolbar>{"key":"value"}</andypf-json-viewer>
-    <!-- <andypf-json-viewer id="interactive-demo2" data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"></andypf-json-viewer> -->
+    <andypf-json-viewer 
+      id="interactive-demo" 
+      show-toolbar 
+      expanded 
+      show-copy 
+      show-size 
+      toolbar-show-copy
+      toolbar-show-size
+      toolbar-show-search
+      toolbar-show-expand-controls
+      toolbar-show-indent-controls
+      toolbar-show-theme-select
+      toolbar-show-infos
+      >
+      {"test":"ètest"}
+    </andypf-json-viewer>
+    <andypf-json-viewer show-toolbar id="interactive-demo2" data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"></andypf-json-viewer> 
   </div>
   <script>
     const textArea = document.getElementById('json-input');
@@ -68,7 +83,7 @@
       const interactiveDemo = document.getElementById('interactive-demo');
       const indentValue = parseInt(indentInput.value, 10);
       if (!isNaN(indentValue) && indentValue >= 1 && indentValue <= 10) {
-        interactiveDemo.setAttribute('indent', indentValue);
+        interactiveDemo.indent = indentValue
       } else {
         console.warn('Indent value must be between 1 and 10');
       }
