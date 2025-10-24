@@ -44,27 +44,44 @@
         ></textarea>
         <button id="parse-button">Parse JSON</button>
       </div>
+
+
       <andypf-json-viewer
-        id="interactive-demo"
         show-toolbar
-        expanded
+        id="interactive-demo3"
+        expanded="5"
+        theme="monokai"
+        indent="2"
+        expand-icon-type="square"
+        show-size  
+        show-data-types
+        show-infos
         show-copy
-        show-size
-        toolbar-show-copy
-        toolbar-show-size
-        toolbar-show-search
-        toolbar-show-expand-controls
-        toolbar-show-indent-controls
-        toolbar-show-theme-select
-        toolbar-show-infos
       >
-        {"test":"ètest"}
+      {
+        "string": "this is a test",
+        "integer": 42,
+        "array": [
+          1,
+          2,
+          3,
+          "test",
+          null
+        ],
+        "float": 3.14159,
+        "object": {
+          "first-child": true,
+          "second-child": false,
+          "last-child": null,
+          "strings": {
+            "veryLong": "The 'json-viewer' is a powerful tool designed specifically for displaying and analyzing JSON data. JSON (JavaScript Object Notation) is a widely used data format for transmission and storage. It's easy to understand and write, but when it comes to visualizing extensive or complex JSON data, it can be a challenge."
+          }
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        "string_number": "1234",
+        "date": "2025-10-24T10:16:59.631Z"
+      }
       </andypf-json-viewer>
-      <andypf-json-viewer
-        show-toolbar
-        id="interactive-demo2"
-        data="https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json"
-      ></andypf-json-viewer>
     </div>
     <script>
       const textArea = document.getElementById("json-input")
@@ -85,6 +102,36 @@
           console.warn("Indent value must be between 1 and 10")
         }
       })
+
+      const interactiveDemo4 = document.createElement("andypf-json-viewer")
+      interactiveDemo4.id = "interactive-demo4"
+      interactiveDemo4.setAttribute("show-toolbar", "")
+      interactiveDemo4.setAttribute("theme", "light")
+      interactiveDemo4.setAttribute("indent", "2")
+      interactiveDemo4.setAttribute("expanded", "5")
+      interactiveDemo4.setAttribute("expand-icon-type", "square")
+      interactiveDemo4.setAttribute("show-size", "")
+      interactiveDemo4.setAttribute("show-data-types", "")
+      interactiveDemo4.setAttribute("show-infos", "")
+      interactiveDemo4.setAttribute("show-copy", "")
+
+
+      document.body.appendChild(interactiveDemo4)
+      interactiveDemo4.setAttribute("data", JSON.stringify({
+
+        example: "This JSON viewer instance was created dynamically via JavaScript!",
+        number: 12345,
+        float: 67.89,
+        boolean: true,
+        nested: {
+          array: [1, 2, 3, 4, 5],
+          object: {
+            key: "value"
+          }
+        },
+        today: new Date()
+      }, null, 2))
+
     </script>
   </body>
 </html>

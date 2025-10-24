@@ -29,6 +29,7 @@
   padding: 2px 5px;
 }
 
+
 .toolbar select.theme-select {
   background: transparent;
   display: flex;
@@ -37,6 +38,7 @@
   padding: 0;
   border: none;
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--base0D) 30%, transparent);
+  border-radius: 5px;
 }
 
 .toolbar .icon.copy {

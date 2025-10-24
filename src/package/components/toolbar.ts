@@ -244,15 +244,17 @@ export class Toolbar {
     searchInput.value = this.state.searchTerm || ""
 
     // Debounced input handler - more efficient than before
-    searchInput.addEventListener("input", (e) => {
+    searchInput.addEventListener("input", (e: Event) => {
       clearTimeout(this.searchTimeout)
-      this.searchTimeout = window.setTimeout(() => {
-        const searchTerm = (e.target as HTMLInputElement).value
-        if (this.state.searchTerm !== searchTerm) {
-          this.state.searchTerm = searchTerm
-          this.onStateChange({ searchTerm })
-        }
-      }, 300)
+      if (e.target instanceof HTMLInputElement) {
+        const searchTerm = e.target.value
+        this.searchTimeout = window.setTimeout(() => {
+          if (this.state.searchTerm !== searchTerm) {
+            this.state.searchTerm = searchTerm
+            this.onStateChange({ searchTerm })
+          }
+        }, 300)
+      }
     })
 
     this.actions.set("searchIcon", searchIcon)

@@ -1430,9 +1430,11 @@ export const availableThemes: string[] = Object.keys(themes)
 export const themeStyles = (nameOrObject: string | Record<string, string>): string => {
   let theme
   if (typeof nameOrObject === "string") {
-    if (themes[nameOrObject] === undefined) {
-      throw new Error(`${nameOrObject} not found`)
+    if (availableThemes.indexOf(nameOrObject) === -1) {
+      console.warn(`${nameOrObject} not found, falling back to default theme`)
+      nameOrObject = "default-light"
     }
+
     theme = themes[nameOrObject].reduce(
       (map: Record<string, string>, v, i) => {
         const key = `base0${i.toString(16).toUpperCase()}`

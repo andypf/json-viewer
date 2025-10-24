@@ -2,12 +2,16 @@ import { DataParser } from "../utils/data-parser"
 import styles from "../assets/styles.css?inline"
 import { themeStyles, availableThemes } from "../assets/themes"
 import { Toolbar } from "./toolbar"
+import { Container } from "../renderer/container"
 
-const ICON_TYPES = ["arrow", "square", "circle"]
+const ICON_TYPES = ["arrow", "square", "circle"] as const
 const MAX_EXPAND_LEVEL = 12
 const MAX_INDENT_LEVEL = 10
+
+type IconType = (typeof ICON_TYPES)[number]
+
 export class JsonViewer extends HTMLElement {
-  static get observedAttributes() {
+  static get observedAttributes(): string[] {
     return [
       "toolbar-show-copy",
       "toolbar-show-size",
@@ -32,38 +36,47 @@ export class JsonViewer extends HTMLElement {
     ]
   }
 
+  // Private properties
   private dataParser: DataParser | null = null
   private stylesContainer: HTMLStyleElement | null = null
-  private themeSyteles: HTMLStyleElement | null = null
+  private themeStyles: HTMLStyleElement | null = null
   private dataContainer: HTMLDivElement | null = null
+  private toolbarContainer: HTMLDivElement | null = null
+  private jsonDataContainer: HTMLDivElement | null = null
   private cachedThemeStyles: string | null = null
   private cachedData: string | null = null
   private toolbar: Toolbar | null = null
+  private observer?: MutationObserver
+  private isUpdatingFromToolbar = false
+  private renderTimeout?: number
+  private isInitialized = false
+
   private static readonly defaultTheme = "default-light"
-  private static readonly defaultIconType = "arrow"
+  private static readonly defaultIconType: IconType = "arrow"
+
+  private rendererContainer: Container | null = null
 
   constructor() {
     super()
     this.attachShadow({ mode: "open" })
   }
 
-  // Number attributes
+  // All your getters and setters (keeping them as-is)
   get indent(): number {
     if (!this.hasAttribute("indent") || this.getAttribute("indent") === "false") return 0
-    if (this.getAttribute("indent") === "true") return MAX_INDENT_LEVEL
-
+    if (this.getAttribute("indent") === "true" || this.getAttribute("indent") === "") return MAX_INDENT_LEVEL
     let value = parseInt(this.getAttribute("indent") || "0")
     value = isNaN(value) ? 0 : value
     if (value < 0) return 0
     if (value > MAX_INDENT_LEVEL) return MAX_INDENT_LEVEL
     return value
   }
+
   set indent(value: number | boolean) {
     if (typeof value === "boolean") {
       this.setAttribute("indent", value ? MAX_INDENT_LEVEL.toString() : "0")
       return
     }
-
     if (typeof value === "number") {
       if (value < 0) value = 0
       if (value > MAX_INDENT_LEVEL) value = MAX_INDENT_LEVEL
@@ -73,18 +86,17 @@ export class JsonViewer extends HTMLElement {
     this.removeAttribute("indent")
   }
 
-  // Boolean attributes
   get expanded(): number {
     if (!this.hasAttribute("expanded") || this.getAttribute("expanded") === "false") return 0
-    if (this.getAttribute("expanded") === "true") return MAX_EXPAND_LEVEL
+    if (this.getAttribute("expanded") === "true" || this.getAttribute("expanded") === "") return MAX_EXPAND_LEVEL
     let value = parseInt(this.getAttribute("expanded") || "0")
     value = isNaN(value) ? 0 : value
     if (value < 0) return 0
     if (value > MAX_EXPAND_LEVEL) return MAX_EXPAND_LEVEL
     return value
   }
+
   set expanded(value: number | boolean) {
-    console.log("Setting expanded to:", value)
     if (typeof value === "boolean") {
       this.setAttribute("expanded", value.toString())
       return
@@ -99,13 +111,13 @@ export class JsonViewer extends HTMLElement {
     this.removeAttribute("expanded")
   }
 
+  // ... (all your other getters/setters remain the same) ...
   get showDataTypes(): boolean {
     return this.hasAttribute("show-data-types") && this.getAttribute("show-data-types") !== "false"
   }
   set showDataTypes(value: boolean) {
     this.setAttribute("show-data-types", value.toString())
   }
-
   get showLoadingStatus(): boolean {
     return this.hasAttribute("show-loading-status") && this.getAttribute("show-loading-status") !== "false"
   }
@@ -118,35 +130,30 @@ export class JsonViewer extends HTMLElement {
   set showErrors(value: boolean) {
     this.setAttribute("show-errors", value.toString())
   }
-
   get showInfos(): boolean {
     return this.hasAttribute("show-infos") && this.getAttribute("show-infos") !== "false"
   }
   set showInfos(value: boolean) {
     this.setAttribute("show-infos", value.toString())
   }
-
   get showToolbar(): boolean {
     return this.hasAttribute("show-toolbar") && this.getAttribute("show-toolbar") !== "false"
   }
   set showToolbar(value: boolean) {
     this.setAttribute("show-toolbar", value.toString())
   }
-
   get showCopy(): boolean {
     return this.hasAttribute("show-copy") && this.getAttribute("show-copy") !== "false"
   }
   set showCopy(value: boolean) {
     this.setAttribute("show-copy", value.toString())
   }
-
   get showSize(): boolean {
     return this.hasAttribute("show-size") && this.getAttribute("show-size") !== "false"
   }
   set showSize(value: boolean) {
     this.setAttribute("show-size", value.toString())
   }
-
   // Toolbar attributes
   get toolbarShowCopy(): boolean {
     return this.getAttribute("toolbar-show-copy") !== "false"
@@ -175,20 +182,21 @@ export class JsonViewer extends HTMLElement {
   get toolbarShowIndentControls(): boolean {
     return this.getAttribute("toolbar-show-indent-controls") !== "false"
   }
-  set toolbarThemeSelect(value: boolean) {
-    this.setAttribute("toolbar-show-theme-select", value.toString())
+  set toolbarShowIndentControls(value: boolean) {
+    this.setAttribute("toolbar-show-indent-controls", value.toString())
   }
   get toolbarShowThemeSelect(): boolean {
     return this.getAttribute("toolbar-show-theme-select") !== "false"
   }
-
-  set toolbarShowInfos(value: boolean) {
-    this.setAttribute("toolbar-show-infos", value.toString())
+  set toolbarShowThemeSelect(value: boolean) {
+    this.setAttribute("toolbar-show-theme-select", value.toString())
   }
   get toolbarShowInfos(): boolean {
     return this.getAttribute("toolbar-show-infos") !== "false"
   }
-
+  set toolbarShowInfos(value: boolean) {
+    this.setAttribute("toolbar-show-infos", value.toString())
+  }
   // String attributes
   get theme(): string {
     return this.getAttribute("theme") ?? JsonViewer.defaultTheme
@@ -196,15 +204,15 @@ export class JsonViewer extends HTMLElement {
   set theme(value: string) {
     this.setAttribute("theme", value)
   }
-
-  get expandIconType(): string {
-    return this.getAttribute("expand-icon-type") ?? JsonViewer.defaultIconType
+  get expandIconType(): IconType {
+    const value = this.getAttribute("expand-icon-type")
+    return (ICON_TYPES.includes(value as IconType) ? value : JsonViewer.defaultIconType) as IconType
   }
-  set expandIconType(value: string) {
+  set expandIconType(value: IconType) {
     if (!ICON_TYPES.includes(value)) {
       console.warn(`Invalid expand-icon-type: ${value}. Defaulting to "arrow".`)
       value = JsonViewer.defaultIconType
-      this.removeAttribute("expand-icon-type") // Remove old attribute to avoid conflicts
+      this.removeAttribute("expand-icon-type")
       return
     }
     this.setAttribute("expand-icon-type", value)
@@ -213,63 +221,106 @@ export class JsonViewer extends HTMLElement {
     return this.getAttribute("search-term") ?? ""
   }
   set searchTerm(value: string) {
-    if (this.searchTerm === value) return // Avoid unnecessary updates
+    if (this.searchTerm === value) return
     this.setAttribute("search-term", value)
   }
-
-  // Data attribute - with fallback to content
+  // Data attribute
   get data(): string {
-    // Priority: attribute > textContent > default
     const attrData = this.getAttribute("data")
     if (attrData) {
       return attrData
     }
 
+    // Get content data and validate it
     const contentData = this.getContentData()
     if (contentData) {
-      this.clearContent() // Clear content after reading
-      this.setAttribute("data", contentData) // Set as attribute for future use
+      try {
+        // Test if it's valid JSON
+        JSON.parse(contentData)
+        // If valid, clear content and set as attribute
+        this.clearContent()
+        this.setAttribute("data", contentData)
+        return contentData
+      } catch (error) {
+        console.warn("Invalid JSON in element content:", error)
+        // Return the content anyway, let the parser handle the error
+        return contentData
+      }
     }
-    return contentData || "{}"
-  }
 
+    return "{}"
+  }
   set data(value: string | object) {
-    if (this.data === value) return // Avoid unnecessary updates
+    if (this.data === value) return
     if (typeof value === "string") {
       this.setAttribute("data", value)
     } else {
       this.setAttribute("data", JSON.stringify(value))
     }
-    // Clear content when setting via property/attribute
     this.textContent = ""
   }
 
-  // Get JSON from element content
+  // Private methods
   private getContentData(): string {
-    const content = this.textContent?.trim()
-    return content || ""
+    // Get all text content, including from child text nodes
+    const content = this.textContent?.trim() || ""
+
+    // Remove any extra whitespace and normalize
+    if (content) {
+      try {
+        // Try to parse and re-stringify to normalize the JSON
+        const parsed = JSON.parse(content)
+        return JSON.stringify(parsed)
+      } catch {
+        // If parsing fails, return the raw content
+        return content
+      }
+    }
+
+    return ""
   }
 
-  // Clear content after reading
   private clearContent(): void {
     this.textContent = ""
   }
 
-  attributeChangedCallback(_name: string, oldValue: string | null, newValue: string | null) {
-    console.log(`Attribute changed: ${_name}, oldValue: ${oldValue}, newValue: ${newValue}`)
+  // Lifecycle methods
+  attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+    if (!this.isInitialized) return
+
+    if (this.isUpdatingFromToolbar) {
+      // Even when updating from toolbar, we need to re-render for some changes
+      if (["indent", "expanded", "theme", "search-term"].includes(name)) {
+        // Force re-render for these critical attributes
+        this.isUpdatingFromToolbar = false
+        this.debouncedRender()
+        return
+      }
+      return
+    }
+
     if (oldValue !== newValue) {
-      this.render()
+      this.debouncedRender()
     }
   }
 
-  connectedCallback() {
-    this.render()
+  private debouncedRender(): void {
+    if (this.renderTimeout) {
+      clearTimeout(this.renderTimeout)
+    }
+    this.renderTimeout = window.setTimeout(() => {
+      this.render()
+    }, 10)
+  }
 
-    // Watch for content changes
+  connectedCallback(): void {
+    this.render().then(() => {
+      this.isInitialized = true
+    })
+
     this.observer = new MutationObserver(() => {
-      // Only react to content changes if no data attribute is set
-      if (!this.hasAttribute("data")) {
-        this.render()
+      if (!this.hasAttribute("data") && this.isInitialized) {
+        this.debouncedRender()
       }
     })
 
@@ -280,43 +331,130 @@ export class JsonViewer extends HTMLElement {
     })
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
+    this.isInitialized = false
+
+    if (this.renderTimeout) {
+      clearTimeout(this.renderTimeout)
+      this.renderTimeout = undefined
+    }
+
     if (this.observer) {
       this.observer.disconnect()
     }
-  }
-  private observer?: MutationObserver
 
-  private renderToolbar() {
-    if (!this.dataContainer) return
+    if (this.toolbar) {
+      this.toolbar.remove()
+      this.toolbar = null
+    }
+  }
+
+  private renderToolbar(): void {
+    if (!this.toolbarContainer) return
 
     if (!this.toolbar) {
       this.toolbar = new Toolbar({
-        parent: this.dataContainer,
+        parent: this.toolbarContainer,
         onCopyAll: () => {
-          const json = this.dataContainer?.querySelector(".json-data")?.textContent || ""
-          navigator.clipboard.writeText(json).then(() => {
-            console.log("Copied to clipboard:", json.length)
-          })
+          try {
+            // Get the original data and stringify it cleanly
+            const dataParser = this.dataParser
+            if (dataParser) {
+              dataParser.getParsedData().then((result) => {
+                if (result.data) {
+                  const cleanJson = JSON.stringify(result.data, null, this.indent || 2)
+                  navigator.clipboard
+                    .writeText(cleanJson)
+                    .then(() => {
+                      console.log("Copied clean JSON to clipboard:", cleanJson.length)
+                    })
+                    .catch((err) => {
+                      console.error("Failed to copy to clipboard:", err)
+                    })
+                }
+              })
+            } else {
+              // Fallback: try to parse the original data attribute
+              const rawData = this.data
+              const parsedData = JSON.parse(rawData)
+              const cleanJson = JSON.stringify(parsedData, null, this.indent || 2)
+              navigator.clipboard.writeText(cleanJson)
+            }
+          } catch (error) {
+            console.error("Failed to copy JSON:", error)
+            // Ultimate fallback
+            navigator.clipboard.writeText(this.data)
+          }
         },
         onStateChange: (changes) => {
           console.log("Toolbar state changed:", changes)
-          switch (Object.keys(changes)[0]) {
-            case "searchTerm":
-              this.searchTerm = changes.searchTerm!
-              break
-            case "expandLevel":
-              this.expanded = changes.expandLevel || 0
-              break
-            case "indent":
-              this.indent = changes.indent || 0
-              break
-            case "infosEnabled":
-              this.showInfos = changes.infosEnabled || false
-              break
-            case "theme":
-              this.theme = changes.theme || JsonViewer.defaultTheme
-              break
+
+          this.isUpdatingFromToolbar = true
+
+          try {
+            Object.entries(changes).forEach(([key, value]) => {
+              switch (key) {
+                case "searchTerm":
+                  if (this.searchTerm !== value) {
+                    this.setAttribute("search-term", value as string)
+                  }
+                  break
+                case "expandLevel":
+                  if (this.expanded !== value) {
+                    this.setAttribute("expanded", (value || 0).toString())
+                  }
+                  break
+                case "indent":
+                  if (this.indent !== value) {
+                    this.setAttribute("indent", (value || 0).toString())
+                  }
+                  break
+                case "infosEnabled":
+                  if (this.showInfos !== value) {
+                    this.setAttribute("show-infos", (value || false).toString())
+                    // Also update the individual show flags
+                    this.setAttribute("show-data-types", (value || false).toString())
+                    this.setAttribute("show-copy", (value || false).toString())
+                    this.setAttribute("show-size", (value || false).toString())
+                  }
+                  break
+                case "theme":
+                  if (this.theme !== value) {
+                    this.setAttribute("theme", (value as string) || JsonViewer.defaultTheme)
+                  }
+                  break
+              }
+            })
+          } finally {
+            // Clear the flag and force a render for toolbar changes
+            setTimeout(() => {
+              this.isUpdatingFromToolbar = false
+
+              // Force immediate update for info changes
+              if (changes.infosEnabled !== undefined) {
+                console.log("Info state changed, updating renderer")
+                if (this.rendererContainer) {
+                  this.rendererContainer.update({
+                    expanded: this.expanded,
+                    indent: this.indent,
+                    showDataTypes: this.showInfos, // Use showInfos for all info displays
+                    showCopy: this.showInfos,
+                    showSize: this.showInfos,
+                    expandIconType: this.expandIconType,
+                    searchTerm: this.searchTerm,
+                  })
+                }
+                // Also update container classes immediately
+                if (this.dataContainer) {
+                  this.dataContainer.classList.toggle("show-data-types", this.showInfos)
+                  this.dataContainer.classList.toggle("show-copy", this.showInfos)
+                  this.dataContainer.classList.toggle("show-size", this.showInfos)
+                }
+              }
+
+              // Force render for other changes
+              this.forceRender()
+            }, 0)
           }
         },
         config: {
@@ -335,7 +473,7 @@ export class JsonViewer extends HTMLElement {
           expandLevel: this.expanded,
           indent: this.indent,
           theme: this.theme,
-          searchTerm: "",
+          searchTerm: this.searchTerm,
           dataSize: new TextEncoder().encode(this.data).length,
           infosEnabled: this.showInfos,
         },
@@ -350,7 +488,7 @@ export class JsonViewer extends HTMLElement {
         showThemeSelect: this.toolbarShowThemeSelect,
         showInfos: this.toolbarShowInfos,
       })
-      console.log("Updating toolbar state with current attributes", this.showInfos)
+
       this.toolbar.updateState({
         searchTerm: this.searchTerm,
         expandLevel: this.expanded,
@@ -362,52 +500,111 @@ export class JsonViewer extends HTMLElement {
     }
   }
 
-  private async render() {
+  // Add method to force re-render (bypasses cache)
+  private forceRender(): void {
+    this.cachedData = null
+    this.rendererContainer = null // Clear renderer cache
+    this.render()
+  }
+
+  private async render(): Promise<void> {
     if (!this.shadowRoot) return
 
+    // Initialize styles
     if (!this.stylesContainer) {
       this.stylesContainer = document.createElement("style")
       this.shadowRoot.appendChild(this.stylesContainer)
       this.stylesContainer.textContent = styles
     }
-    if (!this.themeSyteles) {
-      this.themeSyteles = document.createElement("style")
-      this.shadowRoot.appendChild(this.themeSyteles)
-    }
-    if (this.cachedThemeStyles !== this.theme) {
-      this.cachedThemeStyles = this.theme
-      this.themeSyteles.textContent = themeStyles(this.theme)
+
+    if (!this.themeStyles) {
+      this.themeStyles = document.createElement("style")
+      this.shadowRoot.appendChild(this.themeStyles)
     }
 
+    // Update theme styles
+    if (this.cachedThemeStyles !== this.theme) {
+      this.cachedThemeStyles = this.theme
+      this.themeStyles.textContent = themeStyles(this.theme)
+    }
+
+    // Initialize main container
     if (!this.dataContainer) {
       this.dataContainer = document.createElement("div")
       this.dataContainer.className = "container"
-
       this.shadowRoot.appendChild(this.dataContainer)
     }
 
-    // Update data container styles based on attributes
+    // Initialize toolbar container
+    if (!this.toolbarContainer) {
+      this.toolbarContainer = document.createElement("div")
+      this.toolbarContainer.className = "toolbar-container"
+      this.dataContainer.appendChild(this.toolbarContainer)
+    }
 
+    // Initialize JSON data container
+    if (!this.jsonDataContainer) {
+      this.jsonDataContainer = document.createElement("div")
+      this.jsonDataContainer.className = "json-container"
+      this.dataContainer.appendChild(this.jsonDataContainer)
+    }
+
+    // Update container classes
     this.dataContainer.classList.toggle("show-data-types", this.showDataTypes)
     this.dataContainer.classList.toggle("show-size", this.showSize)
     this.dataContainer.classList.toggle("show-copy", this.showCopy)
     this.dataContainer.classList.toggle("show-loading-status", this.showLoadingStatus)
     this.dataContainer.classList.toggle("show-errors", this.showErrors)
 
-    if (this.cachedData === this.data) {
-      // If data hasn't changed, no need to re-render
+    // Handle toolbar visibility
+    if (this.showToolbar) {
+      this.toolbarContainer.style.display = "block"
+      this.renderToolbar()
+    } else {
+      this.toolbarContainer.style.display = "none"
+      if (this.toolbar) {
+        this.toolbar.remove()
+        this.toolbar = null
+      }
+    }
+
+    // Always update toolbar state if it exists
+    if (this.showToolbar && this.toolbar) {
+      this.toolbar.updateState({
+        searchTerm: this.searchTerm,
+        expandLevel: this.expanded,
+        indent: this.indent,
+        theme: this.theme,
+        infosEnabled: this.showInfos,
+        dataSize: new TextEncoder().encode(this.data).length,
+      })
+    }
+
+    // Check if we need to re-render JSON (either data changed OR toolbar actions)
+    const needsJsonRerender = this.cachedData !== this.data || this.isUpdatingFromToolbar
+
+    if (!needsJsonRerender) {
+      // Even if we don't re-render, update the existing renderer with new settings
+      if (this.rendererContainer) {
+        this.rendererContainer.update({
+          expanded: this.expanded,
+          indent: this.indent,
+          showDataTypes: this.showDataTypes,
+          showCopy: this.showCopy,
+          showSize: this.showSize,
+          expandIconType: this.expandIconType,
+          searchTerm: this.searchTerm,
+        })
+      }
       return
     }
 
-    // Render toolbar if enabled
-    if (this.showToolbar) this.renderToolbar()
-    else this.toolbar?.remove()
-
-    let jsonData = this.dataContainer.querySelector(".json-data")
+    // Render JSON data
+    let jsonData = this.jsonDataContainer.querySelector(".json-data")
     if (!jsonData) {
       jsonData = document.createElement("div")
       jsonData.className = "json-data"
-      this.dataContainer.appendChild(jsonData)
+      this.jsonDataContainer.appendChild(jsonData)
     }
 
     // Create or update parser
@@ -418,41 +615,89 @@ export class JsonViewer extends HTMLElement {
     }
 
     if (this.dataParser.isUrlData && this.showLoadingStatus) {
-      //Show spinner
       jsonData.innerHTML = `
-        <div class="spinner>>
-          <div class="spinner-dot1"></div>
-          <div class="spinner-dot2"></div>
-          <div class="spinner-dot3"></div>
-        </div>
-      `
+      <div class="spinner">
+        <div class="spinner-dot1"></div>
+        <div class="spinner-dot2"></div>
+        <div class="spinner-dot3"></div>
+      </div>
+    `
     }
-    const result = await this.dataParser.getParsedData()
 
-    if (this.showErrors && (result.error || !result.data)) {
-      jsonData.innerHTML = `
+    try {
+      const result = await this.dataParser.getParsedData()
+
+      if (this.showErrors && (result.error || !result.data)) {
+        jsonData.innerHTML = `
         <div class="error-container">
           Invalid JSON data
           <details>
             <summary>Raw data:</summary>
-            <pre >${this.data}</pre>
+            <pre>${this.escapeHtml(this.data)}</pre>
             <p>Error: ${result.error || "Unknown error"}</p>
           </details>
         </div>
       `
-      return
+        this.cachedData = this.data
+        this.rendererContainer = null // Clear renderer on error
+        return
+      }
+
+      const parsedData = result.data
+      jsonData.innerHTML = ""
+
+      // Use the new renderer
+      const renderedElement = this.renderJson(parsedData)
+      jsonData.appendChild(renderedElement)
+
+      this.cachedData = this.data
+    } catch (error) {
+      console.error("Error rendering JSON:", error)
+      this.rendererContainer = null // Clear renderer on error
+
+      if (this.showErrors) {
+        jsonData.innerHTML = `
+        <div class="error-container">
+          Error rendering JSON data
+          <p>Error: ${error instanceof Error ? error.message : "Unknown error"}</p>
+        </div>
+      `
+      }
+      this.cachedData = this.data
     }
-
-    const parsedData = result.data
-
-    jsonData.innerHTML = "" // Clear previous content
-    jsonData.appendChild(this.renderJson(parsedData))
   }
 
   private renderJson(data: any): HTMLElement {
-    const pre = document.createElement("pre")
-    pre.className = "json-data"
-    pre.innerHTML = JSON.stringify(data, null, this.indent)
-    return pre
+    const container = document.createElement("div")
+    container.className = "json-data"
+    try {
+      this.rendererContainer = new Container(container, {
+        data: data,
+        expanded: this.expanded,
+        indent: this.indent,
+        showDataTypes: this.showDataTypes,
+        showCopy: this.showCopy,
+        showSize: this.showSize,
+        expandIconType: this.expandIconType,
+        searchTerm: this.searchTerm,
+      })
+      return container
+    } catch (error) {
+      console.error("Error creating renderer:", error)
+      this.rendererContainer = null
+      // Fallback to simple pre element
+      const pre = document.createElement("pre")
+      pre.className = "json-data"
+      pre.textContent = "Error: Unable to render JSON data"
+      return pre
+    }
+  }
+
+  private escapeHtml(text: string): string {
+    const div = document.createElement("div")
+    div.textContent = text
+    return div.innerHTML
   }
 }
+
+export default JsonViewer
