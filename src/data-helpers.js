@@ -69,3 +69,13 @@ export const parseJson = (jsonString) => {
   // Parse the modified JSON string using the custom reviver function
   return JSON.parse(fixedJsonString, customReviver)
 }
+
+// This function escape HTML characters
+export const escapeHtml = (unsafe) => {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+};
