@@ -1992,11 +1992,11 @@ SOFTWARE.
       return this.#options;
     }
     connectedCallback() {
-      window.addEventListener("DOMContentLoaded", () => {
-        const data = this.textContent;
+      const data = this.textContent;
+      if (data.trim()) {
         this.textContent = "";
-        if (data) this.data = data;
-      });
+        this.data = data;
+      }
     }
     attributeChangedCallback(name, oldValue, newValue) {
       if (_JsonViewer.allowedAttributes.indexOf(name) > -1) {
