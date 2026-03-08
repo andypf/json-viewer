@@ -1,5 +1,9 @@
 name: CI Check
 
+# Set minimal permissions for the workflow
+permissions:
+  contents: read
+
 on:
   pull_request:
     types:
