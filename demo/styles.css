@@ -82,11 +82,12 @@ body::before {
 }
 
 .title .slogan {
-  color: var(--text-secondary);
+  color: var(--primary);
   font-size: 1.1rem;
   font-weight: 300;
   letter-spacing: 0.5px;
   animation: fadeIn 0.8s ease-out 0.3s both;
+  text-shadow: 0 0 20px rgba(232, 119, 46, 0.3);
 }
 
 @keyframes fadeIn {
@@ -133,11 +134,28 @@ form.options {
   box-shadow: var(--shadow);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: slideInLeft 0.6s ease-out 0.2s both;
+  position: relative;
+}
+
+form.options::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary) 0%, transparent 100%);
+  border-radius: 20px 20px 0 0;
+  opacity: 0.6;
 }
 
 form.options:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.5);
+  box-shadow: 0 12px 48px 0 rgba(232, 119, 46, 0.3);
+}
+
+form.options:hover::after {
+  opacity: 1;
 }
 
 .options-container {
@@ -183,6 +201,11 @@ form.options:hover {
   text-transform: uppercase;
   font-size: 0.75rem;
   opacity: 0.9;
+  transition: color 0.3s ease;
+}
+
+.input-element:hover > label:first-child {
+  color: var(--primary);
 }
 
 select,
@@ -230,11 +253,28 @@ select option {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: slideInRight 0.6s ease-out 0.2s both;
   overflow: hidden;
+  position: relative;
+}
+
+.display::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, var(--primary) 100%);
+  border-radius: 20px 20px 0 0;
+  opacity: 0.6;
 }
 
 .display:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.5);
+  box-shadow: 0 12px 48px 0 rgba(232, 119, 46, 0.3);
+}
+
+.display:hover::after {
+  opacity: 1;
 }
 
 /* Modern toggle switch */
@@ -295,28 +335,43 @@ input:checked + .slider:before {
 
 /* Code display styling */
 pre.html-code {
-  background: rgba(0, 0, 0, 0.3);
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   padding: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(232, 119, 46, 0.2);
   border-radius: 16px;
   overflow: auto;
   font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', monospace;
   font-size: 14px;
   line-height: 1.6;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(232, 119, 46, 0.1);
+  transition: all 0.3s ease;
+}
+
+pre.html-code:hover {
+  border-color: rgba(232, 119, 46, 0.4);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(232, 119, 46, 0.2);
 }
 
 pre.html-code code {
   display: block;
   white-space: pre;
-  color: #a8dadc;
+  color: #e0e7ff;
 }
 
 .source-code {
   width: 100%;
-  height: 400px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-height: 150px;
+  max-height: 800px;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(232, 119, 46, 0.2);
   border-radius: 16px;
   padding: 20px;
   color: var(--text-primary);
@@ -324,7 +379,24 @@ pre.html-code code {
   font-size: 14px;
   line-height: 1.6;
   resize: vertical;
-  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(232, 119, 46, 0.1);
+  transition: all 0.3s ease;
+  outline: none;
+  overflow-y: auto;
+}
+
+.source-code:focus {
+  border-color: var(--primary);
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 0 3px rgba(232, 119, 46, 0.2),
+    0 0 30px rgba(232, 119, 46, 0.3);
+}
+
+.source-code:hover {
+  border-color: rgba(232, 119, 46, 0.4);
 }
 
 .hidden {

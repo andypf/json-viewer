@@ -164,7 +164,18 @@ showSourceBox.addEventListener("change", function () {
 
 const sourceCode = document.getElementById("source-code")
 sourceCode.value = JSON.stringify(JSON.parse(jsonViewer.options.data), null, 2)
+
+// Auto-resize textarea to fit content
+const autoResize = (textarea) => {
+  textarea.style.height = 'auto'
+  textarea.style.height = (textarea.scrollHeight + 2) + 'px'
+}
+
+// Initial resize
+autoResize(sourceCode)
+
 sourceCode.addEventListener("input", function () {
+  autoResize(this)
   try {
     const newData = JSON.parse(this.value)
     jsonViewer.data = newData
