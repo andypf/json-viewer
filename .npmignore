@@ -2,6 +2,16 @@ src
 demo
 docker
 tests
+coverage
+.github
+.claude
 babel.config.js
 esbuild.config.mjs
 jest.config.js
+.prettierrc
+eslint.config.mjs
+*.log
+.DS_Store
+.env
+.vscode
+.idea
