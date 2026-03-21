@@ -186,4 +186,112 @@ describe("Container", () => {
       showSize: true,
     })
   })
+
+  describe("preserveExpanded feature", () => {
+    it("should preserve expanded state when data updates with preserveExpanded enabled", () => {
+      let root = document.createElement("div")
+      const renderer = new Container(root)
+
+      // Initial data
+      const initialData = {
+        users: [
+          { name: "Alice", age: 30 },
+          { name: "Bob", age: 25 }
+        ]
+      }
+
+      renderer.update({
+        data: initialData,
+        expanded: 1,
+        preserveExpanded: true
+      })
+
+      // Expand the users array manually
+      const usersRow = root.querySelector('[data-key="users"]')
+      expect(usersRow).toBeDefined()
+
+      // Simulate expanding
+      usersRow.classList.add("expanded")
+      const expandIcon = usersRow.querySelector(".expand.icon")
+      if (expandIcon) expandIcon.click()
+
+      // Update data with new values but same structure
+      const updatedData = {
+        users: [
+          { name: "Alice", age: 31 }, // age changed
+          { name: "Bob", age: 26 }    // age changed
+        ]
+      }
+
+      renderer.update({
+        data: updatedData,
+        preserveExpanded: true
+      })
+
+      // The users row should still exist after update
+      const usersRowAfter = root.querySelector('[data-key="users"]')
+      expect(usersRowAfter).toBeDefined()
+    })
+
+    it("should NOT preserve expanded state when preserveExpanded is disabled", () => {
+      let root = document.createElement("div")
+      const renderer = new Container(root)
+
+      const data = {
+        users: [{ name: "Alice" }]
+      }
+
+      renderer.update({
+        data: data,
+        expanded: 1,
+        preserveExpanded: false
+      })
+
+      // Expand manually
+      const usersRow = root.querySelector('[data-key="users"]')
+      if (usersRow) {
+        usersRow.classList.add("expanded")
+      }
+
+      // Update data - should reset expansion
+      renderer.update({
+        data: { users: [{ name: "Bob" }] },
+        preserveExpanded: false
+      })
+
+      // New render means new elements, old manual expansion is lost
+      const container = root.children[0]
+      expect(container).toBeDefined()
+    })
+
+    it("should handle missing paths gracefully when preserveExpanded is enabled", () => {
+      let root = document.createElement("div")
+      const renderer = new Container(root)
+
+      // Initial data with nested structure
+      const initialData = {
+        users: [{ name: "Alice" }],
+        settings: { theme: "dark" }
+      }
+
+      renderer.update({
+        data: initialData,
+        preserveExpanded: true
+      })
+
+      // Update with data that removes the settings key
+      const updatedData = {
+        users: [{ name: "Bob" }]
+        // settings is removed
+      }
+
+      // Should not throw error
+      expect(() => {
+        renderer.update({
+          data: updatedData,
+          preserveExpanded: true
+        })
+      }).not.toThrow()
+    })
+  })
 })

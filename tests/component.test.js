@@ -158,4 +158,24 @@ describe("JsonViewer", () => {
     jsonViewer.setAttribute("show-size", "true")
     expect(jsonViewer.shadowRoot.querySelector(".icon.info").classList).toContain("active")
   })
+
+  it("should set preserveExpanded", () => {
+    const jsonViewer = document.createElement("andypf-json-viewer")
+    jsonViewer.preserveExpanded = true
+    expect(jsonViewer.options.preserveExpanded).toEqual(true)
+  })
+
+  it("should set preserveExpanded as string", () => {
+    const jsonViewer = document.createElement("andypf-json-viewer")
+    jsonViewer.preserveExpanded = "true"
+    expect(jsonViewer.options.preserveExpanded).toEqual(true)
+  })
+
+  it("should warn for invalid preserveExpanded", () => {
+    console.warn = jest.fn()
+    const jsonViewer = document.createElement("andypf-json-viewer")
+    jsonViewer.preserveExpanded = "invalid"
+    expect(jsonViewer.options.preserveExpanded).not.toEqual("invalid")
+    expect(console.warn).toHaveBeenCalledWith(expect.anything(), expect.stringContaining("should be a boolean"))
+  })
 })
