@@ -31,6 +31,7 @@ const DEFAULT_PARAMS = {
   expandIconType: "arrow",
   showCopy: true,
   showSize: true,
+  preserveExpanded: false,
   data: null,
 }
 
@@ -116,6 +117,10 @@ class JsonViewer extends HTMLElement {
     this.#validateAndUpdate("showCopy", showCopy, validateBoolean)
   }
 
+  set preserveExpanded(value) {
+    this.#validateAndUpdate("preserveExpanded", value, validateBoolean)
+  }
+
   // validate and set theme
   // theme can be a string or an object
   // validationg theme is more complex than other attributes
@@ -198,6 +203,7 @@ class JsonViewer extends HTMLElement {
       showToolbar: this.#options.showToolbar,
       showSize: this.#options.showSize,
       showCopy: this.#options.showCopy,
+      preserveExpanded: this.#options.preserveExpanded,
     })
   }
 }

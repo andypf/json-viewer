@@ -1,12 +1,23 @@
 import { dataType, escapeHtml } from "../data-helpers"
 
-const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow }) {
+const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null }) {
   const row = document.createElement("div")
   this.maxLevel = level
 
+  // Build the current path for this node
+  const currentPath = path ? `${path}.${key}` : key !== "" ? String(key) : ""
+
   const thisDataType = dataType(value)
   const hasChildren = thisDataType === "array" || thisDataType === "object"
-  let isExpanded = expanded === true || expanded > level
+
+  // Check if this path should be expanded based on expandedPaths
+  let isExpanded
+  if (expandedPaths && currentPath) {
+    isExpanded = expandedPaths.has(currentPath)
+  } else {
+    isExpanded = expanded === true || expanded > level
+  }
+
   let expandIcon, childrenRows, keyEl, valueEl
 
   // ROW CONTAINER
@@ -21,9 +32,15 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
 
   const toggleExpand = () => {
     row.classList.toggle("expanded")
+    const isNowExpanded = row.classList.contains("expanded")
+
+    // Notify about path toggle for state preservation
+    if (onPathToggle && currentPath) {
+      onPathToggle(currentPath, isNowExpanded)
+    }
 
     if (onToggleExpand) {
-      if (row.classList.contains("expanded")) {
+      if (isNowExpanded) {
         onToggleExpand(level + 1)
       } else {
         onToggleExpand(level)
@@ -103,6 +120,9 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
         onToggleExpand,
         level: level + 1,
         parentRow: row,
+        path: currentPath,
+        expandedPaths,
+        onPathToggle,
       })
       childrenRows.push(subRow)
       row.appendChild(subRow.element)

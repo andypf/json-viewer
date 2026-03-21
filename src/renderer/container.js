@@ -10,13 +10,30 @@ function Container(root, options = {}) {
 
   const cache = {}
 
-  this.update = ({ data, expanded, indent, expandIconType, showDataTypes, showToolbar, showSize, showCopy }) => {
+  // Store expanded paths when preserveExpanded is enabled
+  let expandedPaths = new Set()
+
+  this.update = ({ data, expanded, indent, expandIconType, showDataTypes, showToolbar, showSize, showCopy, preserveExpanded }) => {
+    // Handle preserveExpanded option
+    if (preserveExpanded !== undefined) {
+      cache.preserveExpanded = preserveExpanded
+    }
+
     // DATA
     if (data) {
       const newDataCompareString = JSON.stringify(data)
       // if data has not changed, do nothing
       if (cache.dataComapreString !== newDataCompareString) {
         cache.dataComapreString = newDataCompareString
+
+        // Callback to track expansion state changes
+        const onPathToggle = cache.preserveExpanded ? (path, isExpanded) => {
+          if (isExpanded) {
+            expandedPaths.add(path)
+          } else {
+            expandedPaths.delete(path)
+          }
+        } : null
 
         dataRow = new DataRow({
           key: "",
@@ -27,6 +44,9 @@ function Container(root, options = {}) {
             if (toolbar) toolbar.expanded = level
             cache.expanded = level
           },
+          path: "",
+          expandedPaths: cache.preserveExpanded ? expandedPaths : null,
+          onPathToggle,
         })
         containerElem.replaceChildren(dataRow.element)
         if (cache.showToolbar && toolbar) {

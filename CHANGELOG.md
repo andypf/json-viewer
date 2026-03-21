@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.3.0] - 2026-03-21
 
 ### Added
+- **preserve-expanded attribute**: Automatically preserves node expansion state when data updates (#68)
+  - Usage: `<json-viewer preserve-expanded="true">`
+  - When enabled, manually expanded/collapsed nodes remain in their state after data updates
+  - Perfect for live data monitoring, dashboards, and periodic refreshes
 - Title attributes to all toolbar buttons for improved UX (#issue)
 - Full accessibility support for toolbar buttons with ARIA labels and semantic HTML
 - Focus-visible styling for keyboard navigation
