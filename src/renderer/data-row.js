@@ -147,7 +147,14 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     if (hasChildren) {
       textToCopy = JSON.stringify(value, null, indent)
     } else {
-      textToCopy = String(value)
+      // Handle special cases: null and undefined should be represented as their keyword strings
+      if (value === null) {
+        textToCopy = "null"
+      } else if (value === undefined) {
+        textToCopy = "undefined"
+      } else {
+        textToCopy = String(value)
+      }
     }
     navigator.clipboard.writeText(textToCopy)
   })
