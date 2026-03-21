@@ -141,7 +141,15 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   const copyIconWrapper = document.createElement("span")
   copyIconWrapper.className = "icon-wrapper"
   copyIconWrapper.addEventListener("click", () => {
-    navigator.clipboard.writeText(JSON.stringify(value, null, indent))
+    // For primitive values (string, number, boolean, null, undefined), copy raw value
+    // For objects and arrays, copy formatted JSON
+    let textToCopy
+    if (hasChildren) {
+      textToCopy = JSON.stringify(value, null, indent)
+    } else {
+      textToCopy = String(value)
+    }
+    navigator.clipboard.writeText(textToCopy)
   })
   copyIconWrapper.appendChild(copyIcon)
   keyValueWrapper.appendChild(copyIconWrapper)
