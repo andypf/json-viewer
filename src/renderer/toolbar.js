@@ -19,85 +19,105 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
   searchWrapper.className = "search-wrapper"
   toolbar.appendChild(searchWrapper)
 
-  // REFRESH ICON
-  const refreshIconWrapper = document.createElement("div")
-  refreshIconWrapper.className = "icon-wrapper clickable"
-  refreshIconWrapper.setAttribute("title", "Reset to defaults")
-  options.appendChild(refreshIconWrapper)
+  // REFRESH BUTTON
+  const refreshButton = document.createElement("button")
+  refreshButton.type = "button"
+  refreshButton.className = "icon-wrapper"
+  refreshButton.setAttribute("title", "Reset to defaults")
+  refreshButton.setAttribute("aria-label", "Reset to defaults")
+  options.appendChild(refreshButton)
   const refreshIcon = document.createElement("span")
   refreshIcon.className = "icon refresh"
-  refreshIconWrapper.onclick = () => this.refresh()
-  refreshIconWrapper.appendChild(refreshIcon)
+  refreshIcon.setAttribute("aria-hidden", "true")
+  refreshButton.onclick = () => this.refresh()
+  refreshButton.appendChild(refreshIcon)
 
-  // EXPAND ICON
-  const expandIconWrapper = document.createElement("div")
-  expandIconWrapper.className = "icon-wrapper clickable"
-  expandIconWrapper.setAttribute("title", "Expand")
-  options.appendChild(expandIconWrapper)
+  // EXPAND BUTTON
+  const expandButton = document.createElement("button")
+  expandButton.type = "button"
+  expandButton.className = "icon-wrapper"
+  expandButton.setAttribute("title", "Expand")
+  expandButton.setAttribute("aria-label", "Expand one level")
+  options.appendChild(expandButton)
   const expandIcon = document.createElement("span")
   expandIcon.className = "icon plus"
-  expandIconWrapper.appendChild(expandIcon)
-  expandIconWrapper.onclick = () => {
+  expandIcon.setAttribute("aria-hidden", "true")
+  expandButton.appendChild(expandIcon)
+  expandButton.onclick = () => {
     if (this.expanded < this.maxExpandLevel) this.expanded += 1
     onChange({ expanded: this.expanded })
   }
 
-  // COLLAPSE ICON
-  const collapseIconWrapper = document.createElement("div")
-  collapseIconWrapper.className = "icon-wrapper clickable"
-  collapseIconWrapper.setAttribute("title", "Collapse")
-  options.appendChild(collapseIconWrapper)
+  // COLLAPSE BUTTON
+  const collapseButton = document.createElement("button")
+  collapseButton.type = "button"
+  collapseButton.className = "icon-wrapper"
+  collapseButton.setAttribute("title", "Collapse")
+  collapseButton.setAttribute("aria-label", "Collapse one level")
+  options.appendChild(collapseButton)
 
   const collapseIcon = document.createElement("span")
   collapseIcon.className = "icon minus"
-  collapseIconWrapper.appendChild(collapseIcon)
-  collapseIconWrapper.onclick = () => {
+  collapseIcon.setAttribute("aria-hidden", "true")
+  collapseButton.appendChild(collapseIcon)
+  collapseButton.onclick = () => {
     if (this.expanded > this.maxExpandLevel) this.expanded = this.maxExpandLevel
     if (this.expanded > 0) this.expanded -= 1
     onChange({ expanded: this.expanded })
   }
 
-  // INDENT ICON
-  const indentIconWrapper = document.createElement("div")
-  indentIconWrapper.className = "icon-wrapper clickable"
-  indentIconWrapper.setAttribute("title", "Increase indent")
-  options.appendChild(indentIconWrapper)
+  // INDENT BUTTON
+  const indentButton = document.createElement("button")
+  indentButton.type = "button"
+  indentButton.className = "icon-wrapper"
+  indentButton.setAttribute("title", "Increase indent")
+  indentButton.setAttribute("aria-label", "Increase indent")
+  options.appendChild(indentButton)
   const indentIcon = document.createElement("span")
   indentIcon.className = "icon indent"
-  indentIconWrapper.onclick = () => {
+  indentIcon.setAttribute("aria-hidden", "true")
+  indentButton.onclick = () => {
     this.indent += 1
     onChange({ indent: this.indent })
   }
-  indentIconWrapper.appendChild(indentIcon)
+  indentButton.appendChild(indentIcon)
 
-  // OUTDENT ICON
-  const outdentIconWrapper = document.createElement("div")
-  outdentIconWrapper.className = "icon-wrapper clickable"
-  outdentIconWrapper.setAttribute("title", "Decrease indent")
-  options.appendChild(outdentIconWrapper)
+  // OUTDENT BUTTON
+  const outdentButton = document.createElement("button")
+  outdentButton.type = "button"
+  outdentButton.className = "icon-wrapper"
+  outdentButton.setAttribute("title", "Decrease indent")
+  outdentButton.setAttribute("aria-label", "Decrease indent")
+  options.appendChild(outdentButton)
   const outdentIcon = document.createElement("span")
   outdentIcon.className = "icon outdent"
-  outdentIconWrapper.onclick = () => {
+  outdentIcon.setAttribute("aria-hidden", "true")
+  outdentButton.onclick = () => {
     this.indent -= 1
     onChange({ indent: this.indent })
   }
-  outdentIconWrapper.appendChild(outdentIcon)
+  outdentButton.appendChild(outdentIcon)
 
-  // INFO ICON
-  const infoIconWrapper = document.createElement("div")
-  infoIconWrapper.className = "icon-wrapper clickable"
-  infoIconWrapper.setAttribute("title", "Toggle details")
-  options.appendChild(infoIconWrapper)
+  // INFO BUTTON
+  const infoButton = document.createElement("button")
+  infoButton.type = "button"
+  infoButton.className = "icon-wrapper"
+  infoButton.setAttribute("title", "Toggle details")
+  infoButton.setAttribute("aria-label", "Toggle details")
+  infoButton.setAttribute("aria-pressed", this.showDetails ? "true" : "false")
+  options.appendChild(infoButton)
   const infoIcon = document.createElement("span")
   infoIcon.className = `icon info ${this.showDetails ? "active" : ""}`
-  infoIconWrapper.onclick = () => {
+  infoIcon.setAttribute("aria-hidden", "true")
+  infoButton.onclick = () => {
     infoIcon.classList.toggle("active")
     this.showDetails = !this.showDetails
+    infoButton.setAttribute("aria-pressed", this.showDetails ? "true" : "false")
     onChange({
       showDetails: this.showDetails,
     })
   }
-  infoIconWrapper.appendChild(infoIcon)
+  infoButton.appendChild(infoIcon)
 
   // SEARCH INPUT
   const searchIcon = document.createElement("span")
@@ -121,6 +141,7 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
 
   this.updateShowDetails = (value) => {
     this.showDetails = value
+    infoButton.setAttribute("aria-pressed", this.showDetails ? "true" : "false")
     if (this.showDetails) {
       infoIcon.classList.add("active")
     } else {

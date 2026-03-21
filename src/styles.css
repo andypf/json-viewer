@@ -25,11 +25,20 @@
   height: 15px;
   display: flex;
   align-items: center;
-
   padding: 2px 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
 }
 .toolbar .icon-wrapper:hover {
   background-color: var(--base02);
+  border-radius: 3px;
+}
+.toolbar .icon-wrapper:focus-visible {
+  outline: 2px solid var(--base0D);
+  outline-offset: 2px;
   border-radius: 3px;
 }
 .toolbar .icon-wrapper:first-child {
