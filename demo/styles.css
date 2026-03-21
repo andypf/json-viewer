@@ -91,6 +91,18 @@ body::before {
   letter-spacing: 0;
 }
 
+.title h1 .version {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+  padding: 4px 12px;
+  border-radius: 6px;
+  margin-left: 12px;
+  letter-spacing: 0;
+  border: 1px solid var(--border);
+}
+
 .title iframe {
   transition: opacity 0.2s ease;
 }
