@@ -188,7 +188,9 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
       indexes.forEach((index) => {
         found = true
         newHtml.push(string.slice(lastIndex, index))
-        newHtml.push(`<span class="match">${searchTerm}</span>`)
+        // Preserve original text casing by extracting from the source string
+        const matchedText = string.slice(index, index + searchTerm.length)
+        newHtml.push(`<span class="match">${matchedText}</span>`)
         lastIndex = index + searchTerm.length
       })
       newHtml.push(string.slice(lastIndex))
