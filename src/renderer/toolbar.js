@@ -22,6 +22,7 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
   // REFRESH ICON
   const refreshIconWrapper = document.createElement("div")
   refreshIconWrapper.className = "icon-wrapper clickable"
+  refreshIconWrapper.setAttribute("title", "Reset to defaults")
   options.appendChild(refreshIconWrapper)
   const refreshIcon = document.createElement("span")
   refreshIcon.className = "icon refresh"
@@ -31,6 +32,7 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
   // EXPAND ICON
   const expandIconWrapper = document.createElement("div")
   expandIconWrapper.className = "icon-wrapper clickable"
+  expandIconWrapper.setAttribute("title", "Expand")
   options.appendChild(expandIconWrapper)
   const expandIcon = document.createElement("span")
   expandIcon.className = "icon plus"
@@ -43,6 +45,7 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
   // COLLAPSE ICON
   const collapseIconWrapper = document.createElement("div")
   collapseIconWrapper.className = "icon-wrapper clickable"
+  collapseIconWrapper.setAttribute("title", "Collapse")
   options.appendChild(collapseIconWrapper)
 
   const collapseIcon = document.createElement("span")
@@ -57,6 +60,7 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
   // INDENT ICON
   const indentIconWrapper = document.createElement("div")
   indentIconWrapper.className = "icon-wrapper clickable"
+  indentIconWrapper.setAttribute("title", "Increase indent")
   options.appendChild(indentIconWrapper)
   const indentIcon = document.createElement("span")
   indentIcon.className = "icon indent"
@@ -69,6 +73,7 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
   // OUTDENT ICON
   const outdentIconWrapper = document.createElement("div")
   outdentIconWrapper.className = "icon-wrapper clickable"
+  outdentIconWrapper.setAttribute("title", "Decrease indent")
   options.appendChild(outdentIconWrapper)
   const outdentIcon = document.createElement("span")
   outdentIcon.className = "icon outdent"
@@ -81,6 +86,7 @@ const Toolbar = function ({ expanded, indent, onChange, onSearch, showDetails })
   // INFO ICON
   const infoIconWrapper = document.createElement("div")
   infoIconWrapper.className = "icon-wrapper clickable"
+  infoIconWrapper.setAttribute("title", "Toggle details")
   options.appendChild(infoIconWrapper)
   const infoIcon = document.createElement("span")
   infoIcon.className = `icon info ${this.showDetails ? "active" : ""}`
