@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.1] - 2026-03-21
+
+### Added
+- Comprehensive test coverage for preserve-expanded feature (6 new tests)
+- Component-level validation tests for preserveExpanded property
+- Container-level integration tests for state preservation
+
+### Fixed
+- Test count increased from 142 to 148 tests, all passing
+
 ## [2.3.0] - 2026-03-21
 
 ### Added
