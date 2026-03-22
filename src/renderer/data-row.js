@@ -1,6 +1,6 @@
 import { dataType, escapeHtml } from "../data-helpers"
 
-const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null }) {
+const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true }) {
   const row = document.createElement("div")
   this.maxLevel = level
 
@@ -10,12 +10,20 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   const thisDataType = dataType(value)
   const hasChildren = thisDataType === "array" || thisDataType === "object"
 
+  // Check if collection is empty
+  const isEmpty = hasChildren && (thisDataType === "array" ? value.length === 0 : Object.keys(value).length === 0)
+
   // Check if this path should be expanded based on expandedPaths
   let isExpanded
   if (expandedPaths && currentPath) {
     isExpanded = expandedPaths.has(currentPath)
   } else {
     isExpanded = expanded === true || expanded > level
+  }
+
+  // Don't expand empty collections if expandEmpty is false
+  if (isEmpty && !expandEmpty) {
+    isExpanded = false
   }
 
   let expandIcon, childrenRows, keyEl, valueEl
@@ -117,6 +125,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
         value: value[key],
         expanded,
         indent,
+        expandEmpty,
         onToggleExpand,
         level: level + 1,
         parentRow: row,

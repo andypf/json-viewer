@@ -13,10 +13,15 @@ function Container(root, options = {}) {
   // Store expanded paths when preserveExpanded is enabled
   let expandedPaths = new Set()
 
-  this.update = ({ data, expanded, indent, expandIconType, showDataTypes, showToolbar, showSize, showCopy, preserveExpanded }) => {
+  this.update = ({ data, expanded, indent, expandIconType, showDataTypes, showToolbar, showSize, showCopy, preserveExpanded, expandEmpty }) => {
     // Handle preserveExpanded option
     if (preserveExpanded !== undefined) {
       cache.preserveExpanded = preserveExpanded
+    }
+
+    // Handle expandEmpty option
+    if (expandEmpty !== undefined) {
+      cache.expandEmpty = expandEmpty
     }
 
     // DATA
@@ -40,6 +45,7 @@ function Container(root, options = {}) {
           value: data,
           expanded,
           indent,
+          expandEmpty: cache.expandEmpty,
           onToggleExpand: (level) => {
             if (toolbar) toolbar.expanded = level
             cache.expanded = level
