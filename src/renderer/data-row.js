@@ -183,8 +183,10 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
 
   // this function highlights the search term
   const search = (searchTerm) => {
-    // create a regular expression from the search term
-    const regex = new RegExp(searchTerm, "gi")
+    // escape special regex characters to prevent ReDoS attacks
+    const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    // create a regular expression from the escaped search term
+    const regex = new RegExp(escapedTerm, "gi")
     // initialize an array of elements to search
     const searchElements = []
     // add the key and value elements to the array if they exist
