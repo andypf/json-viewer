@@ -45,7 +45,7 @@ function Container(root, options = {}) {
           value: data,
           expanded,
           indent,
-          expandEmpty: cache.expandEmpty,
+          expandEmpty: cache.expandEmpty !== undefined ? cache.expandEmpty : true,
           onToggleExpand: (level) => {
             if (toolbar) toolbar.expanded = level
             cache.expanded = level

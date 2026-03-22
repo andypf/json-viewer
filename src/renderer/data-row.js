@@ -22,7 +22,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   }
 
   // Don't expand empty collections if expandEmpty is false
-  if (isEmpty && !expandEmpty) {
+  if (isEmpty && expandEmpty === false) {
     isExpanded = false
   }
 
@@ -244,6 +244,10 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
 
     if (expanded !== undefined) {
       isExpanded = expanded === true || expanded > level
+      // Don't expand empty collections if expandEmpty is false
+      if (isEmpty && expandEmpty === false) {
+        isExpanded = false
+      }
       row.classList.toggle("expanded", isExpanded)
       if (expandIcon) expandIcon.title = isExpanded ? "Collapse" : "Expand"
     }

@@ -81,6 +81,7 @@ To include the "json-viewer" element in your HTML, you can pass options as attri
   expand-icon-type="arrow"
   show-copy="true"
   show-size="true"
+  expand-empty="false"
   data='{"example": "data"}'
 ></andypf-json-viewer>
 ```
@@ -129,6 +130,7 @@ jsonViewer.showToolbar = true
 jsonViewer.showSize = true
 jsonViewer.showCopy = true
 jsonViewer.expandIconType = "square"
+jsonViewer.expandEmpty = false
 jsonViewer.data = { example: "data" }
 ```
 
@@ -176,6 +178,8 @@ export default JsonViewer
 | `expandIconType` (`expand-icon-type`) | String                         | "square"        | The type of icons used for expanding and collapsing JSON nodes. You can choose "square", "circle" or "arrow".                                                                         |
 | `showCopy` (`show-copy`)              | Boolean                        | true            | Whether to show the copy button to copy the JSON data to the clipboard.                                                                                                               |
 | `showSize` (`show-size`)              | Boolean                        | true            | Whether to display the size (number of characters) of the JSON data.                                                                                                                  |
+| `expandEmpty` (`expand-empty`)        | Boolean                        | true            | Whether to automatically expand empty objects and arrays. When `false`, empty collections remain collapsed regardless of the `expanded` level, but can still be manually expanded.     |
+| `preserveExpanded` (`preserve-expanded`) | Boolean                     | false           | Whether to preserve the expanded/collapsed state of nodes when the data is updated.                                                                                                   |
 | `data`                                | Stringified JSON or URL String | (Not specified) | The JSON data to be visualized. You can provide it as a stringified JSON or a URL string. Alternatively, you can pass the data via the API as an object or as content within the tag. |
 
 ## Toolbar Functions

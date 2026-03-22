@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.3.2] - 2026-03-22
+
+### Added
+- **expand-empty attribute**: Control whether empty objects and arrays are automatically expanded (#31)
+  - Usage: `<json-viewer expand-empty="false">`
+  - When `false`, empty collections (`{}` and `[]`) remain collapsed regardless of the `expanded` level
+  - Users can still manually expand empty collections by clicking
+  - Default value is `true` to maintain backward compatibility
+- Test coverage for expand-empty feature (4 new tests)
+- Demo page updated to showcase expand-empty feature with empty collections
+
+### Fixed
+- **Security**: Fixed Regular Expression Denial of Service (ReDoS) vulnerability in search function (#32)
+  - User-supplied search terms are now properly escaped before creating RegExp
+  - Prevents malicious regex patterns from causing catastrophic backtracking
+  - Search functionality remains unchanged for end users
+
 ## [2.3.1] - 2026-03-21
 
 ### Added
@@ -61,6 +78,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Previous stable release
 
+[2.3.2]: https://github.com/andypf/json-viewer/compare/v2.3.1...v2.3.2
+[2.3.1]: https://github.com/andypf/json-viewer/compare/v2.3.0...v2.3.1
 [2.3.0]: https://github.com/andypf/json-viewer/compare/v2.2.4...v2.3.0
 [2.2.6]: https://github.com/andypf/json-viewer/compare/v2.2.4...v2.2.6
 [2.2.5]: https://github.com/andypf/json-viewer/compare/v2.2.4...v2.2.5
