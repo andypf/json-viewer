@@ -38,13 +38,47 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   keyValueWrapper.className = "key-value-wrapper"
   row.appendChild(keyValueWrapper)
 
-  const toggleExpand = () => {
+  const toggleExpand = (expandAll = false) => {
     row.classList.toggle("expanded")
     const isNowExpanded = row.classList.contains("expanded")
 
     // Notify about path toggle for state preservation
     if (onPathToggle && currentPath) {
       onPathToggle(currentPath, isNowExpanded)
+    }
+
+    // If expandAll is true (shift-click), recursively expand/collapse all children
+    if (expandAll && childrenRows) {
+      childrenRows.forEach((childRow) => {
+        const childElement = childRow.element
+        if (isNowExpanded) {
+          // Expand all children
+          if (!childElement.classList.contains("expanded")) {
+            childElement.classList.add("expanded")
+            // Notify about path toggle for each child
+            if (onPathToggle && childRow.currentPath) {
+              onPathToggle(childRow.currentPath, true)
+            }
+          }
+          // Recursively expand all descendants
+          if (childRow.expandAll) {
+            childRow.expandAll(true)
+          }
+        } else {
+          // Collapse all children
+          if (childElement.classList.contains("expanded")) {
+            childElement.classList.remove("expanded")
+            // Notify about path toggle for each child
+            if (onPathToggle && childRow.currentPath) {
+              onPathToggle(childRow.currentPath, false)
+            }
+          }
+          // Recursively collapse all descendants
+          if (childRow.expandAll) {
+            childRow.expandAll(false)
+          }
+        }
+      })
     }
 
     if (onToggleExpand) {
@@ -56,6 +90,34 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     }
   }
 
+  // Expose expandAll method for recursive expansion
+  this.expandAll = (shouldExpand) => {
+    if (!hasChildren) return
+
+    if (shouldExpand) {
+      row.classList.add("expanded")
+    } else {
+      row.classList.remove("expanded")
+    }
+
+    // Notify about path toggle
+    if (onPathToggle && currentPath) {
+      onPathToggle(currentPath, shouldExpand)
+    }
+
+    // Recursively expand/collapse all children
+    if (childrenRows) {
+      childrenRows.forEach((childRow) => {
+        if (childRow.expandAll) {
+          childRow.expandAll(shouldExpand)
+        }
+      })
+    }
+  }
+
+  // Store currentPath for access in expandAll
+  this.currentPath = currentPath
+
   // EXPAND ICON
   if (hasChildren) {
     const expandIconWrapper = document.createElement("span")
@@ -65,10 +127,12 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     // create the icon (i tag) using the DOM API
     expandIcon = document.createElement("span")
     expandIcon.className = `expand icon clickable`
-    expandIcon.setAttribute("title", isExpanded ? "Collapse" : "Expand")
+    expandIcon.setAttribute("title", isExpanded ? "Collapse (Shift+Click for all)" : "Expand (Shift+Click for all)")
     expandIconWrapper.appendChild(expandIcon)
 
-    expandIconWrapper.addEventListener("click", () => toggleExpand())
+    expandIconWrapper.addEventListener("click", (event) => {
+      toggleExpand(event.shiftKey)
+    })
   }
 
   // KEY VALUE WRAPPER
@@ -78,7 +142,9 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     keyEl = document.createElement("span")
     keyEl.className = `key clickable ${keyDataType === "number" ? "number" : ""}`
     keyEl.textContent = keyDataType === "number" ? key : `${key}`
-    keyEl.addEventListener("click", () => toggleExpand())
+    keyEl.addEventListener("click", (event) => {
+      toggleExpand(event.shiftKey)
+    })
     keyValueWrapper.appendChild(keyEl)
 
     // COLON
@@ -99,7 +165,9 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     const ellipsis = document.createElement("span")
     ellipsis.className = "ellipsis clickable"
     ellipsis.textContent = "..."
-    ellipsis.addEventListener("click", () => toggleExpand())
+    ellipsis.addEventListener("click", (event) => {
+      toggleExpand(event.shiftKey)
+    })
     keyValueWrapper.appendChild(ellipsis)
 
     // CLOSING PARENTHESIS
@@ -249,7 +317,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
         isExpanded = false
       }
       row.classList.toggle("expanded", isExpanded)
-      if (expandIcon) expandIcon.title = isExpanded ? "Collapse" : "Expand"
+      if (expandIcon) expandIcon.title = isExpanded ? "Collapse (Shift+Click for all)" : "Expand (Shift+Click for all)"
     }
     if (searchTerm !== undefined && searchTerm !== null) {
       search(searchTerm)
