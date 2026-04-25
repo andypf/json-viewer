@@ -25,7 +25,7 @@ function Container(root, options = {}) {
     }
 
     // DATA
-    if (data) {
+    if (data !== undefined && data !== null) {
       const newDataCompareString = JSON.stringify(data)
       // if data has not changed, do nothing
       if (cache.dataComapreString !== newDataCompareString) {
