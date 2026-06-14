@@ -1,6 +1,6 @@
 import { dataType, escapeHtml } from "../data-helpers"
 
-const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true }) {
+const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true, copyWithKey = false }) {
   const row = document.createElement("div")
   this.maxLevel = level
 
@@ -241,6 +241,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
         expanded,
         indent,
         expandEmpty,
+        copyWithKey,
         onToggleExpand,
         level: level + 1,
         parentRow: row,
@@ -335,15 +336,15 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     let textToCopy
 
     if (hasChildren) {
-      // For objects/arrays: copy "key: {json}" or just the JSON if no key
-      if (key !== null && key !== "") {
+      // For objects/arrays: copy based on copyWithKey setting
+      if (copyWithKey && key !== null && key !== "") {
         const keyText = typeof key === "number" ? key : `"${key}"`
         textToCopy = `${keyText}: ${JSON.stringify(value, null, indent)}`
       } else {
         textToCopy = JSON.stringify(value, null, indent)
       }
     } else {
-      // For primitive values: copy "key: value" or just value if no key
+      // For primitive values: copy based on copyWithKey setting
       let valueText
       if (value === null) {
         valueText = "null"
@@ -355,7 +356,7 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
         valueText = String(value)
       }
 
-      if (key !== null && key !== "") {
+      if (copyWithKey && key !== null && key !== "") {
         const keyText = typeof key === "number" ? key : `"${key}"`
         textToCopy = `${keyText}: ${valueText}`
       } else {

@@ -33,6 +33,7 @@ const DEFAULT_PARAMS = {
   showSize: true,
   preserveExpanded: false,
   expandEmpty: true,
+  copyWithKey: false,
   data: null,
 }
 
@@ -126,6 +127,10 @@ class JsonViewer extends HTMLElement {
     this.#validateAndUpdate("expandEmpty", value, validateBoolean)
   }
 
+  set copyWithKey(value) {
+    this.#validateAndUpdate("copyWithKey", value, validateBoolean)
+  }
+
   // validate and set theme
   // theme can be a string or an object
   // validationg theme is more complex than other attributes
@@ -210,6 +215,7 @@ class JsonViewer extends HTMLElement {
       showCopy: this.#options.showCopy,
       preserveExpanded: this.#options.preserveExpanded,
       expandEmpty: this.#options.expandEmpty,
+      copyWithKey: this.#options.copyWithKey,
     })
   }
 }
