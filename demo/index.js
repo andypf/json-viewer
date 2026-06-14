@@ -187,8 +187,8 @@ sourceCode.value = JSON.stringify(JSON.parse(jsonViewer.options.data), null, 2)
 
 // Auto-resize textarea to fit content
 const autoResize = (textarea) => {
-  textarea.style.height = 'auto'
-  textarea.style.height = (textarea.scrollHeight + 2) + 'px'
+  textarea.style.height = "auto"
+  textarea.style.height = textarea.scrollHeight + 2 + "px"
 }
 
 // Initial resize

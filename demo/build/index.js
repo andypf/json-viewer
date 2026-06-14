@@ -1527,7 +1527,7 @@ SOFTWARE.
   };
 
   // src/renderer/data-row.js
-  var DataRow = function({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true, copyWithKey = false }) {
+  var DataRow = function({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true }) {
     const row = document.createElement("div");
     this.maxLevel = level;
     const currentPath = path ? `${path}.${key}` : key !== "" ? String(key) : "";
@@ -1698,7 +1698,6 @@ SOFTWARE.
           expanded,
           indent,
           expandEmpty,
-          copyWithKey,
           onToggleExpand,
           level: level + 1,
           parentRow: row,
@@ -1768,6 +1767,8 @@ SOFTWARE.
     const copyIconWrapper = document.createElement("span");
     copyIconWrapper.className = "icon-wrapper";
     copyIconWrapper.addEventListener("click", () => {
+      const container = row.closest(".container");
+      const copyWithKey = container?.dataset.copyWithKey === "true";
       let textToCopy;
       if (hasChildren) {
         if (copyWithKey && key !== null && key !== "") {
@@ -1984,6 +1985,7 @@ SOFTWARE.
   function Container(root, options = {}) {
     const containerElem = document.createElement("div");
     containerElem.className = "container";
+    containerElem.dataset.copyWithKey = "false";
     root.appendChild(containerElem);
     let dataRow = null;
     let toolbar = null;
@@ -1998,6 +2000,7 @@ SOFTWARE.
       }
       if (copyWithKey !== void 0) {
         cache.copyWithKey = copyWithKey;
+        containerElem.dataset.copyWithKey = String(copyWithKey);
       }
       if (data !== void 0 && data !== null) {
         const newDataCompareString = JSON.stringify(data);
@@ -2016,7 +2019,6 @@ SOFTWARE.
             expanded,
             indent,
             expandEmpty: cache.expandEmpty !== void 0 ? cache.expandEmpty : true,
-            copyWithKey: cache.copyWithKey !== void 0 ? cache.copyWithKey : false,
             onToggleExpand: (level) => {
               if (toolbar) toolbar.expanded = level;
               cache.expanded = level;

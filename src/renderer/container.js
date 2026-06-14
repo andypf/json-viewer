@@ -4,6 +4,7 @@ import Toolbar from "./toolbar"
 function Container(root, options = {}) {
   const containerElem = document.createElement("div")
   containerElem.className = "container"
+  containerElem.dataset.copyWithKey = "false" // Store as data attribute
   root.appendChild(containerElem)
   let dataRow = null
   let toolbar = null
@@ -27,6 +28,7 @@ function Container(root, options = {}) {
     // Handle copyWithKey option
     if (copyWithKey !== undefined) {
       cache.copyWithKey = copyWithKey
+      containerElem.dataset.copyWithKey = String(copyWithKey) // Update data attribute
     }
 
     // DATA
@@ -51,7 +53,6 @@ function Container(root, options = {}) {
           expanded,
           indent,
           expandEmpty: cache.expandEmpty !== undefined ? cache.expandEmpty : true,
-          copyWithKey: cache.copyWithKey !== undefined ? cache.copyWithKey : false,
           onToggleExpand: (level) => {
             if (toolbar) toolbar.expanded = level
             cache.expanded = level

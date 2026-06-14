@@ -1,6 +1,6 @@
 import { dataType, escapeHtml } from "../data-helpers"
 
-const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true, copyWithKey = false }) {
+const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true }) {
   const row = document.createElement("div")
   this.maxLevel = level
 
@@ -241,7 +241,6 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
         expanded,
         indent,
         expandEmpty,
-        copyWithKey,
         onToggleExpand,
         level: level + 1,
         parentRow: row,
@@ -333,6 +332,10 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   const copyIconWrapper = document.createElement("span")
   copyIconWrapper.className = "icon-wrapper"
   copyIconWrapper.addEventListener("click", () => {
+    // Read copyWithKey from container's data attribute for performance
+    const container = row.closest('.container')
+    const copyWithKey = container?.dataset.copyWithKey === 'true'
+
     let textToCopy
 
     if (hasChildren) {
