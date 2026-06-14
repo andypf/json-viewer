@@ -243,9 +243,19 @@
 /* ICONS */
 .icon-wrapper,
 .copy-icon-wrapper {
-  display: inline-block;
-  /* width: 17px; */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  min-width: 24px;
+  min-height: 24px;
+  padding: 6px;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+}
+
+.icon-wrapper:hover {
+  background-color: var(--base01);
 }
 
 .icon {
@@ -328,11 +338,6 @@
   background-color: var(--base0D);
 }
 /* ---------------- */
-
-.icon-wrapper {
-  display: inline-block;
-  cursor: pointer;
-}
 
 /* copy icon */
 .show-copy .key-value-wrapper:hover .icon.copy {

@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.1] - 2024-06-14
+
+### Fixed
+- **Expand/collapse icon click area too small** (#19)
+  - Increased min-size from ~6x12px to 24x24px (4x larger click target)
+  - Added 6px padding around icons for even better hit area
+  - Changed to flexbox layout for consistent icon centering
+  - Added hover background feedback (var(--base01)) for better visual feedback
+  - Click target now remains same size when expanding/collapsing
+  - Meets accessibility guidelines (minimum 24x24px touch target)
+
+### Improved
+- Better usability for expand/collapse interactions
+- Consistent click area regardless of icon state (expanded/collapsed)
+- Visual feedback on hover makes clickable area obvious
+
 ## [2.7.0] - 2024-06-14
 
 ### Changed
