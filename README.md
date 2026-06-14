@@ -1,11 +1,11 @@
 # json-viewer
 
-![Size](https://img.shields.io/badge/size-32.3KB-green.svg) [![License](https://img.shields.io/npm/l/%40andypf%2Fjson-viewer?color=yellow)](https://github.com/andypf/json-viewer/blob/main/LICENSE.md) ![Coverage Status](https://img.shields.io/badge/coverage-88.5%25-orange.svg) [![Version](https://img.shields.io/npm/v/%40andypf%2Fjson-viewer)](https://github.com/andypf/json-viewer/blob/main/LICENSE.md) ![Tools](https://img.shields.io/badge/tools-Shadow_DOM%2C_Web_Component%2C_React-red)
+![Size](https://img.shields.io/badge/size-37.9KB-green.svg) ![Gzipped](https://img.shields.io/badge/gzipped-12.4KB-brightgreen.svg) [![License](https://img.shields.io/npm/l/%40andypf%2Fjson-viewer?color=yellow)](https://github.com/andypf/json-viewer/blob/main/LICENSE.md) ![Coverage Status](https://img.shields.io/badge/coverage-88.5%25-orange.svg) [![Version](https://img.shields.io/npm/v/%40andypf%2Fjson-viewer)](https://github.com/andypf/json-viewer/blob/main/LICENSE.md) ![Tools](https://img.shields.io/badge/tools-Shadow_DOM%2C_Web_Component%2C_React-red)
 
 **json-viewer** is a modern JavaScript-based JSON data visualization tool designed with cutting-edge web technologies, including Web Components and Shadow DOM. This versatile tool empowers you to elegantly and attractively present JSON data within your web browser. It's well-suited for use in standalone web applications and seamlessly integrates with popular frameworks like React.
 
-The packed size of this project is approximately **32.3KB**.
-Please note that half of this size is dedicated to the predefined themes, allowing for rich visual customization.
+The packed size of this project is approximately **37.9KB** minified (**12.4KB gzipped**).
+Please note that about one-third of this size is dedicated to the 46 predefined themes, allowing for rich visual customization.
 
 ![Demo Dark](doc/jsonViewer.png)
 
