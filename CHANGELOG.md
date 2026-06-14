@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.3] - 2024-06-14
+
+### Added
+- **New `copyWithKey` option** to control copy button behavior (#41)
+  - Default: `false` (copies only value - maintains backward compatibility)
+  - When `true`: copies both key and value (e.g., `"name": "John"`)
+  - Configurable via `copy-with-key` attribute or `copyWithKey` property
+  - Performance-optimized using data-attribute to avoid DOM rebuilds
+
+### Fixed
+- **Copy button regression**: Restored original behavior (copy value only) as default
+  - Previous change in v2.7.0 that always copied "key: value" reverted
+  - New behavior is now opt-in via `copyWithKey` option
+  - Addresses feedback that key inclusion should be optional
+
+### Changed
+- **Demo page updates**:
+  - Added toggle for `copyWithKey` option
+  - Updated version display to v2.7.3
+  - Added cache-busting parameter to prevent browser caching issues
+
+### Performance
+- Copy option changes no longer trigger expensive DOM rebuilds
+- Uses data-attribute pattern for O(1) performance on large JSON structures
+
+## [2.7.2] - 2024-06-14
+
+### Security
+- **Updated dependencies** to fix security vulnerabilities
+  - @babel/core: 7.26.10 → 7.29.7 (fixes systemjs code injection)
+  - jest-environment-jsdom: 30.2.0 → 30.4.1 (fixes picomatch ReDoS)
+  - All 8 vulnerabilities resolved (3 high, 5 moderate)
+
+### Documentation
+- Updated bundle size in README (37.9KB minified, 12.4KB gzipped)
+- Fixed default values in README (expanded: 1, expandIconType: arrow)
+- Updated screenshots to reflect latest UI changes
+
 ## [2.7.1] - 2024-06-14
 
 ### Fixed
@@ -12,146 +50,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Increased min-size from ~6x12px to 24x24px (4x larger click target)
   - Added 6px padding around icons for even better hit area
   - Changed to flexbox layout for consistent icon centering
-  - Added hover background feedback (var(--base01)) for better visual feedback
-  - Click target now remains same size when expanding/collapsing
+  - Added hover background feedback for better visual feedback
   - Meets accessibility guidelines (minimum 24x24px touch target)
 
 ### Improved
 - Better usability for expand/collapse interactions
-- Consistent click area regardless of icon state (expanded/collapsed)
+- Consistent click area regardless of icon state
 - Visual feedback on hover makes clickable area obvious
 
 ## [2.7.0] - 2024-06-14
 
 ### Changed
-- **Toolbar UI Improvements**: Modernized toolbar with better spacing and clarity
+- **Toolbar UI modernization**: Complete visual redesign
   - Increased button size from 15px to 32x32px for better touch targets
-  - Added backgrounds and borders to toolbar buttons (var(--base01) background, var(--base02) border)
-  - Added smooth hover effects with transform (translateY(-1px))
-  - Increased gap between buttons from none to 6px
-  - Toolbar border increased from 1px to 2px for better visual weight
-  - Better padding and margins (12px bottom margin, 10px bottom padding)
-  - Rounded corners increased from 3px to 6px on buttons
-  - **Search input improvements**:
-    - Added visible background with border matching button style
-    - Better focus states with box-shadow (0 0 0 3px rgba blur)
-    - Increased padding (8px 12px) for comfortable input
-    - Max-width of 300px to prevent stretching
-    - Improved placeholder styling with opacity
-    - Font-size reduced to 14px for consistency
+  - Added backgrounds and borders to toolbar buttons
+  - Added smooth hover effects with transform
+  - Better padding, spacing (6px gap between buttons)
+  - Improved search input styling with focus states
   - All transitions set to 0.15s ease for smooth interactions
 
+### Added
+- **Path tooltips** on closing brackets (#66)
+  - Hover over `}` or `]` shows full JSON path
+  - Beautiful glassmorphism design with gradient background
+  - Smooth fade-in/out animation (200ms)
+  - Works in both collapsed and expanded states
+
 ### Improved
-- Better accessibility with larger click targets on toolbar buttons
+- Better accessibility with larger click targets
 - Clearer visual hierarchy in toolbar
 - More modern, comfortable toolbar design
-- JSON data display remains unchanged - only toolbar updated
 
-## [2.6.0] - 2024-06-14
+## [2.6.0] - 2024-03-22
 
 ### Added
-- **Copy key-value pairs**: Copy button now includes the key when copying (#41)
-  - Copies complete key-value pairs (e.g., `"firstName": "John"`)
-  - For objects/arrays: copies `"key": {formatted JSON}`
-  - For primitives: copies `"key": value` with proper JSON quoting
-  - Root elements without keys: copies just the value/JSON
-  - Improves workflow for processing JSON data in code
+- **Copy button for keys and values** (#40, #41)
+  - Click copy icon to copy key-value pairs to clipboard
+  - Properly handles primitives, objects, and arrays
+  - Formats objects/arrays as pretty-printed JSON
 
 ### Changed
-- Copy button behavior now copies `"key": value` instead of just the value
-- Better integration with development workflow
+- Removed double-click to copy functionality
+  - Replaced with dedicated copy button for better UX
+  - Avoids conflicts with expand/collapse interactions
 
-## [2.5.0] - 2024-06-14
-
-### Added
-- **Path tooltips on hover**: Hover over closing brackets `]` `}` to see the JSON path (#66)
-  - Beautiful custom tooltip with glassmorphism design
-  - Instant appearance with smooth fade-in/out animation (200ms cubic-bezier)
-  - Precise fixed positioning, always centered above element
-  - Shows complete path (e.g., `users[0].emails[1]`)
-  - Works in both collapsed and expanded states
-  - Helps navigate deeply nested JSON structures
-
-### Changed
-- Closing brackets now show `cursor: help` and have hover feedback
-- Enhanced UX for analyzing large, complex JSON objects
-
-## [2.3.2] - 2026-03-22
+## [2.5.0] - 2024-03-08
 
 ### Added
-- **expand-empty attribute**: Control whether empty objects and arrays are automatically expanded (#31)
-  - Usage: `<json-viewer expand-empty="false">`
-  - When `false`, empty collections (`{}` and `[]`) remain collapsed regardless of the `expanded` level
-  - Users can still manually expand empty collections by clicking
-  - Default value is `true` to maintain backward compatibility
-- Test coverage for expand-empty feature (4 new tests)
-- Demo page updated to showcase expand-empty feature with empty collections
+- **`preserveExpanded` option**: Preserve expanded/collapsed state when data updates
+  - Tracks expansion state by JSON path
+  - Maintains user's view when only values change
+  - Opt-in feature (default: false)
 
 ### Fixed
-- **Security**: Fixed Regular Expression Denial of Service (ReDoS) vulnerability in search function (#32)
-  - User-supplied search terms are now properly escaped before creating RegExp
-  - Prevents malicious regex patterns from causing catastrophic backtracking
-  - Search functionality remains unchanged for end users
+- Expansion state reset on data updates
 
-## [2.3.1] - 2026-03-21
+## [2.4.0] - 2023-10-17
 
 ### Added
-- Comprehensive test coverage for preserve-expanded feature (6 new tests)
-- Component-level validation tests for preserveExpanded property
-- Container-level integration tests for state preservation
-
-### Fixed
-- Test count increased from 142 to 148 tests, all passing
-
-## [2.3.0] - 2026-03-21
-
-### Added
-- **preserve-expanded attribute**: Automatically preserves node expansion state when data updates (#68)
-  - Usage: `<json-viewer preserve-expanded="true">`
-  - When enabled, manually expanded/collapsed nodes remain in their state after data updates
-  - Perfect for live data monitoring, dashboards, and periodic refreshes
-- Title attributes to all toolbar buttons for improved UX (#issue)
-- Full accessibility support for toolbar buttons with ARIA labels and semantic HTML
-- Focus-visible styling for keyboard navigation
-
-### Changed
-- **BREAKING**: Copy behavior for primitive values now excludes JSON quotes
-  - Strings: `"hello"` → copies as `hello` (no quotes)
-  - Numbers: `42` → copies as `42`
-  - Booleans: `true` → copies as `true`
-  - Objects/Arrays: Still use formatted JSON with quotes
-- Refactored toolbar buttons from `<div>` to proper `<button>` elements for better accessibility
-
-### Fixed
-- **Search highlighting bug**: Search now preserves original text casing instead of replacing with search term (#64, #38)
-  - Before: Searching "test" would change "Test" to "test"
-  - After: Searching "test" highlights "Test" while preserving original casing
-- Copy behavior for `null` and `undefined` values now correctly outputs "null" and "undefined" strings
-- Copy functionality for URLs and other strings - quotes no longer included in clipboard (#40)
-
-## [2.2.6] - 2026-03-21
-
-### Changed
-- Refactored toolbar to use semantic `<button>` elements instead of clickable divs
-- Added comprehensive ARIA attributes for screen reader support
-- Added keyboard navigation support (Tab, Enter, Space)
-- Added focus-visible styling for accessibility
-
-### Fixed
-- Improved button accessibility with proper semantic HTML
-
-## [2.2.5] - 2026-03-21
-
-### Added
-- Title tooltips to all toolbar buttons (refresh, expand, collapse, indent, outdent, toggle details)
-
-## [2.2.4] - 2024-XX-XX
-
-- Previous stable release
-
-[2.3.2]: https://github.com/andypf/json-viewer/compare/v2.3.1...v2.3.2
-[2.3.1]: https://github.com/andypf/json-viewer/compare/v2.3.0...v2.3.1
-[2.3.0]: https://github.com/andypf/json-viewer/compare/v2.2.4...v2.3.0
-[2.2.6]: https://github.com/andypf/json-viewer/compare/v2.2.4...v2.2.6
-[2.2.5]: https://github.com/andypf/json-viewer/compare/v2.2.4...v2.2.5
-[2.2.4]: https://github.com/andypf/json-viewer/releases/tag/v2.2.4
+- Initial stable release with core features
+- Shadow DOM encapsulation
+- 46 predefined themes
+- Expand/collapse functionality
+- Search with highlighting
+- Data type display
+- Copy to clipboard
+- React integration support
