@@ -142,27 +142,9 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     keyEl = document.createElement("span")
     keyEl.className = `key clickable ${keyDataType === "number" ? "number" : ""}`
     keyEl.textContent = keyDataType === "number" ? key : `${key}`
-    keyEl.setAttribute("title", "Click to expand/collapse, Double-click to copy key")
-
-    // Single click: expand/collapse
     keyEl.addEventListener("click", (event) => {
       toggleExpand(event.shiftKey)
     })
-
-    // Double click: copy key
-    keyEl.addEventListener("dblclick", (event) => {
-      event.stopPropagation()
-      const keyText = keyDataType === "number" ? String(key) : key
-      navigator.clipboard.writeText(keyText).then(() => {
-        // Visual feedback
-        const originalText = keyEl.textContent
-        keyEl.textContent = "✓ Copied!"
-        setTimeout(() => {
-          keyEl.textContent = originalText
-        }, 800)
-      })
-    })
-
     keyValueWrapper.appendChild(keyEl)
 
     // COLON
@@ -350,21 +332,37 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   const copyIconWrapper = document.createElement("span")
   copyIconWrapper.className = "icon-wrapper"
   copyIconWrapper.addEventListener("click", () => {
-    // For primitive values (string, number, boolean, null, undefined), copy raw value
-    // For objects and arrays, copy formatted JSON
     let textToCopy
+
     if (hasChildren) {
-      textToCopy = JSON.stringify(value, null, indent)
-    } else {
-      // Handle special cases: null and undefined should be represented as their keyword strings
-      if (value === null) {
-        textToCopy = "null"
-      } else if (value === undefined) {
-        textToCopy = "undefined"
+      // For objects/arrays: copy "key: {json}" or just the JSON if no key
+      if (key !== null && key !== "") {
+        const keyText = typeof key === "number" ? key : `"${key}"`
+        textToCopy = `${keyText}: ${JSON.stringify(value, null, indent)}`
       } else {
-        textToCopy = String(value)
+        textToCopy = JSON.stringify(value, null, indent)
+      }
+    } else {
+      // For primitive values: copy "key: value" or just value if no key
+      let valueText
+      if (value === null) {
+        valueText = "null"
+      } else if (value === undefined) {
+        valueText = "undefined"
+      } else if (typeof value === "string") {
+        valueText = `"${value}"`
+      } else {
+        valueText = String(value)
+      }
+
+      if (key !== null && key !== "") {
+        const keyText = typeof key === "number" ? key : `"${key}"`
+        textToCopy = `${keyText}: ${valueText}`
+      } else {
+        textToCopy = valueText
       }
     }
+
     navigator.clipboard.writeText(textToCopy)
   })
   copyIconWrapper.appendChild(copyIcon)
