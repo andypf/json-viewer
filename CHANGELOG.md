@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2024-06-14
+
+### Added
+- **Copy key-value pairs**: Copy button now includes the key when copying (#41)
+  - Copies complete key-value pairs (e.g., `"firstName": "John"`)
+  - For objects/arrays: copies `"key": {formatted JSON}`
+  - For primitives: copies `"key": value` with proper JSON quoting
+  - Root elements without keys: copies just the value/JSON
+  - Improves workflow for processing JSON data in code
+
+### Changed
+- Copy button behavior now copies `"key": value` instead of just the value
+- Better integration with development workflow
+
+## [2.5.0] - 2024-06-14
+
+### Added
+- **Path tooltips on hover**: Hover over closing brackets `]` `}` to see the JSON path (#66)
+  - Beautiful custom tooltip with glassmorphism design
+  - Instant appearance with smooth fade-in/out animation (200ms cubic-bezier)
+  - Precise fixed positioning, always centered above element
+  - Shows complete path (e.g., `users[0].emails[1]`)
+  - Works in both collapsed and expanded states
+  - Helps navigate deeply nested JSON structures
+
+### Changed
+- Closing brackets now show `cursor: help` and have hover feedback
+- Enhanced UX for analyzing large, complex JSON objects
+
 ## [2.3.2] - 2026-03-22
 
 ### Added
