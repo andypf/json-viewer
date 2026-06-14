@@ -241,21 +241,21 @@
 }
 
 /* ICONS */
-.icon-wrapper,
-.copy-icon-wrapper {
+.data-row .icon-wrapper,
+.data-row .copy-icon-wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  min-width: 24px;
-  min-height: 24px;
   padding: 6px;
+  margin: -6px;
+  margin-right: 0;
   border-radius: 4px;
   transition: background-color 0.15s ease;
 }
 
-.icon-wrapper:hover {
-  background-color: var(--base01);
+.data-row .icon-wrapper:hover {
+  background-color: var(--base02);
 }
 
 .icon {
@@ -272,10 +272,9 @@
 
 /* expand arrow */
 .expand.icon {
-  margin-right: 5px;
+  margin: 0;
 }
 .expand-icon-arrow .expand.icon {
-  margin-left: 3px;
   width: 0;
   height: 0;
   border-left: solid 6px var(--base0E);
@@ -344,15 +343,18 @@
   display: block;
 }
 
+/* Position copy icon wrapper further to the right */
+.data-row .key-value-wrapper > .icon-wrapper:last-child {
+  margin-left: 2px;
+}
+
 .copy.icon {
-  margin-left: 10px;
   display: none;
   width: 8px;
   height: 10px;
   border: solid 1px var(--base0D);
   border-radius: 1px;
   position: relative;
-  top: 4px;
   transition: 0.2s all;
 }
 

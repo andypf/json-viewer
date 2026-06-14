@@ -22,7 +22,7 @@
     "component",
     "fast",
     "small",
-    "32KB"
+    "38KB"
   ],
   "scripts": {
     "test": "jest",
@@ -34,7 +34,7 @@
   },
   "author": "Andreas Pfau",
   "license": "MIT",
-  "packedSize": 32.3,
+  "packedSize": 37.9,
   "devDependencies": {
     "@babel/core": "^7.23.2",
     "@babel/preset-env": "^7.23.2",
