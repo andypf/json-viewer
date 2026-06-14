@@ -40,7 +40,7 @@
     "@babel/preset-env": "^7.23.2",
     "@eslint/js": "^9.9.1",
     "babel-jest": "^29.7.0",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.28.1",
     "eslint": "^10.0.3",
     "eslint-plugin-jest": "^29.15.0",
     "eslint-plugin-react": "^7.37.5",
