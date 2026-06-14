@@ -1,5 +1,7 @@
 import DataRow from "./data-row"
 import Toolbar from "./toolbar"
+import TooltipPool from "./tooltip-pool"
+import SearchOptimizer from "./search-optimizer"
 
 function Container(root, options = {}) {
   const containerElem = document.createElement("div")
@@ -13,6 +15,12 @@ function Container(root, options = {}) {
 
   // Store expanded paths when preserveExpanded is enabled
   let expandedPaths = new Set()
+
+  // Create tooltip pool for reusing tooltip across all rows
+  const tooltipPool = new TooltipPool(root)
+
+  // Create search optimizer for better search performance
+  const searchOptimizer = new SearchOptimizer()
 
   this.update = ({ data, expanded, indent, expandIconType, showDataTypes, showToolbar, showSize, showCopy, preserveExpanded, expandEmpty, copyWithKey }) => {
     // Handle preserveExpanded option
@@ -53,6 +61,8 @@ function Container(root, options = {}) {
           expanded,
           indent,
           expandEmpty: cache.expandEmpty !== undefined ? cache.expandEmpty : true,
+          tooltipPool,
+          searchOptimizer,
           onToggleExpand: (level) => {
             if (toolbar) toolbar.expanded = level
             cache.expanded = level

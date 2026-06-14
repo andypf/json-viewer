@@ -1,6 +1,6 @@
 import { dataType, escapeHtml } from "../data-helpers"
 
-const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true }) {
+const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level = 0, parentRow, path = "", expandedPaths = null, onPathToggle = null, expandEmpty = true, tooltipPool = null, searchOptimizer = null }) {
   const row = document.createElement("div")
   this.maxLevel = level
 
@@ -175,50 +175,16 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     closingParenthesis.className = "closing-parenthesis"
     closingParenthesis.textContent = thisDataType === "array" ? "]" : "}"
 
-    // Add custom tooltip on hover
-    if (currentPath) {
-      let tooltip = null
-
-      const showTooltip = (e) => {
-        tooltip = document.createElement("div")
-        tooltip.className = "path-tooltip"
-        tooltip.textContent = currentPath
-
-        // Append to shadow root
-        const shadowRoot = closingParenthesis.getRootNode()
-        shadowRoot.appendChild(tooltip)
-
-        // Position using fixed positioning relative to viewport
-        const rect = closingParenthesis.getBoundingClientRect()
-        const tooltipRect = tooltip.getBoundingClientRect()
-
-        // Center tooltip above the element
-        const left = rect.left + rect.width / 2 - tooltipRect.width / 2
-        const top = rect.top - tooltipRect.height - 10
-
-        tooltip.style.left = `${left}px`
-        tooltip.style.top = `${top}px`
-
-        // Trigger animation
-        requestAnimationFrame(() => {
-          tooltip.classList.add("visible")
-        })
-      }
-
-      const hideTooltip = () => {
-        if (tooltip) {
-          tooltip.classList.remove("visible")
-          setTimeout(() => {
-            if (tooltip && tooltip.parentNode) {
-              tooltip.parentNode.removeChild(tooltip)
-            }
-            tooltip = null
-          }, 200)
+    // Add custom tooltip on hover using tooltip pool
+    if (currentPath && tooltipPool) {
+      closingParenthesis.addEventListener("mouseenter", () => {
+        tooltipPool.show(currentPath, closingParenthesis)
+      })
+      closingParenthesis.addEventListener("mouseleave", () => {
+        if (tooltipPool.isShowingFor(closingParenthesis)) {
+          tooltipPool.hide()
         }
-      }
-
-      closingParenthesis.addEventListener("mouseenter", showTooltip)
-      closingParenthesis.addEventListener("mouseleave", hideTooltip)
+      })
     }
 
     keyValueWrapper.appendChild(closingParenthesis)
@@ -247,6 +213,8 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
         path: currentPath,
         expandedPaths,
         onPathToggle,
+        tooltipPool,
+        searchOptimizer,
       })
       childrenRows.push(subRow)
       row.appendChild(subRow.element)
@@ -258,50 +226,16 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     expandedClosingParenthesis.className = "closing-parenthesis"
     expandedClosingParenthesis.textContent = thisDataType === "array" ? "]" : "}"
 
-    // Add custom tooltip on hover
-    if (currentPath) {
-      let tooltip = null
-
-      const showTooltip = (e) => {
-        tooltip = document.createElement("div")
-        tooltip.className = "path-tooltip"
-        tooltip.textContent = currentPath
-
-        // Append to shadow root
-        const shadowRoot = expandedClosingParenthesis.getRootNode()
-        shadowRoot.appendChild(tooltip)
-
-        // Position using fixed positioning relative to viewport
-        const rect = expandedClosingParenthesis.getBoundingClientRect()
-        const tooltipRect = tooltip.getBoundingClientRect()
-
-        // Center tooltip above the element
-        const left = rect.left + rect.width / 2 - tooltipRect.width / 2
-        const top = rect.top - tooltipRect.height - 10
-
-        tooltip.style.left = `${left}px`
-        tooltip.style.top = `${top}px`
-
-        // Trigger animation
-        requestAnimationFrame(() => {
-          tooltip.classList.add("visible")
-        })
-      }
-
-      const hideTooltip = () => {
-        if (tooltip) {
-          tooltip.classList.remove("visible")
-          setTimeout(() => {
-            if (tooltip && tooltip.parentNode) {
-              tooltip.parentNode.removeChild(tooltip)
-            }
-            tooltip = null
-          }, 200)
+    // Add custom tooltip on hover using tooltip pool
+    if (currentPath && tooltipPool) {
+      expandedClosingParenthesis.addEventListener("mouseenter", () => {
+        tooltipPool.show(currentPath, expandedClosingParenthesis)
+      })
+      expandedClosingParenthesis.addEventListener("mouseleave", () => {
+        if (tooltipPool.isShowingFor(expandedClosingParenthesis)) {
+          tooltipPool.hide()
         }
-      }
-
-      expandedClosingParenthesis.addEventListener("mouseenter", showTooltip)
-      expandedClosingParenthesis.addEventListener("mouseleave", hideTooltip)
+      })
     }
 
     row.appendChild(expandedClosingParenthesis)
@@ -372,43 +306,23 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
   copyIconWrapper.appendChild(copyIcon)
   keyValueWrapper.appendChild(copyIconWrapper)
 
-  // this function highlights the search term
+  // this function highlights the search term using the optimized searcher
   const search = (searchTerm) => {
-    // escape special regex characters to prevent ReDoS attacks
-    const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-    // create a regular expression from the escaped search term
-    const regex = new RegExp(escapedTerm, "gi")
-    // initialize an array of elements to search
+    if (!searchOptimizer) {
+      // Fallback: no optimizer available
+      return
+    }
+
+    // Set search term in optimizer (it caches the RegExp)
+    searchOptimizer.setSearchTerm(searchTerm)
+
+    // Collect elements to search
     const searchElements = []
-    // add the key and value elements to the array if they exist
     if (keyEl) searchElements.push(keyEl)
     if (valueEl) searchElements.push(valueEl)
 
-    let found = false
-    // loop through the elements and highlight the matches
-    searchElements.forEach((el) => {
-      const string = el.textContent
-      // remove any existing matches (RESETTING THE OLD SEARCH)
-      el.innerHTML = string
-
-      // if the search term is empty, return
-      if (!searchTerm || searchTerm === "") return
-      // find all the indexes of the search term in the string
-      const indexes = [...string.matchAll(regex)].map((m) => m.index)
-      // if there are matches, expand the row
-      const newHtml = []
-      let lastIndex = 0
-      indexes.forEach((index) => {
-        found = true
-        newHtml.push(string.slice(lastIndex, index))
-        // Preserve original text casing by extracting from the source string
-        const matchedText = string.slice(index, index + searchTerm.length)
-        newHtml.push(`<span class="match">${matchedText}</span>`)
-        lastIndex = index + searchTerm.length
-      })
-      newHtml.push(string.slice(lastIndex))
-      el.innerHTML = newHtml.join("")
-    })
+    // Use the optimized highlighter
+    const found = searchOptimizer.highlightInElements(searchElements)
 
     // if the search term was found, expand the row
     if (found && !row.classList.contains("expanded")) {
