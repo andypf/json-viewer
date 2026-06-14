@@ -174,6 +174,53 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     const closingParenthesis = document.createElement("span")
     closingParenthesis.className = "closing-parenthesis"
     closingParenthesis.textContent = thisDataType === "array" ? "]" : "}"
+
+    // Add custom tooltip on hover
+    if (currentPath) {
+      let tooltip = null
+
+      const showTooltip = (e) => {
+        tooltip = document.createElement("div")
+        tooltip.className = "path-tooltip"
+        tooltip.textContent = currentPath
+
+        // Append to shadow root
+        const shadowRoot = closingParenthesis.getRootNode()
+        shadowRoot.appendChild(tooltip)
+
+        // Position using fixed positioning relative to viewport
+        const rect = closingParenthesis.getBoundingClientRect()
+        const tooltipRect = tooltip.getBoundingClientRect()
+
+        // Center tooltip above the element
+        const left = rect.left + rect.width / 2 - tooltipRect.width / 2
+        const top = rect.top - tooltipRect.height - 10
+
+        tooltip.style.left = `${left}px`
+        tooltip.style.top = `${top}px`
+
+        // Trigger animation
+        requestAnimationFrame(() => {
+          tooltip.classList.add("visible")
+        })
+      }
+
+      const hideTooltip = () => {
+        if (tooltip) {
+          tooltip.classList.remove("visible")
+          setTimeout(() => {
+            if (tooltip && tooltip.parentNode) {
+              tooltip.parentNode.removeChild(tooltip)
+            }
+            tooltip = null
+          }, 200)
+        }
+      }
+
+      closingParenthesis.addEventListener("mouseenter", showTooltip)
+      closingParenthesis.addEventListener("mouseleave", hideTooltip)
+    }
+
     keyValueWrapper.appendChild(closingParenthesis)
 
     // ITEMS SIZE
@@ -210,6 +257,53 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     const expandedClosingParenthesis = document.createElement("span")
     expandedClosingParenthesis.className = "closing-parenthesis"
     expandedClosingParenthesis.textContent = thisDataType === "array" ? "]" : "}"
+
+    // Add custom tooltip on hover
+    if (currentPath) {
+      let tooltip = null
+
+      const showTooltip = (e) => {
+        tooltip = document.createElement("div")
+        tooltip.className = "path-tooltip"
+        tooltip.textContent = currentPath
+
+        // Append to shadow root
+        const shadowRoot = expandedClosingParenthesis.getRootNode()
+        shadowRoot.appendChild(tooltip)
+
+        // Position using fixed positioning relative to viewport
+        const rect = expandedClosingParenthesis.getBoundingClientRect()
+        const tooltipRect = tooltip.getBoundingClientRect()
+
+        // Center tooltip above the element
+        const left = rect.left + rect.width / 2 - tooltipRect.width / 2
+        const top = rect.top - tooltipRect.height - 10
+
+        tooltip.style.left = `${left}px`
+        tooltip.style.top = `${top}px`
+
+        // Trigger animation
+        requestAnimationFrame(() => {
+          tooltip.classList.add("visible")
+        })
+      }
+
+      const hideTooltip = () => {
+        if (tooltip) {
+          tooltip.classList.remove("visible")
+          setTimeout(() => {
+            if (tooltip && tooltip.parentNode) {
+              tooltip.parentNode.removeChild(tooltip)
+            }
+            tooltip = null
+          }, 200)
+        }
+      }
+
+      expandedClosingParenthesis.addEventListener("mouseenter", showTooltip)
+      expandedClosingParenthesis.addEventListener("mouseleave", hideTooltip)
+    }
+
     row.appendChild(expandedClosingParenthesis)
   } else {
     // VALUE

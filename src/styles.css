@@ -487,3 +487,55 @@
   width: 1px;
   background-color: var(--base0D);
 }
+
+/* Path Tooltip */
+.path-tooltip {
+  position: fixed;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4),
+              0 0 0 1px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  letter-spacing: 0.3px;
+}
+
+.path-tooltip.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.path-tooltip::before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 5px solid rgba(0, 0, 0, 0.95);
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+.closing-parenthesis {
+  position: relative;
+  cursor: help;
+  transition: opacity 0.15s ease;
+}
+
+.closing-parenthesis:hover {
+  opacity: 0.7;
+}
