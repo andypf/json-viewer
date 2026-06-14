@@ -142,9 +142,27 @@ const DataRow = function ({ key, value, expanded, indent, onToggleExpand, level 
     keyEl = document.createElement("span")
     keyEl.className = `key clickable ${keyDataType === "number" ? "number" : ""}`
     keyEl.textContent = keyDataType === "number" ? key : `${key}`
+    keyEl.setAttribute("title", "Click to expand/collapse, Double-click to copy key")
+
+    // Single click: expand/collapse
     keyEl.addEventListener("click", (event) => {
       toggleExpand(event.shiftKey)
     })
+
+    // Double click: copy key
+    keyEl.addEventListener("dblclick", (event) => {
+      event.stopPropagation()
+      const keyText = keyDataType === "number" ? String(key) : key
+      navigator.clipboard.writeText(keyText).then(() => {
+        // Visual feedback
+        const originalText = keyEl.textContent
+        keyEl.textContent = "✓ Copied!"
+        setTimeout(() => {
+          keyEl.textContent = originalText
+        }, 800)
+      })
+    })
+
     keyValueWrapper.appendChild(keyEl)
 
     // COLON
