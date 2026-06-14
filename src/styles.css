@@ -11,9 +11,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: solid 1px var(--base02);
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: solid 2px var(--base02);
+  gap: 12px;
 }
 
 .toolbar .options,
@@ -21,40 +22,82 @@
   display: flex;
   align-items: center;
 }
+
+.toolbar .options {
+  gap: 6px;
+}
+
 .toolbar .icon-wrapper {
-  height: 15px;
+  height: 32px;
+  width: 32px;
   display: flex;
   align-items: center;
-  padding: 2px 5px;
-  background: none;
-  border: none;
+  justify-content: center;
+  padding: 0;
+  background: var(--base01);
+  border: 1px solid var(--base02);
+  border-radius: 6px;
   cursor: pointer;
   color: inherit;
   font: inherit;
+  transition: all 0.15s ease;
 }
+
 .toolbar .icon-wrapper:hover {
   background-color: var(--base02);
-  border-radius: 3px;
+  border-color: var(--base03);
+  transform: translateY(-1px);
 }
+
+.toolbar .icon-wrapper:active {
+  transform: translateY(0);
+}
+
 .toolbar .icon-wrapper:focus-visible {
   outline: 2px solid var(--base0D);
   outline-offset: 2px;
-  border-radius: 3px;
+  border-radius: 6px;
 }
+
 .toolbar .icon-wrapper:first-child {
   margin-left: 0px;
 }
 
 .toolbar .search.icon {
-  margin-right: 5px;
+  margin-right: 8px;
+  opacity: 0.7;
 }
+
+.toolbar .search-wrapper {
+  gap: 8px;
+  background: var(--base01);
+  border: 1px solid var(--base02);
+  border-radius: 6px;
+  padding: 8px 12px;
+  flex: 1;
+  max-width: 300px;
+  transition: all 0.2s ease;
+}
+
+.toolbar .search-wrapper:focus-within {
+  border-color: var(--base0D);
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: var(--base00);
+}
+
 .toolbar .search-input {
   border: none;
-  background: transparent; /* Transparent background */
+  background: transparent;
   outline: none;
-  flex: 1; /* Input expands to fill remaining space */
-  font-size: 16px;
-  color: var(--base0D); /* Input text color */
+  flex: 1;
+  font-size: 14px;
+  color: var(--base05);
+  min-width: 0;
+}
+
+.toolbar .search-input::placeholder {
+  color: var(--base04);
+  opacity: 0.6;
 }
 
 .match {

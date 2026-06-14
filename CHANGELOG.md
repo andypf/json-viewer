@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.7.0] - 2024-06-14
+
+### Changed
+- **Toolbar UI Improvements**: Modernized toolbar with better spacing and clarity
+  - Increased button size from 15px to 32x32px for better touch targets
+  - Added backgrounds and borders to toolbar buttons (var(--base01) background, var(--base02) border)
+  - Added smooth hover effects with transform (translateY(-1px))
+  - Increased gap between buttons from none to 6px
+  - Toolbar border increased from 1px to 2px for better visual weight
+  - Better padding and margins (12px bottom margin, 10px bottom padding)
+  - Rounded corners increased from 3px to 6px on buttons
+  - **Search input improvements**:
+    - Added visible background with border matching button style
+    - Better focus states with box-shadow (0 0 0 3px rgba blur)
+    - Increased padding (8px 12px) for comfortable input
+    - Max-width of 300px to prevent stretching
+    - Improved placeholder styling with opacity
+    - Font-size reduced to 14px for consistency
+  - All transitions set to 0.15s ease for smooth interactions
+
+### Improved
+- Better accessibility with larger click targets on toolbar buttons
+- Clearer visual hierarchy in toolbar
+- More modern, comfortable toolbar design
+- JSON data display remains unchanged - only toolbar updated
+
 ## [2.6.0] - 2024-06-14
 
 ### Added
