@@ -1,4 +1,5 @@
 import DataRow from "../../src/renderer/data-row.js"
+import SearchOptimizer from "../../src/renderer/search-optimizer.js"
 
 describe("DataRow", () => {
   it("should be defined", () => {
@@ -156,22 +157,26 @@ describe("DataRow", () => {
     expect(root.querySelectorAll(".match").length).toBe(0)
   })
   it("should contain one node with match css class if matches the value", () => {
+    const root = document.createElement("div")
+    const searchOptimizer = new SearchOptimizer()
     const row = new DataRow({
       value: { key1: "test" },
       expanded: true,
+      searchOptimizer,
     })
     row.update({ searchTerm: "test" })
-    const root = document.createElement("div")
     root.appendChild(row.element)
     expect(root.querySelectorAll(".match").length).toBe(1)
   })
   it("should contain one nodes with match css class if matches the key", () => {
+    const root = document.createElement("div")
+    const searchOptimizer = new SearchOptimizer()
     const row = new DataRow({
       value: { key1: "test" },
       expanded: true,
+      searchOptimizer,
     })
     row.update({ searchTerm: "key1" })
-    const root = document.createElement("div")
     root.appendChild(row.element)
     expect(root.querySelectorAll(".match").length).toBe(1)
   })
