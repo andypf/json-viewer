@@ -7,6 +7,7 @@ const defaultShowSize = true
 const defaultShowCopy = true
 const defaultExpandIconType = "square"
 const defaultExpandEmpty = false
+const defaultCopyWithKey = false
 
 const jsonViewer = document.getElementById("andypf-json-viewer")
 jsonViewer.id = "json"
@@ -19,6 +20,7 @@ jsonViewer.showSize = defaultShowSize
 jsonViewer.showCopy = defaultShowCopy
 jsonViewer.expandIconType = defaultExpandIconType
 jsonViewer.expandEmpty = defaultExpandEmpty
+jsonViewer.copyWithKey = defaultCopyWithKey
 jsonViewer.data = {
   string: "this is a test",
   integer: 42,
@@ -158,6 +160,13 @@ const expandEmptyCheckbox = document.getElementById("expand-empty")
 expandEmptyCheckbox.checked = defaultExpandEmpty
 expandEmptyCheckbox.addEventListener("change", function () {
   jsonViewer.expandEmpty = this.checked
+  updateOutput()
+})
+
+const copyWithKeyCheckbox = document.getElementById("copy-with-key")
+copyWithKeyCheckbox.checked = defaultCopyWithKey
+copyWithKeyCheckbox.addEventListener("change", function () {
+  jsonViewer.copyWithKey = this.checked
   updateOutput()
 })
 
