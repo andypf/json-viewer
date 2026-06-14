@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Issue #22 Test - URL Validation</title>
+  <style>
+    body {
+      font-family: system-ui;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 { color: #333; }
+    .test-section {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+    .instructions {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      border-left: 4px solid #2196F3;
+    }
+    .pass { color: green; font-weight: bold; }
+    .fail { color: red; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Issue #22 Test - URL Validation Fix</h1>
+
+  <div class="instructions">
+    <h2>Test Instructions:</h2>
+    <p><strong>Open your browser console (F12)</strong> and check for errors.</p>
+    <p>✅ <strong>Expected:</strong> Console should be <strong>clean</strong>, no URL constructor exceptions</p>
+    <p>❌ <strong>Before fix:</strong> Console would show TypeError exceptions for non-URL strings</p>
+  </div>
+
+  <div class="test-section">
+    <h2>Test Data - Mixed URLs and non-URLs</h2>
+    <p>This JSON contains strings that look like URLs and strings that don't.</p>
+    <p>The isUrl() function is called for every string value to check if it should be rendered as a link.</p>
+
+    <andypf-json-viewer
+      id="test-viewer"
+      theme="monokai"
+      show-toolbar="true"
+      expanded="2">
+    </andypf-json-viewer>
+  </div>
+
+  <div id="test-results" style="margin-top: 20px; padding: 15px; background: #f5f5f5; border-radius: 5px;">
+    <h3>Console Check:</h3>
+    <p id="result-message">Run the test to see results...</p>
+  </div>
+
+  <script type="module">
+    import './build/andypf-json-viewer.js'
+
+    // Test data with various string types that could trigger URL constructor exceptions
+    const testData = {
+      "valid_urls": {
+        "website": "https://example.com",
+        "api": "http://api.example.com/v1/users",
+        "with_port": "https://localhost:8080/test"
+      },
+      "non_urls_that_look_like_urls": {
+        "no_protocol": "example.com",
+        "just_domain": "www.example.com",
+        "ftp": "ftp://files.example.com"
+      },
+      "strings_that_would_cause_exceptions": {
+        "simple_string": "hello world",
+        "number_string": "12345",
+        "path": "/path/to/file",
+        "email": "test@example.com",
+        "empty": "",
+        "special_chars": "!@#$%^&*()",
+        "json_like": "{\"key\": \"value\"}",
+        "array_like": "[1, 2, 3]"
+      },
+      "edge_cases": {
+        "single_char": "a",
+        "spaces": "   ",
+        "newline": "line1\nline2",
+        "unicode": "こんにちは",
+        "null_string": null,
+        "number": 123,
+        "boolean": true
+      }
+    }
+
+    // Set up console error tracking
+    let consoleErrors = []
+    const originalError = console.error
+    console.error = function(...args) {
+      consoleErrors.push(args.join(' '))
+      originalError.apply(console, args)
+    }
+
+    // Initialize viewer
+    document.getElementById('test-viewer').data = testData
+
+    // Check results after a short delay
+    setTimeout(() => {
+      const resultDiv = document.getElementById('result-message')
+
+      // Filter for URL-related errors
+      const urlErrors = consoleErrors.filter(err =>
+        err.includes('URL') || err.includes('TypeError')
+      )
+
+      if (urlErrors.length === 0) {
+        resultDiv.innerHTML = '<span class="pass">✅ PASS: No URL constructor exceptions in console!</span><br><small>Issue #22 is fixed.</small>'
+      } else {
+        resultDiv.innerHTML = '<span class="fail">❌ FAIL: Found URL-related errors:</span><br><pre>' +
+          urlErrors.join('\n') + '</pre>'
+      }
+
+      // Restore console.error
+      console.error = originalError
+    }, 1000)
+
+    console.log('✓ Test data loaded - check console for any URL constructor exceptions')
+  </script>
+</body>
+</html>

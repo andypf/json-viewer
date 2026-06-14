@@ -1,5 +1,12 @@
 // This function checks if a string is a valid URL.
 export const isUrl = (string) => {
+  // Quick validation to avoid noisy URL constructor exceptions in console
+  if (!string || typeof string !== 'string') return false
+
+  // Check if string starts with http:// or https://
+  // This prevents URL constructor from throwing exceptions for non-URL strings
+  if (!/^https?:\/\//i.test(string)) return false
+
   try {
     // Attempt to create a URL object from the input string
     return Boolean(new URL(string)) // Return true if successful
