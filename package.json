@@ -63,12 +63,5 @@
   "bugs": {
     "url": "https://github.com/andypf/json-viewer/issues"
   },
-  "homepage": "https://github.com/andypf/json-viewer#readme",
-  "pnpm": {
-    "overrides": {
-      "minimatch": "10.2.4",
-      "flatted": ">=3.4.2",
-      "js-yaml": ">=3.14.2"
-    }
-  }
+  "homepage": "https://github.com/andypf/json-viewer#readme"
 }
