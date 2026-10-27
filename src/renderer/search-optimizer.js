@@ -34,8 +34,10 @@ class SearchOptimizer {
 
     // Kein Suchbegriff → Original-Text wiederherstellen
     if (!this.currentSearchTerm || !this.currentRegex) {
-      // textContent statt innerHTML: verhindert XSS, da Text nicht als HTML interpretiert wird
-      if (element.textContent !== text) {
+      // Vergleich via innerHTML (nur lesend), damit auch zuvor gesetzte
+      // <span class="match">-Highlights erkannt und entfernt werden.
+      // Zuweisung via textContent: verhindert XSS, da Text nicht als HTML interpretiert wird.
+      if (element.innerHTML !== text) {
         element.textContent = text
       }
       return false
@@ -52,8 +54,10 @@ class SearchOptimizer {
 
     if (indexes.length === 0) {
       // Kein Match → Original-Text
-      // textContent statt innerHTML: verhindert XSS, da Text nicht als HTML interpretiert wird
-      if (element.textContent !== text) {
+      // Vergleich via innerHTML (nur lesend), damit auch zuvor gesetzte
+      // <span class="match">-Highlights erkannt und entfernt werden.
+      // Zuweisung via textContent: verhindert XSS, da Text nicht als HTML interpretiert wird.
+      if (element.innerHTML !== text) {
         element.textContent = text
       }
       this.matches.set(element, { searchTerm: this.currentSearchTerm, text, found: false })
