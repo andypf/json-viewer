@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+- Resolved all open dependency security advisories (14 high, 4 moderate)
+  - All affected packages were transitive `devDependencies` only and are
+    not included in the published `dist/` bundle, so end users were not
+    impacted
+  - Moved `pnpm` overrides from `package.json` to `pnpm-workspace.yaml`
+    (pnpm 12.x no longer reads the `pnpm` field in `package.json`, so the
+    previous overrides were silently ignored)
+  - Bumped vulnerable transitive dependencies to patched versions:
+    `brace-expansion` (>=5.0.12), `js-yaml` (>=4.3.2), `nanoid` (>=3.3.18),
+    `postcss` (>=8.5.23), `postcss-selector-parser` (>=7.1.6),
+    `source-map-js` (>=1.2.2), `browserslist` (>=4.28.7),
+    `baseline-browser-mapping` (>=2.11.0)
+  - No changes to the published package; `dist/` output is unchanged
+
 ## [2.8.0] - 2024-06-14
 
 ### Performance
