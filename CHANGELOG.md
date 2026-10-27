@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Security
+- Fixed potential DOM-based XSS in the search highlighter
+  (`SearchOptimizer`, CodeQL `js/xss-through-dom`)
+  - When resetting an element to its original text (no search term or no
+    match), the text was assigned via `innerHTML`, which reinterprets the
+    content as HTML. Since the text originates from user-supplied JSON
+    values, this could allow script injection.
+  - Now assigned via `textContent`, which never interprets the value as
+    HTML. The match-highlighting path was already safe (all text runs
+    through `escapeHtml()`).
+  - Rebuilt `dist/` and `demo/build/` bundles accordingly.
 - Resolved all open dependency security advisories (14 high, 4 moderate)
   - All affected packages were transitive `devDependencies` only and are
     not included in the published `dist/` bundle, so end users were not

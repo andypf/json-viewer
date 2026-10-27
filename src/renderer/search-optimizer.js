@@ -34,8 +34,9 @@ class SearchOptimizer {
 
     // Kein Suchbegriff → Original-Text wiederherstellen
     if (!this.currentSearchTerm || !this.currentRegex) {
-      if (element.innerHTML !== text) {
-        element.innerHTML = text
+      // textContent statt innerHTML: verhindert XSS, da Text nicht als HTML interpretiert wird
+      if (element.textContent !== text) {
+        element.textContent = text
       }
       return false
     }
@@ -51,8 +52,9 @@ class SearchOptimizer {
 
     if (indexes.length === 0) {
       // Kein Match → Original-Text
-      if (element.innerHTML !== text) {
-        element.innerHTML = text
+      // textContent statt innerHTML: verhindert XSS, da Text nicht als HTML interpretiert wird
+      if (element.textContent !== text) {
+        element.textContent = text
       }
       this.matches.set(element, { searchTerm: this.currentSearchTerm, text, found: false })
       return false
